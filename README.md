@@ -11,8 +11,8 @@ An overview of the tools is available [there](https://www.csiro.au/en/Research/L
 
 # Installation
 
-[Installing on Window](./doc/install_windows.md)
-[Installing on Linux](./doc/install_linux.md)
+* [Installing on Window](./doc/install_windows.md)
+* [Installing on Linux](./doc/install_linux.md)
 
 # Samples
 
