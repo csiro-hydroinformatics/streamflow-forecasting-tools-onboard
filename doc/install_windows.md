@@ -5,6 +5,8 @@ Installing ensemble streamflow forecasting tools on Windows
 
 This documentation is fairly prescriptive in terms of the location where you would install dynamic libraries. You can still choose the top level folder where you would install these libraries. This document uses "c:\local".
 
+You may have `7z` in your command line prompt, otherwise use Windows Explorer:
+
 ```bat
 mkdir c:\local
 cd c:\local
