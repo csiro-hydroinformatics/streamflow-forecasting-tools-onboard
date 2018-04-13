@@ -1,16 +1,18 @@
 # Onboarding guide for streamflow forecasting software tools
 
-The purpose of this repository is to have a public entry point for people interested in a suite of modelling tools, previously refered to as SWIFT2. These tools are designed for ensemble streamflow forecasting, but can be used for other types of semi-distributed hydrologic modelling.
+The purpose of this repository is to have a public entry point for people interested in a suite of modelling tools, previously refered to as `SWIFT2`. These tools are designed for ensemble streamflow forecasting, but can be used for other types of semi-distributed hydrologic modelling.
 
 # Capabilities
 
 This documentation introduces a set of software tools for ensemble streamflow forecasting techniques. The core is written in C++, but in practice users access the features via packages in R, python, or Matlab.
 
+You can browse through [sample modelling workflows in R package vignettes](./doc/sample_workflows.md) to get an idea of the features from a modeller's perspective.
+
 An overview of the tools is available [there](https://www.csiro.au/en/Research/LWF/Areas/Water-resources/Assessing-water-resources/WIRADA/Data-and-tools), under the section "Flood and short-term streamflow forecasting"
 
 # Installation
 
-As of Jan 2018 most of the software tools are not publicly available; you should have received a link to downloadable packages and files. Follow the instructions for your platform
+As of April 2018 most of the software tools are not publicly available; you should have received a link to downloadable packages and files. Follow the instructions for your platform
 
 * [Installing on Window](./doc/install_windows.md)
 * [Installing on Linux](./doc/install_linux.md)

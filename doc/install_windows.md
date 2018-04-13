@@ -38,7 +38,7 @@ While not required, we advise you set up an additional R library location, speci
 
 ### Installing an R package
 
-You should have been given pre-compiled R packages. If you have for instance a USB drive mapped to E:, the following command should install ophct, and all its depencency packages. This may take some time to set up once, but is worth it - most of these packages are publicly, popular R packages providing powerful statistical and visualisation tools to complement SWIFT2.
+You should have been given pre-compiled R packages. If you have for instance a USB drive mapped to E:, the following command should install swift, and all its depencency packages. This may take some time to set up once, but is worth it - most of these packages are publicly, popular R packages providing powerful statistical and visualisation tools to complement SWIFT2.
 
 `swift` is the main modelling package, `uchronia` is a closely related package for multi-dimensional time series handling. 
 
