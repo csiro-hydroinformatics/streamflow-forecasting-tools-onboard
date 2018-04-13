@@ -114,7 +114,7 @@ x <- merge(noReset,withReset)
 zoo::plot.zoo(x, plot.type='single', col=c('blue','red'), ylab="Outflow m3/s", main="Outflows with/without state resets")
 ```
 
-<img src="/home/per202/src/csiro/stash/per202/swift/bindings/R/pkgs/swift/vignettes/ensemble_model_runs/ensemble_model_runs_files/figure-markdown_github/unnamed-chunk-8-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./ensemble_model_runs_files/figure-markdown_github/unnamed-chunk-8-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Now let'd ready the simulation to do ensemble forecasts. We define a list `inputMap` such that keys are the names of ensemble forecast time series found in `dataLibrary` and the values is one or more of the model properties found in the simulation. In this instance we use the same series for all model precipitation inputs in `precipIds`
 
@@ -155,4 +155,4 @@ flowFc <- uchronia::getItem(forecasts, 1)
 uchronia::plotXtsQuantiles(flowFc)
 ```
 
-<img src="/home/per202/src/csiro/stash/per202/swift/bindings/R/pkgs/swift/vignettes/ensemble_model_runs/ensemble_model_runs_files/figure-markdown_github/unnamed-chunk-11-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./ensemble_model_runs_files/figure-markdown_github/unnamed-chunk-11-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
