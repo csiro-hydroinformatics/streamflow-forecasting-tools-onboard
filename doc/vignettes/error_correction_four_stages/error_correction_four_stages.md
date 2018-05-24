@@ -1,22 +1,11 @@
 Error correction models - Elaboration
 ================
-Jean-Michel Perraud
-2018-04-13
 
-Error correction models - Elaboration
-=====================================
+NOTE: this example workflow is outdated and will be revised, for more relevant example modelling workflows go to [this list](https://github.com/jmp75/streamflow-forecasting-tools-onboard/blob/master/doc/sample_workflows.md)
 
-About this document
-===================
 
-This document was generated from an R markdown file on 2018-04-13 17:36:51.
-
-Elaboration
+Elaboration 
 ===========
-
-``` r
-has_data <- (Sys.info()['nodename'] == "ABINGTON-BU") 
-```
 
 ``` r
 library(swift)
