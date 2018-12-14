@@ -190,7 +190,7 @@ execSimulation(sc)
 obsVsCalc(gaugeFlow, getRecorded(sc, varId))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/calibrate_subcatchments/calibrate_subcatchments_files/figure-markdown_github/unnamed-chunk-10-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./calibrate_subcatchments_files/figure-markdown_github/unnamed-chunk-10-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Now, setting up an objective (NSE) and optimizer:
 
@@ -264,7 +264,7 @@ execSimulation(sc)
 obsVsCalc(gaugeFlow, getRecorded(sc, varId))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/calibrate_subcatchments/calibrate_subcatchments_files/figure-markdown_github/unnamed-chunk-13-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./calibrate_subcatchments_files/figure-markdown_github/unnamed-chunk-13-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 We can create a subcatchment parameterizer, such that when applied to the whole of the South Esk, only the states of the subareas, links and nodes of the subcatchment are potentially affected.
 

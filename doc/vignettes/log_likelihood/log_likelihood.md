@@ -81,7 +81,7 @@ names(sState) <- shortVarId(names(sState))
 zoo::plot.zoo(sState)
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-7-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-7-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Let's build the objective calculator that will guide the calibration process:
 
@@ -169,7 +169,7 @@ modRunoff <- getRecorded(ms, runoffDepthVarname)
 joki::plotTwoSeries(flow, modRunoff, ylab="obs/mod runoff", startTime = start(flow), endTime = end(flow))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-11-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-11-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Build the optimiser definition, instrument with a logger.
 
@@ -226,7 +226,7 @@ for (pVar in pVarIds) {
 }
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-15-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-15-2.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-15-3.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-15-4.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-15-5.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-15-6.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-15-7.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-15-8.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-15-9.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-15-10.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-2.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-3.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-4.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-5.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-6.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-7.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-8.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-9.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-10.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Finally, get a visual of the runoff time series with the best known parameter set (the penultimate entry in the data frame with the log of the calibration process).
 
@@ -258,4 +258,4 @@ modRunoff <- getRecorded(ms, runoffDepthVarname)
 joki::plotTwoSeries(flow, modRunoff, ylab="obs/mod runoff", startTime = start(flow), endTime = end(flow))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/log_likelihood/log_likelihood_files/figure-markdown_github/unnamed-chunk-16-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-16-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />

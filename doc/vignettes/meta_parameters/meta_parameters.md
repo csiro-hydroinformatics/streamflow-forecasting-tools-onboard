@@ -142,7 +142,7 @@ calc <- getRecorded(ms, outflowVarname)
 joki::plotTwoSeries(flow, calc, startTime=end(flow)-lubridate::years(3), endTime=end(flow))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/meta_parameters/meta_parameters_files/figure-markdown_github/unnamed-chunk-12-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./meta_parameters_files/figure-markdown_github/unnamed-chunk-12-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ``` r
 objective <- createObjective(ms, outflowVarname, flow, 'NSE', w, e)
@@ -223,7 +223,7 @@ for (pVarId in pVarIds) {
 }
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/meta_parameters/meta_parameters_files/figure-markdown_github/unnamed-chunk-18-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/meta_parameters/meta_parameters_files/figure-markdown_github/unnamed-chunk-18-2.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/meta_parameters/meta_parameters_files/figure-markdown_github/unnamed-chunk-18-3.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/meta_parameters/meta_parameters_files/figure-markdown_github/unnamed-chunk-18-4.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./meta_parameters_files/figure-markdown_github/unnamed-chunk-18-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./meta_parameters_files/figure-markdown_github/unnamed-chunk-18-2.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./meta_parameters_files/figure-markdown_github/unnamed-chunk-18-3.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./meta_parameters_files/figure-markdown_github/unnamed-chunk-18-4.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ``` r
 sortedResults <- sortByScore(calibResults, 'NSE')
@@ -273,4 +273,4 @@ modRunoff <- getRecorded(ms, outflowVarname)
 joki::plotTwoSeries(flow, modRunoff, startTime=end(modRunoff)-lubridate::years(3), endTime=end(modRunoff))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/meta_parameters/meta_parameters_files/figure-markdown_github/unnamed-chunk-21-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./meta_parameters_files/figure-markdown_github/unnamed-chunk-21-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />

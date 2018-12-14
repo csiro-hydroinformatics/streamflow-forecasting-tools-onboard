@@ -114,7 +114,7 @@ execSimulation(simulation)
 obsVsCalc(flowRateTs, getRecorded(simulation, flowId))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/error_correction_four_stages/error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-6-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-6-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ### Set up the error correction model
 
@@ -223,7 +223,7 @@ execSimulation(ecs)
 obsVsCalc(flowRateTsGapped, getRecorded(ecs, updatedFlowVarID))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/error_correction_four_stages/error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-13-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-13-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 A helper function to process the calibration log:
 
@@ -244,7 +244,7 @@ d <- prepOptimLog(estimator, fitnessName = "Log.likelihood")
 print(mhplot::plotParamEvolution(d$geomOps, 'Sigma1_Rising', c(0, max(d$data@data$Log.likelihood))))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/error_correction_four_stages/error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-15-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-15-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 #### Stage 3
 
@@ -273,7 +273,7 @@ d <- prepOptimLog(estimator, fitnessName = "Log.likelihood")
 print(mhplot::plotParamEvolution(d$geomOps, 'Rho', c(0, max(d$data@data$Log.likelihood))))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/error_correction_four_stages/error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-17-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-17-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 #### Stage 3a, generating and fitting M and S if free
 
@@ -305,7 +305,7 @@ execSimulation(ecs)
 obsVsCalc(flowRateTsGapped, getRecorded(ecs, updatedFlowVarID))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/error_correction_four_stages/error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-19-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-19-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 #### Stage 4, rising limb
 
@@ -334,7 +334,7 @@ d <- prepOptimLog(estimator, fitnessName = "Log.likelihood")
 print(mhplot::plotParamEvolution(d$geomOps, 'Weight_Rising', c(0, max(d$data@data$Log.likelihood))))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/error_correction_four_stages/error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-21-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-21-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ``` r
 applySysConfig(mkEcIds(stageFourPsetRising), ecs)
@@ -342,7 +342,7 @@ execSimulation(ecs)
 obsVsCalc(flowRateTsGapped, getRecorded(ecs, updatedFlowVarID))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/error_correction_four_stages/error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-22-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-22-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 #### Stage 4, falling limbs
 
@@ -371,7 +371,7 @@ Nd <- prepOptimLog(estimator, fitnessName = "Log.likelihood")
 print(mhplot::plotParamEvolution(d$geomOps, 'Weight_Rising', c(0, max(d$data@data$Log.likelihood))))
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/error_correction_four_stages/error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-24-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-24-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 #### Final consolidated parameter set
 

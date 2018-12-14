@@ -94,7 +94,7 @@ execSimulation(ms)
 plot(getRecorded(ms, sVarId), main='GR4J S store. No state initializer')
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/calibration_initial_states/calibration_initial_states_files/figure-markdown_github/unnamed-chunk-6-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./calibration_initial_states_files/figure-markdown_github/unnamed-chunk-6-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Let's define *S0* and *R0* parameters such that for each GR4J model instance, *S = S0 \* x1* and *R = R0 \* x3*
 
@@ -126,7 +126,7 @@ execSimulation(ms)
 plot(getRecorded(ms, sVarId), main='GR4J S store; incomplete store initialization')
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/calibration_initial_states/calibration_initial_states_files/figure-markdown_github/unnamed-chunk-9-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./calibration_initial_states_files/figure-markdown_github/unnamed-chunk-9-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 You need to define a new parameterizer, that makes sure that the model is reset to the expected initial value.
 
@@ -137,7 +137,7 @@ execSimulation(ms)
 plot(getRecorded(ms, sVarId), main='GR4J S store, with a proper state initializer')
 ```
 
-<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/calibration_initial_states/calibration_initial_states_files/figure-markdown_github/unnamed-chunk-10-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./calibration_initial_states_files/figure-markdown_github/unnamed-chunk-10-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 There is logic in keeping the two previous steps in defining a parameterizer as separate, hence this present vignette emphasizes the importance of these two steps.
 
