@@ -1,7 +1,7 @@
 Getting started with the swift R package
 ================
 Jean-Michel Perraud
-2018-04-13
+2018-12-14
 
 Getting started with the SWIFT R package
 ========================================
@@ -9,7 +9,7 @@ Getting started with the SWIFT R package
 About this document
 ===================
 
-This document was generated from an R markdown file on 2018-04-13 17:36:51. It is the introduction 'vignette' to an R package for interacting with SWIFT.
+This document was generated from an R markdown file on 2018-12-14 18:07:23. It is the introduction 'vignette' to an R package for interacting with SWIFT.
 
 It shows one of the most basic usage, running a single model simulation. While basic, it is realistic and uses data from a study catchment.
 
@@ -36,7 +36,7 @@ data('swift_sample_data')
 names(swiftSampleData)
 ```
 
-    ## [1] "MMH"       "Ovens"     "Abbeyard"  "07378500"  "South_Esk"
+    ## [1] "MMH"       "Ovens"     "Abbeyard"  "07378500"  "South_Esk" "Adelaide"
 
 **swift** now has some functions to create a single subarea simulation for testing purposes. While is it perfectly possible to manually build your own model simulation from scratch, for the sake of getting started quickly let's use pre-defined functions to get a model simulation ready to run. The parameters of the function should be fairly self-explanatory to you:
 
@@ -72,7 +72,7 @@ head(getPlayed(ms))
 zoo::plot.zoo(getPlayed(ms), main='MMH daily climate inputs')
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-6-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/getting_started/getting_started_files/figure-markdown_github/unnamed-chunk-6-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 The simulation has no output to record to time series defined yet. SWIFT is designed to record model variables on demand in a highly flexible manner. First, we can query the system to find out known models, and the model variable names that we can record.
 
@@ -86,9 +86,9 @@ getRecordedVarnames(ms)
 runoffModelIds()
 ```
 
-    ##  [1] "NetRainfall"   "GR4J"          "GR5H"          "GR6J"         
-    ##  [5] "GR5J"          "PDM"           "AWBM"          "SACSMA"       
-    ##  [9] "const_outflow" "external"
+    ##  [1] "NetRainfall"   "GR4J"          "GR4J_SG"       "GR5H"         
+    ##  [5] "GR6J"          "GR5J"          "PDM"           "AWBM"         
+    ##  [9] "SACSMA"        "const_outflow" "external"
 
 ``` r
 gr4jModelVars <- runoffModelVarIds('GR4J')
@@ -155,13 +155,22 @@ names(varSeries) <- gsub(names(varSeries), pattern="subarea\\.Subarea\\.", repla
 zoo::plot.zoo(varSeries, main = 'Default GR4J output on MMH data')
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-12-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/getting_started/getting_started_files/figure-markdown_github/unnamed-chunk-12-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Let's look at a shorter period of the output; we can demonstrate the use of the **lubridate** package for convenient date-time arithmetic, and the window function. We define a couple of functions to slice and plot the last three years of the time series.
 
 ``` r
 library(lubridate)
+```
 
+    ## 
+    ## Attaching package: 'lubridate'
+
+    ## The following object is masked from 'package:base':
+    ## 
+    ##     date
+
+``` r
 lastThreeYears <- function(tts) {
     window(tts, start=end(tts)-lubridate::years(3), end=end(tts)) 
 }
@@ -175,7 +184,7 @@ obsVsCalc <- function(obs, calc, ylab="runoff (mm)") {
 zoo::plot.zoo(lastThreeYears(varSeries), main = 'Default GR4J output on MMH data')
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-14-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/getting_started/getting_started_files/figure-markdown_github/unnamed-chunk-14-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Exploring the model interactively
 =================================
@@ -194,7 +203,7 @@ runoffDiff <- getRecorded(ms, runoffId) - baselineRunoff
 zoo::plot.zoo(lastThreeYears(runoffDiff), main = 'Additional runoff with scaled up precipitation', ylab='runoff depth change (mm)')
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-15-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/getting_started/getting_started_files/figure-markdown_github/unnamed-chunk-15-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Let's get back to the initial input settings, and demonstrate one way to change parameters interactively. Note that this is not necessarily the recommended way to handle model parameterisation, as will be made clear later in this document when setting up calibration. You can already see how the code required for just one parameter is more length.
 
@@ -214,7 +223,7 @@ runoffDiff <- getRecorded(ms, runoffId) - baselineRunoff
 zoo::plot.zoo(lastThreeYears(runoffDiff), main = 'Change in runoff with x4 scaled up by 10%', ylab='runoff depth change')
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-16-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/getting_started/getting_started_files/figure-markdown_github/unnamed-chunk-16-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ``` r
 setStateValue(ms, x4Id, x4)
@@ -231,7 +240,7 @@ obsRunoff[which(obsRunoff < -1)] <- NA
 obsVsCalc(obsRunoff, baselineRunoff)
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-17-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/getting_started/getting_started_files/figure-markdown_github/unnamed-chunk-17-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 First let's define the objective of the calibration, the Nash-Sutcliffe efficiency (NSE) for the runoff depth. We'll use two years of data as warmup.
 
@@ -299,7 +308,8 @@ We have our objectives defined, and the parameter space 'p' in which to search. 
 
 ``` r
 # term <- getMarginalTermination(tolerance = 1e-06, cutoffNoImprovement = 100, maxHours = 0.05) 
-term <- getMaxRuntimeTermination(maxHours = 0.0015) 
+# term <- getMaxRuntimeTermination(maxHours = 0.0015) 
+term <- swift::CreateSceTerminationWila_Pkg_R('relative standard deviation', c('0.05','0.0167'))
 
 sceParams <- getDefaultSceParameters()
 urs <- createParameterSampler(0, p, 'urs')
@@ -310,23 +320,13 @@ calibLogger <- setCalibrationLogger(optimizer, '')
 
 ``` r
 startTime <- lubridate::now()
-```
-
-    ## Warning in with_tz(Sys.time(), tzone): Unrecognized time zone ''
-
-``` r
 calibResults <- executeOptimization(optimizer)
 endTime <- lubridate::now()
-```
-
-    ## Warning in with_tz(Sys.time(), tzone): Unrecognized time zone ''
-
-``` r
 calibWallTime <- endTime-startTime
 print(paste( 'Optimization completed in ', calibWallTime, attr(calibWallTime, 'units')))
 ```
 
-    ## [1] "Optimization completed in  5.39394927024841 secs"
+    ## [1] "Optimization completed in  4.5192654132843 secs"
 
 **swift** uses optimization tools that will parallelize model simulation runs if possible (i.e. if supported by the model).
 
@@ -340,9 +340,9 @@ geomOps <- mhplot::subsetByMessage(logMh)
 str(geomOps@data)
 ```
 
-    ## 'data.frame':    2092 obs. of  9 variables:
+    ## 'data.frame':    1201 obs. of  9 variables:
     ##  $ Category          : Factor w/ 7 levels "Complex No 0",..: 7 7 7 7 7 7 7 7 7 7 ...
-    ##  $ CurrentShuffle    : Factor w/ 33 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
+    ##  $ CurrentShuffle    : Factor w/ 19 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
     ##  $ Message           : Factor w/ 5 levels "Adding a random point in hypercube",..: 3 3 3 3 3 3 3 3 3 3 ...
     ##  $ NSE               : num  -1339.286 -0.891 -0.327 -2.367 -913.047 ...
     ##  $ subarea.Subarea.x1: num  948 175 215 725 874 ...
@@ -365,7 +365,7 @@ pVarIds
 print(mhplot::plotParamEvolution(geomOps, pVarIds[1], objLims=c(0,1)))
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-26-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/getting_started/getting_started_files/figure-markdown_github/unnamed-chunk-26-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Note that the parameter x4 also seems to have settled at its lower bound. x4 influences the unit hydrograph, and the meaning of this parameter depends on the time step of the input series. It may be justified in this case to go below 1 for its lower bound.
 
@@ -373,7 +373,7 @@ Note that the parameter x4 also seems to have settled at its lower bound. x4 inf
 print(mhplot::plotParamEvolution(geomOps, pVarIds[4], objLims=c(0,1)))
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-27-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/getting_started/getting_started_files/figure-markdown_github/unnamed-chunk-27-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 So let's restart, with a larger upper bound for the x1 parameter:
 
@@ -397,7 +397,7 @@ Let's check that the parameter does not settle at the boundary anymore:
 print(mhplot::plotParamEvolution(geomOps, pVarIds[1], objLims=c(0,1)))
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-29-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/getting_started/getting_started_files/figure-markdown_github/unnamed-chunk-29-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Let's apply the parameter set with the best NSE, and see the resulting runoff time series. Note that we see only the last 3 years of time series, over drier years, while the NSE score is calculated in several more years.
 
@@ -407,19 +407,19 @@ head(scoresAsDataFrame(sortedResults))
 ```
 
     ##         NSE subarea.Subarea.x1 subarea.Subarea.x2 subarea.Subarea.x3
-    ## 1 0.7832231           1141.613          -5.437475           97.48305
-    ## 2 0.7832231           1141.763          -5.436954           97.47216
-    ## 3 0.7832231           1141.710          -5.436987           97.47743
-    ## 4 0.7832231           1141.694          -5.437763           97.47471
-    ## 5 0.7832231           1141.688          -5.437670           97.46638
-    ## 6 0.7832231           1141.675          -5.437706           97.46622
+    ## 1 0.7793711          1033.6737          -5.476425           111.5389
+    ## 2 0.7753656           917.8338          -7.835381           112.9304
+    ## 3 0.7702455           769.9323          -8.069204           123.8100
+    ## 4 0.7675644           805.6729          -7.556143           154.0380
+    ## 5 0.7664841           702.1191          -9.328493           144.7071
+    ## 6 0.7646561           790.5494         -10.146227           152.3430
     ##   subarea.Subarea.x4
-    ## 1          0.4322110
-    ## 2          0.4160575
-    ## 3          0.4273673
-    ## 4          0.4287794
-    ## 5          0.4293835
-    ## 6          0.4322954
+    ## 1          0.5475978
+    ## 2          0.5124155
+    ## 3          0.3381048
+    ## 4          0.4220644
+    ## 5          0.5124549
+    ## 6          0.4725825
 
 ``` r
 bestPset <- getScoreAtIndex(sortedResults, 1)
@@ -428,4 +428,4 @@ execSimulation(ms)
 obsVsCalc(obsRunoff, getRecorded(ms, runoffId))
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-30-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="/home/per202/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/getting_started/getting_started_files/figure-markdown_github/unnamed-chunk-30-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
