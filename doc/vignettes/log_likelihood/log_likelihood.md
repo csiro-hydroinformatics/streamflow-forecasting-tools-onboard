@@ -1,7 +1,7 @@
 Sample code for log-likelihood calibration
 ================
 Jean-Michel Perraud
-2018-04-13
+2018-12-14
 
 Sample code for log-likelihood calibration
 ==========================================
@@ -9,7 +9,7 @@ Sample code for log-likelihood calibration
 About this document
 ===================
 
-This document was generated from an R markdown file on 2018-04-13 17:37:07. It illustrates how to set up a calibration with a log-likelihood objective.
+This document was generated from an R markdown file on 2018-12-14 18:07:35. It illustrates how to set up a calibration with a log-likelihood objective.
 
 Setting up a calibration on daily data
 ======================================
@@ -175,7 +175,9 @@ Build the optimiser definition, instrument with a logger.
 
 ``` r
 # term <- getMaxRuntimeTermination(maxHours = 0.3/60)  # ~20 second appears enough with SWIFT binaries in Release mode
-term <- getMarginalTermination(tolerance = 1e-06, cutoffNoImprovement = 10, maxHours = 0.3/60) 
+# term <- getMarginalTermination(tolerance = 1e-06, cutoffNoImprovement = 10, maxHours = 0.3/60) 
+term <- swift::CreateSceTerminationWila_Pkg_R('relative standard deviation', c('0.05','0.0167'))
+
 sceParams <- getDefaultSceParameters()
 urs <- createParameterSampler(0, p, 'urs')
 optimizer <- createSceOptimSwift(objective, term, SCEpars=sceParams, urs)
@@ -184,23 +186,13 @@ calibLogger <- setCalibrationLogger(optimizer, '')
 
 ``` r
 startTime <- lubridate::now()
-```
-
-    ## Warning in with_tz(Sys.time(), tzone): Unrecognized time zone ''
-
-``` r
 calibResults <- executeOptimization(optimizer)
 endTime <- lubridate::now()
-```
-
-    ## Warning in with_tz(Sys.time(), tzone): Unrecognized time zone ''
-
-``` r
 calibWallTime <- endTime-startTime
 print(paste( 'Optimization completed in ', calibWallTime, attr(calibWallTime, 'units')))
 ```
 
-    ## [1] "Optimization completed in  17.465832233429 secs"
+    ## [1] "Optimization completed in  46.1551764011383 secs"
 
 ``` r
 d <- getLoggerContent(optimizer)
@@ -210,9 +202,9 @@ geomOps <- mhplot::subsetByMessage(logMh)
 str(geomOps@data)
 ```
 
-    ## 'data.frame':    903 obs. of  15 variables:
+    ## 'data.frame':    1823 obs. of  15 variables:
     ##  $ Category          : Factor w/ 7 levels "Complex No 0",..: 7 7 7 7 7 7 7 7 7 7 ...
-    ##  $ CurrentShuffle    : Factor w/ 12 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
+    ##  $ CurrentShuffle    : Factor w/ 24 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
     ##  $ Message           : Factor w/ 6 levels "Adding a random point in hypercube",..: 4 4 4 4 4 4 4 4 4 4 ...
     ##  $ Log.likelihood    : num  -1.00e+20 -1.00e+20 -1.00e+20 -1.00e+20 -2.57e+06 ...
     ##  $ a                 : num  -17.627 0.299 -17.036 -3.664 -21.609 ...
@@ -244,19 +236,19 @@ head(scoresAsDataFrame(sortedResults))
 ```
 
     ##   Log.likelihood subarea.Subarea.x1 subarea.Subarea.x2 subarea.Subarea.x3
-    ## 1       671.5427           2369.079          -7.669835           590.1732
-    ## 2       508.9381           2004.260         -10.038626           635.8972
-    ## 3       355.6703           2785.467          -6.220998           448.0985
-    ## 4       314.3895           1984.944          -9.523992           655.2813
-    ## 5       193.3621           1369.615          -4.349621           796.9769
-    ## 6       155.8950           2218.584          -3.606396           450.0449
+    ## 1       1250.011           2944.408          -5.243909           282.6414
+    ## 2       1225.556           2881.464          -6.802201           349.3201
+    ## 3       1179.166           2750.132          -6.665507           374.1117
+    ## 4       1147.378           2869.024          -8.051053           375.9139
+    ## 5       1126.027           2832.924          -8.612122           406.4433
+    ## 6       1120.677           2919.919          -5.277272           287.1877
     ##   subarea.Subarea.x4         b m        s         a   maxobs        ct
-    ## 1           1.063890 -17.18383 0 16.85565 -21.79343 17.22113 0.1722113
-    ## 2           3.034797 -17.66727 0 17.61743 -24.10080 17.22113 0.1722113
-    ## 3          15.624986 -16.87873 0 16.46989 -19.78855 17.22113 0.1722113
-    ## 4          10.815378 -17.43273 0 17.30170 -24.23128 17.22113 0.1722113
-    ## 5           2.584622 -20.40376 0 20.24217 -27.84000 17.22113 0.1722113
-    ## 6          11.083408 -19.33618 0 19.43207 -25.61225 17.22113 0.1722113
+    ## 1           1.146554 -17.75643 0 17.33129 -21.37357 17.22113 0.1722113
+    ## 2           1.212845 -17.00999 0 16.49055 -20.04545 17.22113 0.1722113
+    ## 3           1.107039 -16.97280 0 16.47950 -20.28309 17.22113 0.1722113
+    ## 4           1.604649 -15.08533 0 14.75482 -20.16862 17.22113 0.1722113
+    ## 5           1.440035 -16.62996 0 16.24449 -20.89885 17.22113 0.1722113
+    ## 6           1.330056 -17.19624 0 16.78796 -21.84332 17.22113 0.1722113
 
 ``` r
 bestPset <- getScoreAtIndex(sortedResults, 1)

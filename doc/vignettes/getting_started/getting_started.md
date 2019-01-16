@@ -1,7 +1,7 @@
 Getting started with the swift R package
 ================
 Jean-Michel Perraud
-2018-04-13
+2018-12-14
 
 Getting started with the SWIFT R package
 ========================================
@@ -9,7 +9,7 @@ Getting started with the SWIFT R package
 About this document
 ===================
 
-This document was generated from an R markdown file on 2018-04-13 17:36:51. It is the introduction 'vignette' to an R package for interacting with SWIFT.
+This document was generated from an R markdown file on 2018-12-14 18:07:23. It is the introduction 'vignette' to an R package for interacting with SWIFT.
 
 It shows one of the most basic usage, running a single model simulation. While basic, it is realistic and uses data from a study catchment.
 
@@ -36,7 +36,7 @@ data('swift_sample_data')
 names(swiftSampleData)
 ```
 
-    ## [1] "MMH"       "Ovens"     "Abbeyard"  "07378500"  "South_Esk"
+    ## [1] "MMH"       "Ovens"     "Abbeyard"  "07378500"  "South_Esk" "Adelaide"
 
 **swift** now has some functions to create a single subarea simulation for testing purposes. While is it perfectly possible to manually build your own model simulation from scratch, for the sake of getting started quickly let's use pre-defined functions to get a model simulation ready to run. The parameters of the function should be fairly self-explanatory to you:
 
@@ -86,9 +86,9 @@ getRecordedVarnames(ms)
 runoffModelIds()
 ```
 
-    ##  [1] "NetRainfall"   "GR4J"          "GR5H"          "GR6J"         
-    ##  [5] "GR5J"          "PDM"           "AWBM"          "SACSMA"       
-    ##  [9] "const_outflow" "external"
+    ##  [1] "NetRainfall"   "GR4J"          "GR4J_SG"       "GR5H"         
+    ##  [5] "GR6J"          "GR5J"          "PDM"           "AWBM"         
+    ##  [9] "SACSMA"        "const_outflow" "external"
 
 ``` r
 gr4jModelVars <- runoffModelVarIds('GR4J')
@@ -161,7 +161,16 @@ Let's look at a shorter period of the output; we can demonstrate the use of the 
 
 ``` r
 library(lubridate)
+```
 
+    ## 
+    ## Attaching package: 'lubridate'
+
+    ## The following object is masked from 'package:base':
+    ## 
+    ##     date
+
+``` r
 lastThreeYears <- function(tts) {
     window(tts, start=end(tts)-lubridate::years(3), end=end(tts)) 
 }
@@ -299,7 +308,8 @@ We have our objectives defined, and the parameter space 'p' in which to search. 
 
 ``` r
 # term <- getMarginalTermination(tolerance = 1e-06, cutoffNoImprovement = 100, maxHours = 0.05) 
-term <- getMaxRuntimeTermination(maxHours = 0.0015) 
+# term <- getMaxRuntimeTermination(maxHours = 0.0015) 
+term <- swift::CreateSceTerminationWila_Pkg_R('relative standard deviation', c('0.05','0.0167'))
 
 sceParams <- getDefaultSceParameters()
 urs <- createParameterSampler(0, p, 'urs')
@@ -310,23 +320,13 @@ calibLogger <- setCalibrationLogger(optimizer, '')
 
 ``` r
 startTime <- lubridate::now()
-```
-
-    ## Warning in with_tz(Sys.time(), tzone): Unrecognized time zone ''
-
-``` r
 calibResults <- executeOptimization(optimizer)
 endTime <- lubridate::now()
-```
-
-    ## Warning in with_tz(Sys.time(), tzone): Unrecognized time zone ''
-
-``` r
 calibWallTime <- endTime-startTime
 print(paste( 'Optimization completed in ', calibWallTime, attr(calibWallTime, 'units')))
 ```
 
-    ## [1] "Optimization completed in  5.39394927024841 secs"
+    ## [1] "Optimization completed in  4.5192654132843 secs"
 
 **swift** uses optimization tools that will parallelize model simulation runs if possible (i.e. if supported by the model).
 
@@ -340,9 +340,9 @@ geomOps <- mhplot::subsetByMessage(logMh)
 str(geomOps@data)
 ```
 
-    ## 'data.frame':    2092 obs. of  9 variables:
+    ## 'data.frame':    1201 obs. of  9 variables:
     ##  $ Category          : Factor w/ 7 levels "Complex No 0",..: 7 7 7 7 7 7 7 7 7 7 ...
-    ##  $ CurrentShuffle    : Factor w/ 33 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
+    ##  $ CurrentShuffle    : Factor w/ 19 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
     ##  $ Message           : Factor w/ 5 levels "Adding a random point in hypercube",..: 3 3 3 3 3 3 3 3 3 3 ...
     ##  $ NSE               : num  -1339.286 -0.891 -0.327 -2.367 -913.047 ...
     ##  $ subarea.Subarea.x1: num  948 175 215 725 874 ...
@@ -407,19 +407,19 @@ head(scoresAsDataFrame(sortedResults))
 ```
 
     ##         NSE subarea.Subarea.x1 subarea.Subarea.x2 subarea.Subarea.x3
-    ## 1 0.7832231           1141.613          -5.437475           97.48305
-    ## 2 0.7832231           1141.763          -5.436954           97.47216
-    ## 3 0.7832231           1141.710          -5.436987           97.47743
-    ## 4 0.7832231           1141.694          -5.437763           97.47471
-    ## 5 0.7832231           1141.688          -5.437670           97.46638
-    ## 6 0.7832231           1141.675          -5.437706           97.46622
+    ## 1 0.7793711          1033.6737          -5.476425           111.5389
+    ## 2 0.7753656           917.8338          -7.835381           112.9304
+    ## 3 0.7702455           769.9323          -8.069204           123.8100
+    ## 4 0.7675644           805.6729          -7.556143           154.0380
+    ## 5 0.7664841           702.1191          -9.328493           144.7071
+    ## 6 0.7646561           790.5494         -10.146227           152.3430
     ##   subarea.Subarea.x4
-    ## 1          0.4322110
-    ## 2          0.4160575
-    ## 3          0.4273673
-    ## 4          0.4287794
-    ## 5          0.4293835
-    ## 6          0.4322954
+    ## 1          0.5475978
+    ## 2          0.5124155
+    ## 3          0.3381048
+    ## 4          0.4220644
+    ## 5          0.5124549
+    ## 6          0.4725825
 
 ``` r
 bestPset <- getScoreAtIndex(sortedResults, 1)
