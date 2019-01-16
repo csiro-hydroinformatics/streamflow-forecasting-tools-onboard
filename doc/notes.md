@@ -1,7 +1,7 @@
 
 # Howto
 
-## Generating vignettes output as markdown:
+## Generating vignettes output as markdown
 
 ```R
 # cd ~/src/csiro/stash/xxxxxx/swift/bindings/R/pkgs/swift/vignettes
@@ -40,12 +40,12 @@ lapply(infn, FUN=f)
 
 file.remove(list.files('.', pattern="*.html", full.names=TRUE, recursive=TRUE))
 file.copy(infn, '~/src/github_jm/streamflow-forecasting-tools-onboard/doc/vignettes/', recursive=TRUE)
-
 ```
+
 given what I get from [this issue](https://github.com/rstudio/rmarkdown/issues/587) I am not sure it is possible to get relative paths to figures in the markdown documents. Have to use full text search/replace to correct. 
 
 Note the regex pattern to use:
 
-```
+```text
 /home/xxxxxx/src/csiro/stash/xxxxxx/swift/bindings/R/pkgs/swift/vignettes/[a-z_]*/
 ```
