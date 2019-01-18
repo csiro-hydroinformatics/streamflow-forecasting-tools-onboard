@@ -1,7 +1,7 @@
 Ensemble SWIFT model runs
 ================
 Jean-Michel Perraud
-2018-04-13
+2019-01-17
 
 Ensemble SWIFT model runs
 =========================
@@ -9,21 +9,13 @@ Ensemble SWIFT model runs
 About this document
 ===================
 
-This document was generated from an R markdown file on 2018-04-13 18:24:47.
+This document was generated from an R markdown file on 2019-01-17 12:17:54.
 
 Elaboration
 ===========
 
 ``` r
 library(swift)
-```
-
-    ## Loading required package: Rcpp
-
-    ## Warning: replacing previous import 'joki::addLegend' by 'xts::addLegend'
-    ## when loading 'swift'
-
-``` r
 has_data <- swift::hasSampleData()
 ```
 

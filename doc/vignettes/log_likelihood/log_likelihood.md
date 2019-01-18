@@ -1,7 +1,7 @@
 Sample code for log-likelihood calibration
 ================
 Jean-Michel Perraud
-2018-12-14
+2019-01-17
 
 Sample code for log-likelihood calibration
 ==========================================
@@ -9,7 +9,7 @@ Sample code for log-likelihood calibration
 About this document
 ===================
 
-This document was generated from an R markdown file on 2018-12-14 18:07:35. It illustrates how to set up a calibration with a log-likelihood objective.
+This document was generated from an R markdown file on 2019-01-17 12:19:09. It illustrates how to set up a calibration with a log-likelihood objective.
 
 Setting up a calibration on daily data
 ======================================
@@ -114,15 +114,16 @@ pSpecGr4j$Name <- paste0(rootId, pSpecGr4j$Name)
 
 maxobs <- max(flow, na.rm=TRUE)
 p <- createParameterizer(type='Generic', specs=pSpecGr4j)
-setLogLikParamKeys(a='a', b='b', m='m', s='s', ct="ct")
+setLogLikParamKeys(a='a', b='b', m='m', s='s', ct="ct", censopt='censopt')
 censorThreshold <- maxobs / 100 # TBC
+censopt <- 0.0
 
 loglik <- createParameterizer(type='no apply')
 addToHyperCube(loglik, 
-          data.frame( Name=c('b','m','s','a','maxobs','ct'),
-          Min   = c(-30, 0, 1,    -30, maxobs, censorThreshold),
-          Max   = c(0,   0, 1000, 1, maxobs, censorThreshold),
-          Value = c(-7,  0, 100,  -10, maxobs, censorThreshold),
+          data.frame( Name=c('b','m','s','a','maxobs','ct', 'censopt'),
+          Min   = c(-30, 0, 1,    -30, maxobs, censorThreshold, censopt),
+          Max   = c(0,   0, 1000, 1, maxobs, censorThreshold, censopt),
+          Value = c(-7,  0, 100,  -10, maxobs, censorThreshold, censopt),
           stringsAsFactors=FALSE) )
 p <- concatenateParameterizers(p, loglik)
 parameterizerAsDataFrame(p)
@@ -139,6 +140,7 @@ parameterizerAsDataFrame(p)
     ## 8                   a -30.0000000    1.0000000 -10.0000000
     ## 9              maxobs  17.2211304   17.2211304  17.2211304
     ## 10                 ct   0.1722113    0.1722113   0.1722113
+    ## 11            censopt   0.0000000    0.0000000   0.0000000
 
 Check that the objective calculator works, at least with the default values in the feasible parameter space:
 
@@ -163,6 +165,7 @@ print(score)
     ## 8                   a -30.0000000    1.0000000 -10.0000000
     ## 9              maxobs  17.2211304   17.2211304  17.2211304
     ## 10                 ct   0.1722113    0.1722113   0.1722113
+    ## 11            censopt   0.0000000    0.0000000   0.0000000
 
 ``` r
 modRunoff <- getRecorded(ms, runoffDepthVarname)
@@ -192,7 +195,7 @@ calibWallTime <- endTime-startTime
 print(paste( 'Optimization completed in ', calibWallTime, attr(calibWallTime, 'units')))
 ```
 
-    ## [1] "Optimization completed in  46.1551764011383 secs"
+    ## [1] "Optimization completed in  29.0787487030029 secs"
 
 ``` r
 d <- getLoggerContent(optimizer)
@@ -202,21 +205,22 @@ geomOps <- mhplot::subsetByMessage(logMh)
 str(geomOps@data)
 ```
 
-    ## 'data.frame':    1823 obs. of  15 variables:
+    ## 'data.frame':    2812 obs. of  16 variables:
     ##  $ Category          : Factor w/ 7 levels "Complex No 0",..: 7 7 7 7 7 7 7 7 7 7 ...
-    ##  $ CurrentShuffle    : Factor w/ 24 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
+    ##  $ CurrentShuffle    : Factor w/ 38 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
     ##  $ Message           : Factor w/ 6 levels "Adding a random point in hypercube",..: 4 4 4 4 4 4 4 4 4 4 ...
-    ##  $ Log.likelihood    : num  -1.00e+20 -1.00e+20 -1.00e+20 -1.00e+20 -2.57e+06 ...
-    ##  $ a                 : num  -17.627 0.299 -17.036 -3.664 -21.609 ...
-    ##  $ b                 : num  -24.79 -2.08 -17.24 -1.9 -27.77 ...
+    ##  $ Log.likelihood    : num  -1.00e+20 -1.00e+20 -1.00e+20 -7.71e+05 -1.00e+20 ...
+    ##  $ a                 : num  -17.63 -26.11 -3.56 -28.56 -14.85 ...
+    ##  $ b                 : num  -24.79 -4.05 -5.19 -4.51 -7.93 ...
+    ##  $ censopt           : num  0 0 0 0 0 0 0 0 0 0 ...
     ##  $ ct                : num  0.172 0.172 0.172 0.172 0.172 ...
     ##  $ m                 : num  0 0 0 0 0 0 0 0 0 0 ...
     ##  $ maxobs            : num  17.2 17.2 17.2 17.2 17.2 ...
-    ##  $ s                 : num  710 874 827 792 659 ...
-    ##  $ subarea.Subarea.x1: num  2843 372 1346 694 141 ...
-    ##  $ subarea.Subarea.x2: num  23.01 -25.48 14.96 -11.16 5.43 ...
-    ##  $ subarea.Subarea.x3: num  62.2 724.7 550.6 288 968.4 ...
-    ##  $ subarea.Subarea.x4: num  161.9 147 66.3 239.4 173.5 ...
+    ##  $ s                 : num  710 977 784 196 354 ...
+    ##  $ subarea.Subarea.x1: num  2843 227 1651 2993 224 ...
+    ##  $ subarea.Subarea.x2: num  23 13.5 -13.6 26.2 -26.1 ...
+    ##  $ subarea.Subarea.x3: num  62.2 611.4 425.9 246.5 658.5 ...
+    ##  $ subarea.Subarea.x4: num  161.9 223.4 120 190.2 65.7 ...
     ##  $ PointNumber       : int  1 2 3 4 5 6 7 8 9 10 ...
 
 ``` r
@@ -226,7 +230,7 @@ for (pVar in pVarIds) {
 }
 ```
 
-<img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-2.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-3.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-4.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-5.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-6.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-7.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-8.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-9.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-10.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-2.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-3.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-4.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-5.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-6.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-7.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-8.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-9.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-10.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-11.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Finally, get a visual of the runoff time series with the best known parameter set (the penultimate entry in the data frame with the log of the calibration process).
 
@@ -236,19 +240,26 @@ head(scoresAsDataFrame(sortedResults))
 ```
 
     ##   Log.likelihood subarea.Subarea.x1 subarea.Subarea.x2 subarea.Subarea.x3
-    ## 1       1250.011           2944.408          -5.243909           282.6414
-    ## 2       1225.556           2881.464          -6.802201           349.3201
-    ## 3       1179.166           2750.132          -6.665507           374.1117
-    ## 4       1147.378           2869.024          -8.051053           375.9139
-    ## 5       1126.027           2832.924          -8.612122           406.4433
-    ## 6       1120.677           2919.919          -5.277272           287.1877
+    ## 1       4045.065           1126.290          -3.476256           77.99925
+    ## 2       4033.313           1193.720          -4.092005           79.51965
+    ## 3       4019.339           1176.662          -3.886628           78.83296
+    ## 4       4016.760           1034.124          -4.447279           99.69464
+    ## 5       4015.909           1146.734          -4.091580           87.36938
+    ## 6       4013.671           1178.292          -3.764875           74.42727
     ##   subarea.Subarea.x4         b m        s         a   maxobs        ct
-    ## 1           1.146554 -17.75643 0 17.33129 -21.37357 17.22113 0.1722113
-    ## 2           1.212845 -17.00999 0 16.49055 -20.04545 17.22113 0.1722113
-    ## 3           1.107039 -16.97280 0 16.47950 -20.28309 17.22113 0.1722113
-    ## 4           1.604649 -15.08533 0 14.75482 -20.16862 17.22113 0.1722113
-    ## 5           1.440035 -16.62996 0 16.24449 -20.89885 17.22113 0.1722113
-    ## 6           1.330056 -17.19624 0 16.78796 -21.84332 17.22113 0.1722113
+    ## 1           1.055270 -2.268373 0 1.402992 -26.95914 17.22113 0.1722113
+    ## 2           1.068850 -2.176640 0 1.243679 -25.83251 17.22113 0.1722113
+    ## 3           1.023718 -2.624523 0 1.678404 -25.57058 17.22113 0.1722113
+    ## 4           1.048650 -2.149708 0 1.282698 -25.40359 17.22113 0.1722113
+    ## 5           1.069379 -2.300447 0 1.360183 -28.45221 17.22113 0.1722113
+    ## 6           1.009525 -2.670136 0 1.713397 -26.55811 17.22113 0.1722113
+    ##   censopt
+    ## 1       0
+    ## 2       0
+    ## 3       0
+    ## 4       0
+    ## 5       0
+    ## 6       0
 
 ``` r
 bestPset <- getScoreAtIndex(sortedResults, 1)

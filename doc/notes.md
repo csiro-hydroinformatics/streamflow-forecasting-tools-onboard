@@ -4,7 +4,7 @@
 ## Generating vignettes output as markdown
 
 ```R
-# cd ~/src/csiro/stash/xxxxxx/swift/bindings/R/pkgs/swift/vignettes
+# cd ~/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes
 # R
 
 library(rmarkdown)
@@ -47,5 +47,7 @@ given what I get from [this issue](https://github.com/rstudio/rmarkdown/issues/5
 Note the regex pattern to use:
 
 ```text
-/home/xxxxxx/src/csiro/stash/xxxxxx/swift/bindings/R/pkgs/swift/vignettes/[a-z_]*/
+/home/xxxxxx/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/[a-z_]*/
 ```
+
+and needs to be replaced with `./`

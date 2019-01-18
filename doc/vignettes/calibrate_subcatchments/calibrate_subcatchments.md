@@ -1,7 +1,7 @@
 Calibration of subcatchments defined by multiple gauges in a catchment
 ================
 Jean-Michel Perraud
-2018-12-14
+2019-01-17
 
 Calibration of subcatchments defined by multiple gauges in a catchment
 ======================================================================
@@ -142,23 +142,26 @@ subCats <- splitToSubcatchments(simulation, splitElementIds)
 str(subCats)
 ```
 
-    ## List of 6
-    ##  $ node.40:Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
+    ## List of 7
+    ##  $ node.40  :Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
     ##   .. ..@ obj :<externalptr> 
     ##   .. ..@ type: chr "MODEL_SIMULATION_PTR"
-    ##  $ node.25:Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
+    ##  $ node.25  :Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
     ##   .. ..@ obj :<externalptr> 
     ##   .. ..@ type: chr "MODEL_SIMULATION_PTR"
-    ##  $ node.12:Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
+    ##  $ node.12  :Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
     ##   .. ..@ obj :<externalptr> 
     ##   .. ..@ type: chr "MODEL_SIMULATION_PTR"
-    ##  $ node.7 :Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
+    ##  $ node.7   :Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
     ##   .. ..@ obj :<externalptr> 
     ##   .. ..@ type: chr "MODEL_SIMULATION_PTR"
-    ##  $ node.30:Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
+    ##  $ node.30  :Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
     ##   .. ..@ obj :<externalptr> 
     ##   .. ..@ type: chr "MODEL_SIMULATION_PTR"
-    ##  $ node.43:Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
+    ##  $ node.43  :Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
+    ##   .. ..@ obj :<externalptr> 
+    ##   .. ..@ type: chr "MODEL_SIMULATION_PTR"
+    ##  $ remainder:Formal class 'ExternalObjRef' [package "cinterop"] with 2 slots
     ##   .. ..@ obj :<externalptr> 
     ##   .. ..@ type: chr "MODEL_SIMULATION_PTR"
 
@@ -218,7 +221,7 @@ optimWallClock <- lubridate::as.duration(lubridate::interval(optimStartTime, opt
 optimWallClock
 ```
 
-    ## [1] "61.6315343379974s (~1.03 minutes)"
+    ## [1] "13.7019376754761s"
 
 And the resulting hydrograph follows. The NSE score is decent, but the magnitude of the peak is not well represented. We used a uniform value for the routing parameters; having a scaling based on link properties may be a line of enquiry.
 
@@ -227,20 +230,20 @@ sortedResults <- sortByScore(calibResults, 'NSE')
 head(scoresAsDataFrame(sortedResults))
 ```
 
-    ##         NSE   log_x4    log_x1   log_x3  asinh_x2        R0        S0
-    ## 1 0.9223924 1.923999 0.8674379 1.345082 -1.292317 0.2969298 0.6606261
-    ## 2 0.9025209 1.843487 0.9246102 1.322831 -1.003730 0.2923841 0.5955802
-    ## 3 0.8998424 1.827798 0.9441787 1.341297 -1.014108 0.2818166 0.6291445
-    ## 4 0.8952117 1.862959 0.8488102 1.345719 -1.208459 0.2811531 0.7438451
-    ## 5 0.8951437 1.816271 0.8787186 1.427235 -1.169664 0.2841012 0.6791283
-    ## 6 0.8938660 1.877727 0.8107642 1.455299 -1.362180 0.2929140 0.6462923
+    ##         NSE   log_x4    log_x1   log_x3   asinh_x2        R0        S0
+    ## 1 0.9223924 1.923999 0.8674379 1.345082 -1.2923170 0.2969298 0.6606261
+    ## 2 0.9208630 1.924871 0.9082145 1.346919 -1.1084302 0.2972963 0.6506262
+    ## 3 0.9201482 1.885458 0.9509222 1.289396 -0.7948924 0.2962107 0.6575343
+    ## 4 0.9197575 1.865388 0.9479019 1.336610 -1.1005392 0.3014661 0.6885566
+    ## 5 0.9182148 1.918672 0.8878961 1.330481 -1.2076309 0.2990770 0.6692404
+    ## 6 0.9176579 1.875062 0.8619668 1.321127 -1.1728822 0.2802213 0.6682878
     ##       alpha inverse_velocity
     ## 1 0.9955732         2.685732
-    ## 2 1.1859123         3.787288
-    ## 3 1.2861526         3.298638
-    ## 4 0.6837860         4.543396
-    ## 5 1.0126659         3.864894
-    ## 6 0.8790539         3.314982
+    ## 2 0.9555908         3.022432
+    ## 3 1.4391819         2.347480
+    ## 4 1.2184292         2.865111
+    ## 5 1.1376653         2.912497
+    ## 6 1.4721570         2.315036
 
 ``` r
 p <- swift::getScoreAtIndex(sortedResults, 1)
