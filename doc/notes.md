@@ -7,6 +7,8 @@
 # cd ~/src/csiro/stash/xxxxxx/swift/bindings/R/pkgs/swift/vignettes
 # R
 
+setwd('C:/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes')
+
 library(rmarkdown)
 
 infn <- c(
@@ -17,6 +19,7 @@ infn <- c(
 ,'getting_started'
 ,'log_likelihood'
 ,'meta_parameters'
+,'muskingum_multilink_calibration'
 )
 
 
@@ -40,6 +43,8 @@ lapply(infn, FUN=f)
 
 file.remove(list.files('.', pattern="*.html", full.names=TRUE, recursive=TRUE))
 file.copy(infn, '~/src/github_jm/streamflow-forecasting-tools-onboard/doc/vignettes/', recursive=TRUE)
+
+file.copy(infn, 'c:/src/github_jm/streamflow-forecasting-tools-onboard/doc/vignettes/', recursive=TRUE)
 ```
 
 given what I get from [this issue](https://github.com/rstudio/rmarkdown/issues/587) I am not sure it is possible to get relative paths to figures in the markdown documents. Have to use full text search/replace to correct. 
