@@ -1,7 +1,7 @@
 Calibrating tied meta parameters
 ================
 Jean-Michel Perraud
-2018-12-14
+2019-01-17
 
 Sample code to define meta parameter sets over a catchment
 ==========================================================
@@ -9,7 +9,7 @@ Sample code to define meta parameter sets over a catchment
 About this document
 ===================
 
-This document was generated from an R markdown file on 2018-12-14 18:08:25. It illustrates how to set up a calibration where a global parameterization is set at the catchment level, with scaled values for each subareas. This method helps to keep the degrees of freedom of an optimisation to a minimum.
+This document was generated from an R markdown file on 2019-01-17 12:19:44. It illustrates how to set up a calibration where a global parameterization is set at the catchment level, with scaled values for each subareas. This method helps to keep the degrees of freedom of an optimisation to a minimum.
 
 Getting started
 ===============
@@ -191,7 +191,7 @@ calibWallTime <- endTime-startTime
 print(paste( 'Optimization completed in ', calibWallTime, attr(calibWallTime, 'units')))
 ```
 
-    ## [1] "Optimization completed in  1.19988389809926 mins"
+    ## [1] "Optimization completed in  1.18915729522705 mins"
 
 Processing the calibration log:
 
@@ -203,9 +203,9 @@ geomOps <- mhplot::subsetByMessage(logMh)
 str(geomOps@data)
 ```
 
-    ## 'data.frame':    318 obs. of  9 variables:
+    ## 'data.frame':    916 obs. of  9 variables:
     ##  $ Category      : Factor w/ 7 levels "Complex No 0",..: 7 7 7 7 7 7 7 7 7 7 ...
-    ##  $ CurrentShuffle: Factor w/ 5 levels "","0","1","2",..: 1 1 1 1 1 1 1 1 1 1 ...
+    ##  $ CurrentShuffle: Factor w/ 12 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
     ##  $ Message       : Factor w/ 5 levels "Adding a random point in hypercube",..: 3 3 3 3 3 3 3 3 3 3 ...
     ##  $ NSE           : num  -1.20e+04 1.31e-01 -1.29e-04 -1.02 -3.22e+03 ...
     ##  $ log_x4        : num  2.256 0.414 0.509 1.724 2.08 ...
@@ -239,30 +239,30 @@ untfPset <- backtransform(bestPset)
 ```
 
     ## $scores
-    ##      NSE 
-    ## 0.613114 
+    ##       NSE 
+    ## 0.6221004 
     ## 
     ## $sysconfig
     ##     Name Min         Max      Value
-    ## 1 log_x4   0    2.380211   1.371023
-    ## 2     x2 -27   27.000000 -17.160452
-    ## 3     x3   1  660.000000 190.301695
-    ## 4     x1   1 5000.000000 453.171780
+    ## 1 log_x4   0    2.380211   1.491582
+    ## 2     x2 -27   27.000000 -12.615035
+    ## 3     x3   1  660.000000 144.507752
+    ## 4     x1   1 5000.000000 557.988125
 
 ``` r
 (score <- getScore(objective, untfPset))
 ```
 
     ## $scores
-    ##      NSE 
-    ## 0.613114 
+    ##       NSE 
+    ## 0.6221004 
     ## 
     ## $sysconfig
     ##   Name Min  Max     Value
-    ## 1   x2 -27   27 -17.16045
-    ## 2   x3   1  660 190.30170
-    ## 3   x4   1  240  23.49755
-    ## 4   x1   1 5000 453.17178
+    ## 1   x2 -27   27 -12.61503
+    ## 2   x3   1  660 144.50775
+    ## 3   x4   1  240  31.01574
+    ## 4   x1   1 5000 557.98812
 
 Finally, let's have a visual of the fitted streamflow data at Abbeyard:
 

@@ -1,7 +1,7 @@
 Getting started with the swift R package
 ================
 Jean-Michel Perraud
-2018-12-14
+2019-01-17
 
 Getting started with the SWIFT R package
 ========================================
@@ -9,7 +9,7 @@ Getting started with the SWIFT R package
 About this document
 ===================
 
-This document was generated from an R markdown file on 2018-12-14 18:07:23. It is the introduction 'vignette' to an R package for interacting with SWIFT.
+This document was generated from an R markdown file on 2019-01-17 12:19:00. It is the introduction 'vignette' to an R package for interacting with SWIFT.
 
 It shows one of the most basic usage, running a single model simulation. While basic, it is realistic and uses data from a study catchment.
 
@@ -29,7 +29,7 @@ It includes a fair level of documentation, that should be accessible using the '
 ?getRecorded
 ```
 
-The package contains some sample data for a few Australian catchments
+The package contains some sample data for a few Australian catchments. Note that these sample data are for documentation only and not to be used for real world applications.
 
 ``` r
 data('swift_sample_data')
@@ -223,7 +223,7 @@ runoffDiff <- getRecorded(ms, runoffId) - baselineRunoff
 zoo::plot.zoo(lastThreeYears(runoffDiff), main = 'Change in runoff with x4 scaled up by 10%', ylab='runoff depth change')
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-16-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-17-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ``` r
 setStateValue(ms, x4Id, x4)
@@ -240,7 +240,7 @@ obsRunoff[which(obsRunoff < -1)] <- NA
 obsVsCalc(obsRunoff, baselineRunoff)
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-17-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-18-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 First let's define the objective of the calibration, the Nash-Sutcliffe efficiency (NSE) for the runoff depth. We'll use two years of data as warmup.
 
@@ -306,10 +306,17 @@ print(score)
 
 We have our objectives defined, and the parameter space 'p' in which to search. Let's create an optimizer and we are ready to go. While the optimizer can be created in one line, we show how to choose one custom termination criterion and how to configure the optimizer to capture a detailed log of the process.
 
+There are several options for defining a calibration termination criterion
+
 ``` r
-# term <- getMarginalTermination(tolerance = 1e-06, cutoffNoImprovement = 100, maxHours = 0.05) 
-# term <- getMaxRuntimeTermination(maxHours = 0.0015) 
-term <- swift::CreateSceTerminationWila_Pkg_R('relative standard deviation', c('0.05','0.0167'))
+term <- getMarginalTermination(tolerance = 1e-06, cutoffNoImprovement = 100, maxHours = 0.05) 
+term <- getMaxRuntimeTermination(maxHours = 0.0015) 
+```
+
+For this vignette we will use a criterion using the maximum standard deviation of parameters in a population (of 0.2%). Note that most termination criteria have a maximum wallclock runtime as a fallback to set an upper bound for reasonable runtime.
+
+``` r
+term <- swift::CreateSceTerminationWila_Pkg_R('relative standard deviation', c('0.002','0.0167'))
 
 sceParams <- getDefaultSceParameters()
 urs <- createParameterSampler(0, p, 'urs')
@@ -326,23 +333,21 @@ calibWallTime <- endTime-startTime
 print(paste( 'Optimization completed in ', calibWallTime, attr(calibWallTime, 'units')))
 ```
 
-    ## [1] "Optimization completed in  4.5192654132843 secs"
+    ## [1] "Optimization completed in  2.48886322975159 secs"
 
 **swift** uses optimization tools that will parallelize model simulation runs if possible (i.e. if supported by the model).
 
 There are high level functions in the packages **swift** and **mhplot** to import the optimisation log information into R data structures
 
 ``` r
-d <- getLoggerContent(optimizer)
-d$PointNumber = 1:nrow(d)
-logMh <- mhplot::mkOptimLog(d, fitness = "NSE", messages = "Message", categories = "Category") 
-geomOps <- mhplot::subsetByMessage(logMh)
+optLog <- extractOptimizationLog(optimizer, fitnessName = "NSE")
+geomOps <- optLog$geomOps 
 str(geomOps@data)
 ```
 
-    ## 'data.frame':    1201 obs. of  9 variables:
+    ## 'data.frame':    1848 obs. of  9 variables:
     ##  $ Category          : Factor w/ 7 levels "Complex No 0",..: 7 7 7 7 7 7 7 7 7 7 ...
-    ##  $ CurrentShuffle    : Factor w/ 19 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
+    ##  $ CurrentShuffle    : Factor w/ 29 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
     ##  $ Message           : Factor w/ 5 levels "Adding a random point in hypercube",..: 3 3 3 3 3 3 3 3 3 3 ...
     ##  $ NSE               : num  -1339.286 -0.891 -0.327 -2.367 -913.047 ...
     ##  $ subarea.Subarea.x1: num  948 175 215 725 874 ...
@@ -365,7 +370,7 @@ pVarIds
 print(mhplot::plotParamEvolution(geomOps, pVarIds[1], objLims=c(0,1)))
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-26-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-28-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Note that the parameter x4 also seems to have settled at its lower bound. x4 influences the unit hydrograph, and the meaning of this parameter depends on the time step of the input series. It may be justified in this case to go below 1 for its lower bound.
 
@@ -373,7 +378,7 @@ Note that the parameter x4 also seems to have settled at its lower bound. x4 inf
 print(mhplot::plotParamEvolution(geomOps, pVarIds[4], objLims=c(0,1)))
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-27-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-29-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 So let's restart, with a larger upper bound for the x1 parameter:
 
@@ -385,47 +390,64 @@ urs <- createParameterSampler(0, p, 'urs')
 optimizer <- createSceOptimSwift(objective, term, SCEpars=sceParams, urs)
 calibLogger <- setCalibrationLogger(optimizer, '')
 calibResults <- executeOptimization(optimizer)
-d <- getLoggerContent(optimizer)
-d$PointNumber = 1:nrow(d)
-logMh <- mhplot::mkOptimLog(d, fitness = "NSE", messages = "Message", categories = "Category") 
-geomOps <- mhplot::subsetByMessage(logMh)
+optLog <- extractOptimizationLog(optimizer, fitnessName = "NSE")
+geomOps <- optLog$geomOps 
 ```
 
 Let's check that the parameter does not settle at the boundary anymore:
 
 ``` r
-print(mhplot::plotParamEvolution(geomOps, pVarIds[1], objLims=c(0,1)))
+d <- mhplot::plotParamEvolution(geomOps, pVarIds[1], objLims=c(0,1))
+print(d)
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-29-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-31-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-Let's apply the parameter set with the best NSE, and see the resulting runoff time series. Note that we see only the last 3 years of time series, over drier years, while the NSE score is calculated in several more years.
+Note that there are further options in `mhplot` and `ggplot2` to assess the behavior of the optimization process. Explore these packages' documentation to find these options.
 
 ``` r
-sortedResults <- sortByScore(calibResults, 'NSE')
-head(scoresAsDataFrame(sortedResults))
+library(ggplot2)
+d + facet_wrap( as.formula(paste("~", geomOps@messages, sep=' ')) )
 ```
 
-    ##         NSE subarea.Subarea.x1 subarea.Subarea.x2 subarea.Subarea.x3
-    ## 1 0.7793711          1033.6737          -5.476425           111.5389
-    ## 2 0.7753656           917.8338          -7.835381           112.9304
-    ## 3 0.7702455           769.9323          -8.069204           123.8100
-    ## 4 0.7675644           805.6729          -7.556143           154.0380
-    ## 5 0.7664841           702.1191          -9.328493           144.7071
-    ## 6 0.7646561           790.5494         -10.146227           152.3430
-    ##   subarea.Subarea.x4
-    ## 1          0.5475978
-    ## 2          0.5124155
-    ## 3          0.3381048
-    ## 4          0.4220644
-    ## 5          0.5124549
-    ## 6          0.4725825
+<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-32-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+
+Let's retrieve the parameter set with the best NSE, and see the resulting runoff time series.
 
 ``` r
-bestPset <- getScoreAtIndex(sortedResults, 1)
+(bestPset <- getBestScore(calibResults, 'NSE'))
+```
+
+    ## An object of class "ExternalObjRef"
+    ## Slot "obj":
+    ## <pointer: 0x55565f284d40>
+    ## 
+    ## Slot "type":
+    ## [1] "OBJECTIVE_SCORES_WILA_PTR"
+
+To get a visual on the information of this external pointer, we can use:
+
+``` r
+asRStructure(bestPset)
+```
+
+    ## $scores
+    ##       NSE 
+    ## 0.7832226 
+    ## 
+    ## $sysconfig
+    ##                 Name   Min  Max       Value
+    ## 1 subarea.Subarea.x1   1.0 2500 1141.326083
+    ## 2 subarea.Subarea.x2 -30.0   30   -5.443462
+    ## 3 subarea.Subarea.x3   1.0 1000   97.374236
+    ## 4 subarea.Subarea.x4   0.2  240    0.430444
+
+Note, as an aside, that we see only the last 3 years of time series, while the NSE score is calculated over several more years. As it happens, the runoff prediction has a systematic negative bias.
+
+``` r
 applySysConfig(bestPset, ms)
 execSimulation(ms)
 obsVsCalc(obsRunoff, getRecorded(ms, runoffId))
 ```
 
-<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-30-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./getting_started_files/figure-markdown_github/unnamed-chunk-35-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />

@@ -1,7 +1,7 @@
 Error correction - ERRIS
 ================
 Jean-Michel Perraud
-2018-12-14
+2019-01-17
 
 Error correction models - ERRIS
 ===============================
@@ -9,7 +9,7 @@ Error correction models - ERRIS
 About this document
 -------------------
 
-This document was generated from an R markdown file on 2018-12-14 18:04:08.
+This document was generated from an R markdown file on 2019-01-17 12:17:56.
 
 [Li, Ming; Wang, QJ; Bennett, James; Robertson, David. Error reduction and representation in stages (ERRIS) in hydrological modelling for ensemble streamflow forecasting. Hydrology and Earth System Sciences. 2016; 20:3561-3579. https://doi.org/10.5194/hess-20-3561-2016](https://doi.org/10.5194/hess-20-3561-2016)
 
@@ -162,8 +162,9 @@ termination <- swift::CreateSceTerminationWila_Pkg_R('relative standard deviatio
 We could set up a four-stages estimation in one go, but we will instead work in each stages for didactic purposes.
 
 ``` r
+censOpt = 0.0
 estimator <- createERRISParameterEstimator (simulation, flowRateTs, errorModelElementId,
-                                            estimationStart = simstart, estimationEnd=simend, censThr=0.0,
+                                            estimationStart = simstart, estimationEnd=simend, censThr=0.0, censOpt,
                                             termination, restrictionOn=TRUE, weightedLeastSquare=FALSE)
 
 stageOnePset = CalibrateERRISStageOne_R(estimator)
@@ -171,8 +172,8 @@ print(parameterizerAsDataFrame(stageOnePset))
 ```
 
     ##              Name    Min    Max        Value
-    ## 1         Epsilon  -20.0    0.0   -7.7851564
-    ## 2          Lambda  -30.0    5.0   -0.9391474
+    ## 1         Epsilon  -20.0    0.0   -7.5856486
+    ## 2          Lambda  -30.0    5.0   -0.6330786
     ## 3               D    0.0    0.0    0.0000000
     ## 4              Mu    0.0    0.0    0.0000000
     ## 5             Rho    0.0    0.0    0.0000000
@@ -183,7 +184,8 @@ print(parameterizerAsDataFrame(stageOnePset))
     ## 10 Weight_Falling    1.0    1.0    1.0000000
     ## 11  Weight_Rising    1.0    1.0    1.0000000
     ## 12        CensThr    0.0    0.0    0.0000000
-    ## 13         MaxObs 1126.3 1126.3 1126.3000000
+    ## 13        CensOpt    0.0    0.0    0.0000000
+    ## 14         MaxObs 1126.3 1126.3 1126.3000000
 
 #### Stage 2
 
@@ -197,19 +199,20 @@ print(parameterizerAsDataFrame(stageTwoPset))
 ```
 
     ##              Name          Min          Max        Value
-    ## 1               D    0.0000000    2.0000000    0.7818810
-    ## 2              Mu -100.0000000  100.0000000   -1.2404133
-    ## 3   Sigma1_Rising   -6.9077553    6.9077553    0.1088399
-    ## 4         CensThr    0.0000000    0.0000000    0.0000000
-    ## 5         Epsilon   -7.7851564   -7.7851564   -7.7851564
-    ## 6          Lambda   -0.9391474   -0.9391474   -0.9391474
-    ## 7          MaxObs 1126.3000000 1126.3000000 1126.3000000
-    ## 8             Rho    0.0000000    0.0000000    0.0000000
-    ## 9  Sigma1_Falling    0.0000000    0.0000000    0.0000000
-    ## 10 Sigma2_Falling    0.0000000    0.0000000    0.0000000
-    ## 11  Sigma2_Rising    0.0000000    0.0000000    0.0000000
-    ## 12 Weight_Falling    1.0000000    1.0000000    1.0000000
-    ## 13  Weight_Rising    1.0000000    1.0000000    1.0000000
+    ## 1               D    0.0000000    2.0000000    0.7796971
+    ## 2              Mu -100.0000000  100.0000000   -0.9128785
+    ## 3   Sigma1_Rising   -6.9077553    6.9077553    0.2084395
+    ## 4         CensOpt    0.0000000    0.0000000    0.0000000
+    ## 5         CensThr    0.0000000    0.0000000    0.0000000
+    ## 6         Epsilon   -7.5856486   -7.5856486   -7.5856486
+    ## 7          Lambda   -0.6330786   -0.6330786   -0.6330786
+    ## 8          MaxObs 1126.3000000 1126.3000000 1126.3000000
+    ## 9             Rho    0.0000000    0.0000000    0.0000000
+    ## 10 Sigma1_Falling    0.0000000    0.0000000    0.0000000
+    ## 11 Sigma2_Falling    0.0000000    0.0000000    0.0000000
+    ## 12  Sigma2_Rising    0.0000000    0.0000000    0.0000000
+    ## 13 Weight_Falling    1.0000000    1.0000000    1.0000000
+    ## 14  Weight_Rising    1.0000000    1.0000000    1.0000000
 
 ``` r
 mkEcIds <- function(p) {
@@ -254,19 +257,20 @@ print(parameterizerAsDataFrame(stageThreePset))
 ```
 
     ##              Name          Min          Max        Value
-    ## 1             Rho    0.0000000    1.0000000    0.9980095
-    ## 2   Sigma1_Rising   -6.9077553    6.9077553   -1.5063062
-    ## 3         CensThr    0.0000000    0.0000000    0.0000000
-    ## 4               D    0.7818810    0.7818810    0.7818810
-    ## 5         Epsilon   -7.7851564   -7.7851564   -7.7851564
-    ## 6          Lambda   -0.9391474   -0.9391474   -0.9391474
-    ## 7          MaxObs 1126.3000000 1126.3000000 1126.3000000
-    ## 8              Mu   -1.2404133   -1.2404133   -1.2404133
-    ## 9  Sigma1_Falling    0.0000000    0.0000000    0.0000000
-    ## 10 Sigma2_Falling    0.0000000    0.0000000    0.0000000
-    ## 11  Sigma2_Rising    0.0000000    0.0000000    0.0000000
-    ## 12 Weight_Falling    1.0000000    1.0000000    1.0000000
-    ## 13  Weight_Rising    1.0000000    1.0000000    1.0000000
+    ## 1             Rho    0.0000000    1.0000000    0.9948151
+    ## 2   Sigma1_Rising   -6.9077553    6.9077553   -1.8524683
+    ## 3         CensOpt    0.0000000    0.0000000    0.0000000
+    ## 4         CensThr    0.0000000    0.0000000    0.0000000
+    ## 5               D    0.7796971    0.7796971    0.7796971
+    ## 6         Epsilon   -7.5856486   -7.5856486   -7.5856486
+    ## 7          Lambda   -0.6330786   -0.6330786   -0.6330786
+    ## 8          MaxObs 1126.3000000 1126.3000000 1126.3000000
+    ## 9              Mu   -0.9128785   -0.9128785   -0.9128785
+    ## 10 Sigma1_Falling    0.0000000    0.0000000    0.0000000
+    ## 11 Sigma2_Falling    0.0000000    0.0000000    0.0000000
+    ## 12  Sigma2_Rising    0.0000000    0.0000000    0.0000000
+    ## 13 Weight_Falling    1.0000000    1.0000000    1.0000000
+    ## 14  Weight_Rising    1.0000000    1.0000000    1.0000000
 
 ``` r
 d <- prepOptimLog(estimator, fitnessName = "Log.likelihood")
@@ -283,21 +287,22 @@ print(parameterizerAsDataFrame(stageThreePsetMS))
 ```
 
     ##              Name          Min          Max        Value
-    ## 1             Rho    0.0000000    1.0000000    0.9980095
-    ## 2   Sigma1_Rising   -6.9077553    6.9077553   -1.5063062
-    ## 3         CensThr    0.0000000    0.0000000    0.0000000
-    ## 4               D    0.7818810    0.7818810    0.7818810
-    ## 5         Epsilon   -7.7851564   -7.7851564   -7.7851564
-    ## 6          Lambda   -0.9391474   -0.9391474   -0.9391474
-    ## 7          MaxObs 1126.3000000 1126.3000000 1126.3000000
-    ## 8              Mu   -1.2404133   -1.2404133   -1.2404133
-    ## 9  Sigma1_Falling    0.0000000    0.0000000    0.0000000
-    ## 10 Sigma2_Falling    0.0000000    0.0000000    0.0000000
-    ## 11  Sigma2_Rising    0.0000000    0.0000000    0.0000000
-    ## 12 Weight_Falling    1.0000000    1.0000000    1.0000000
-    ## 13  Weight_Rising    1.0000000    1.0000000    1.0000000
-    ## 14         MNoise -100.0000000  100.0000000   -2.7835949
-    ## 15         SNoise  -10.0000000   10.0000000    1.4207727
+    ## 1             Rho    0.0000000    1.0000000    0.9948151
+    ## 2   Sigma1_Rising   -6.9077553    6.9077553   -1.8524683
+    ## 3         CensOpt    0.0000000    0.0000000    0.0000000
+    ## 4         CensThr    0.0000000    0.0000000    0.0000000
+    ## 5               D    0.7796971    0.7796971    0.7796971
+    ## 6         Epsilon   -7.5856486   -7.5856486   -7.5856486
+    ## 7          Lambda   -0.6330786   -0.6330786   -0.6330786
+    ## 8          MaxObs 1126.3000000 1126.3000000 1126.3000000
+    ## 9              Mu   -0.9128785   -0.9128785   -0.9128785
+    ## 10 Sigma1_Falling    0.0000000    0.0000000    0.0000000
+    ## 11 Sigma2_Falling    0.0000000    0.0000000    0.0000000
+    ## 12  Sigma2_Rising    0.0000000    0.0000000    0.0000000
+    ## 13 Weight_Falling    1.0000000    1.0000000    1.0000000
+    ## 14  Weight_Rising    1.0000000    1.0000000    1.0000000
+    ## 15         MNoise -100.0000000  100.0000000   -1.6149544
+    ## 16         SNoise  -10.0000000   10.0000000    1.3524924
 
 ``` r
 applySysConfig(mkEcIds(stageThreePsetMS), ecs)
@@ -314,20 +319,21 @@ stageFourPsetRising = CalibrateERRISStageFour_R(estimator, stageThreePsetMS, use
 print(parameterizerAsDataFrame(stageFourPsetRising))
 ```
 
-    ##              Name          Min          Max         Value
-    ## 1   Sigma1_Rising   -6.9077553    6.9077553   -1.67522575
-    ## 2   Sigma2_Rising   -6.9077553    6.9077553   -0.05776246
-    ## 3   Weight_Rising    0.5000000    1.0000000    0.84504633
-    ## 4         CensThr    0.0000000    0.0000000    0.00000000
-    ## 5               D    0.7818810    0.7818810    0.78188099
-    ## 6         Epsilon   -7.7851564   -7.7851564   -7.78515641
-    ## 7          Lambda   -0.9391474   -0.9391474   -0.93914737
-    ## 8          MaxObs 1126.3000000 1126.3000000 1126.30000000
-    ## 9              Mu   -1.2404133   -1.2404133   -1.24041326
-    ## 10            Rho    0.9980095    0.9980095    0.99800949
-    ## 11 Sigma1_Falling    0.0000000    0.0000000    0.00000000
-    ## 12 Sigma2_Falling    0.0000000    0.0000000    0.00000000
-    ## 13 Weight_Falling    1.0000000    1.0000000    1.00000000
+    ##              Name          Min          Max        Value
+    ## 1   Sigma1_Rising   -6.9077553    6.9077553   -1.9247004
+    ## 2   Sigma2_Rising   -6.9077553    6.9077553   -0.3119869
+    ## 3   Weight_Rising    0.5000000    1.0000000    0.8561796
+    ## 4         CensOpt    0.0000000    0.0000000    0.0000000
+    ## 5         CensThr    0.0000000    0.0000000    0.0000000
+    ## 6               D    0.7796971    0.7796971    0.7796971
+    ## 7         Epsilon   -7.5856486   -7.5856486   -7.5856486
+    ## 8          Lambda   -0.6330786   -0.6330786   -0.6330786
+    ## 9          MaxObs 1126.3000000 1126.3000000 1126.3000000
+    ## 10             Mu   -0.9128785   -0.9128785   -0.9128785
+    ## 11            Rho    0.9948151    0.9948151    0.9948151
+    ## 12 Sigma1_Falling    0.0000000    0.0000000    0.0000000
+    ## 13 Sigma2_Falling    0.0000000    0.0000000    0.0000000
+    ## 14 Weight_Falling    1.0000000    1.0000000    1.0000000
 
 ``` r
 d <- prepOptimLog(estimator, fitnessName = "Log.likelihood")
@@ -352,19 +358,20 @@ print(parameterizerAsDataFrame(stageFourPsetFalling))
 ```
 
     ##              Name          Min          Max        Value
-    ## 1   Sigma1_Rising   -6.9077553    6.9077553   -3.7817510
-    ## 2   Sigma2_Rising   -6.9077553    6.9077553   -1.3274962
-    ## 3   Weight_Rising    0.5000000    1.0000000    0.7783264
-    ## 4         CensThr    0.0000000    0.0000000    0.0000000
-    ## 5               D    0.7818810    0.7818810    0.7818810
-    ## 6         Epsilon   -7.7851564   -7.7851564   -7.7851564
-    ## 7          Lambda   -0.9391474   -0.9391474   -0.9391474
-    ## 8          MaxObs 1126.3000000 1126.3000000 1126.3000000
-    ## 9              Mu   -1.2404133   -1.2404133   -1.2404133
-    ## 10            Rho    0.9980095    0.9980095    0.9980095
-    ## 11 Sigma1_Falling    0.0000000    0.0000000    0.0000000
-    ## 12 Sigma2_Falling    0.0000000    0.0000000    0.0000000
-    ## 13 Weight_Falling    1.0000000    1.0000000    1.0000000
+    ## 1   Sigma1_Rising   -6.9077553    6.9077553   -4.0841234
+    ## 2   Sigma2_Rising   -6.9077553    6.9077553   -1.6123716
+    ## 3   Weight_Rising    0.5000000    1.0000000    0.7853106
+    ## 4         CensOpt    0.0000000    0.0000000    0.0000000
+    ## 5         CensThr    0.0000000    0.0000000    0.0000000
+    ## 6               D    0.7796971    0.7796971    0.7796971
+    ## 7         Epsilon   -7.5856486   -7.5856486   -7.5856486
+    ## 8          Lambda   -0.6330786   -0.6330786   -0.6330786
+    ## 9          MaxObs 1126.3000000 1126.3000000 1126.3000000
+    ## 10             Mu   -0.9128785   -0.9128785   -0.9128785
+    ## 11            Rho    0.9948151    0.9948151    0.9948151
+    ## 12 Sigma1_Falling    0.0000000    0.0000000    0.0000000
+    ## 13 Sigma2_Falling    0.0000000    0.0000000    0.0000000
+    ## 14 Weight_Falling    1.0000000    1.0000000    1.0000000
 
 ``` r
 Nd <- prepOptimLog(estimator, fitnessName = "Log.likelihood")
@@ -382,22 +389,23 @@ finalPset = ConcatenateERRISStagesParameters_R(estimator, hydroParams = createPa
 print(parameterizerAsDataFrame(finalPset))
 ```
 
-    ##              Name          Min          Max         Value
-    ## 1         CensThr    0.0000000    0.0000000    0.00000000
-    ## 2          MNoise -100.0000000  100.0000000   -2.78359487
-    ## 3          SNoise  -10.0000000   10.0000000    1.42077266
-    ## 4          Lambda   -0.9391474   -0.9391474   -0.93914737
-    ## 5         Epsilon   -7.7851564   -7.7851564   -7.78515641
-    ## 6              Mu   -1.2404133   -1.2404133   -1.24041326
-    ## 7               D    0.7818810    0.7818810    0.78188099
-    ## 8             Rho    0.9980095    0.9980095    0.99800949
-    ## 9          MaxObs 1126.3000000 1126.3000000 1126.30000000
-    ## 10  Sigma1_Rising   -6.9077553    6.9077553   -1.67522575
-    ## 11  Sigma2_Rising   -6.9077553    6.9077553   -0.05776246
-    ## 12  Weight_Rising    0.5000000    1.0000000    0.84504633
-    ## 13 Sigma1_Falling   -6.9077553    6.9077553   -3.78175102
-    ## 14 Sigma2_Falling   -6.9077553    6.9077553   -1.32749618
-    ## 15 Weight_Falling    0.5000000    1.0000000    0.77832639
+    ##              Name          Min          Max        Value
+    ## 1         CensThr    0.0000000    0.0000000    0.0000000
+    ## 2         CensOpt    0.0000000    0.0000000    0.0000000
+    ## 3          MNoise -100.0000000  100.0000000   -1.6149544
+    ## 4          SNoise  -10.0000000   10.0000000    1.3524924
+    ## 5          Lambda   -0.6330786   -0.6330786   -0.6330786
+    ## 6         Epsilon   -7.5856486   -7.5856486   -7.5856486
+    ## 7              Mu   -0.9128785   -0.9128785   -0.9128785
+    ## 8               D    0.7796971    0.7796971    0.7796971
+    ## 9             Rho    0.9948151    0.9948151    0.9948151
+    ## 10         MaxObs 1126.3000000 1126.3000000 1126.3000000
+    ## 11  Sigma1_Rising   -6.9077553    6.9077553   -1.9247004
+    ## 12  Sigma2_Rising   -6.9077553    6.9077553   -0.3119869
+    ## 13  Weight_Rising    0.5000000    1.0000000    0.8561796
+    ## 14 Sigma1_Falling   -6.9077553    6.9077553   -4.0841234
+    ## 15 Sigma2_Falling   -6.9077553    6.9077553   -1.6123716
+    ## 16 Weight_Falling    0.5000000    1.0000000    0.7853106
 
 ### Legacy call
 
@@ -408,26 +416,27 @@ dummyDate <- simstart
 
 psetFullEstimate <- estimateERRISParameters(simulation, flowRateTs, errorModelElementId,
   warmupStart=dummyDate, warmupEnd=dummyDate, warmup=FALSE, estimationStart = simstart, estimationEnd=simend, censThr=0.0,
-  exclusionStart=dummyDate, exclusionEnd=dummyDate, exclusion=FALSE, terminationCondition = termination,
+ censOpt = censOpt, exclusionStart=dummyDate, exclusionEnd=dummyDate, exclusion=FALSE, terminationCondition = termination,
   hydroParams = NULL, errisParams = NULL, restrictionOn = TRUE,
   weightedLeastSquare = FALSE)
 
 print(parameterizerAsDataFrame(psetFullEstimate))
 ```
 
-    ##                        Name          Min          Max         Value
-    ## 1         node.2.ec.CensThr    0.0000000    0.0000000    0.00000000
-    ## 2          node.2.ec.MNoise -100.0000000  100.0000000   -2.78359487
-    ## 3          node.2.ec.SNoise  -10.0000000   10.0000000    1.42077266
-    ## 4          node.2.ec.Lambda   -0.9391474   -0.9391474   -0.93914737
-    ## 5         node.2.ec.Epsilon   -7.7851564   -7.7851564   -7.78515641
-    ## 6              node.2.ec.Mu   -1.2404133   -1.2404133   -1.24041326
-    ## 7               node.2.ec.D    0.7818810    0.7818810    0.78188099
-    ## 8             node.2.ec.Rho    0.9980095    0.9980095    0.99800949
-    ## 9          node.2.ec.MaxObs 1126.3000000 1126.3000000 1126.30000000
-    ## 10  node.2.ec.Sigma1_Rising   -6.9077553    6.9077553   -1.67522575
-    ## 11  node.2.ec.Sigma2_Rising   -6.9077553    6.9077553   -0.05776246
-    ## 12  node.2.ec.Weight_Rising    0.5000000    1.0000000    0.84504633
-    ## 13 node.2.ec.Sigma1_Falling   -6.9077553    6.9077553   -3.78175102
-    ## 14 node.2.ec.Sigma2_Falling   -6.9077553    6.9077553   -1.32749618
-    ## 15 node.2.ec.Weight_Falling    0.5000000    1.0000000    0.77832639
+    ##                        Name          Min          Max        Value
+    ## 1         node.2.ec.CensThr    0.0000000    0.0000000    0.0000000
+    ## 2         node.2.ec.CensOpt    0.0000000    0.0000000    0.0000000
+    ## 3          node.2.ec.MNoise -100.0000000  100.0000000   -1.6149544
+    ## 4          node.2.ec.SNoise  -10.0000000   10.0000000    1.3524924
+    ## 5          node.2.ec.Lambda   -0.6330786   -0.6330786   -0.6330786
+    ## 6         node.2.ec.Epsilon   -7.5856486   -7.5856486   -7.5856486
+    ## 7              node.2.ec.Mu   -0.9128785   -0.9128785   -0.9128785
+    ## 8               node.2.ec.D    0.7796971    0.7796971    0.7796971
+    ## 9             node.2.ec.Rho    0.9948151    0.9948151    0.9948151
+    ## 10         node.2.ec.MaxObs 1126.3000000 1126.3000000 1126.3000000
+    ## 11  node.2.ec.Sigma1_Rising   -6.9077553    6.9077553   -1.9247004
+    ## 12  node.2.ec.Sigma2_Rising   -6.9077553    6.9077553   -0.3119869
+    ## 13  node.2.ec.Weight_Rising    0.5000000    1.0000000    0.8561796
+    ## 14 node.2.ec.Sigma1_Falling   -6.9077553    6.9077553   -4.0841234
+    ## 15 node.2.ec.Sigma2_Falling   -6.9077553    6.9077553   -1.6123716
+    ## 16 node.2.ec.Weight_Falling    0.5000000    1.0000000    0.7853106

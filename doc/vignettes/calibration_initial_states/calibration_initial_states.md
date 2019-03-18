@@ -1,7 +1,7 @@
 Calibration with initial model memory states as parameters
 ================
 Jean-Michel Perraud
-2018-12-14
+2019-01-17
 
 Calibration with initial model memory states as parameters
 ==========================================================
@@ -9,7 +9,7 @@ Calibration with initial model memory states as parameters
 About this document
 ===================
 
-This document was generated from an R markdown file on 2018-12-14 18:04:07. It is a vignette to demonstrate features in SWIFT to calibrate a model with initial model states as a parameter.
+This document was generated from an R markdown file on 2019-01-17 12:17:53. It is a vignette to demonstrate features in SWIFT to calibrate a model with initial model states as a parameter.
 
 Essentials of setting up a calibration of initial states
 ========================================================
