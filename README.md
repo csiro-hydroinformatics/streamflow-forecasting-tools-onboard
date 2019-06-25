@@ -2,6 +2,8 @@
 
 The purpose of this repository is to have a public entry point for people interested in a suite of modelling tools, previously refered to as `SWIFT2`. These tools are designed for ensemble streamflow forecasting, but can be used for other types of semi-distributed hydrologic modelling.
 
+![Ensemble forecasting simulation](./img/ens_streamflow_forecast.png "Ensemble forecasting simulation")
+
 # Capabilities
 
 This documentation introduces a set of software tools for ensemble streamflow forecasting techniques. The core is written in C++, but in practice users access the features via packages in R, python, or Matlab.
