@@ -1,6 +1,6 @@
 # Onboarding guide for streamflow forecasting software tools
 
-This repository is a public entry point for people interested in a suite of hydrologic ensemble forecasting modelling tools previously referred to as `SWIFT2`. While featuring unique features ensemble streamflow forecasting, they can be used for other semi-distributed hydrologic modelling.
+This repository is a public entry point for people interested in a suite of hydrologic ensemble forecasting modelling tools previously referred to as `SWIFT2`. While featuring unique features for ensemble streamflow forecasting, they can be used for other semi-distributed hydrologic modelling.
 
 ![Ensemble forecasting simulation](./img/ens_streamflow_forecast.png "Ensemble forecasting simulation")
 
@@ -17,7 +17,7 @@ A high level description of the software stack with the main components follows.
 
 ## Installation
 
-As of April 2018 most of the software tools are not publicly available; you should have received a link to downloadable packages and files. Follow the instructions for your platform
+Software packages are not publicly downloadable but access for evaluation or research purposes can be arranged upon request. Once you have received a link to downloadable packages and files, follow the instructions for your platform:
 
 * [Installing on Window](./doc/install_windows.md)
 * [Installing on Linux](./doc/install_linux.md)
