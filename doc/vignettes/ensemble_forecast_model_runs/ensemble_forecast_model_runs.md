@@ -1,4 +1,4 @@
-Ensemble SWIFT model runs
+Ensemble Forecasting SWIFT model runs
 ================
 Jean-Michel Perraud
 2020-01-28
@@ -8,13 +8,14 @@ Jean-Michel Perraud
 # About this document
 
 This document was generated from an R markdown file on 2020-01-28
-10:52:36.
+10:52:34.
 
 # Elaboration
 
 ``` r
 library(swift)
 has_data <- swift::hasSampleData()
+if (!has_data) {Sys.setenv(SWIFT_SAMPLE_DATA_DIR='c:/data/stsf/documentation')}
 ```
 
 Let’s create a test catchment with a few subareas
@@ -76,10 +77,10 @@ simulation time span. NOTE and TODO: hourly information may not have
 been shown above yet.
 
 ``` r
-s <- joki::asPOSIXct('2007-01-01')
-e <- joki::asPOSIXct('2010-08-01 20')
-sHot <- joki::asPOSIXct('2010-08-01 21')
-eHot <- joki::asPOSIXct('2010-08-05 21')
+s <- uchronia::mkDate(2007, 1, 1)
+e <- uchronia::mkDate(2010, 8, 1, 20)
+sHot <- uchronia::mkDate(2010, 8, 1, 21)
+eHot <- uchronia::mkDate(2010, 8, 5, 21)
 ```
 
 First, before demonstrating ensemble forecasting simulations, let’s
@@ -114,7 +115,7 @@ x <- merge(noReset,withReset)
 zoo::plot.zoo(x, plot.type='single', col=c('blue','red'), ylab="Outflow m3/s", main="Outflows with/without state resets")
 ```
 
-<img src="./ensemble_model_runs_files/figure-gfm/unnamed-chunk-8-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./ensemble_forecast_model_runs_files/figure-gfm/unnamed-chunk-8-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 Now let’d ready the simulation to do ensemble forecasts. We define a
 list `inputMap` such that keys are the names of ensemble forecast time
@@ -159,4 +160,4 @@ flowFc <- uchronia::getItem(forecasts, 1)
 uchronia::plotXtsQuantiles(flowFc)
 ```
 
-<img src="./ensemble_model_runs_files/figure-gfm/unnamed-chunk-11-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./ensemble_forecast_model_runs_files/figure-gfm/unnamed-chunk-11-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />

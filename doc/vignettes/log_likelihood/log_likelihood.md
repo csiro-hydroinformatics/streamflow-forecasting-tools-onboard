@@ -1,20 +1,20 @@
 Sample code for log-likelihood calibration
 ================
 Jean-Michel Perraud
-2019-01-17
+2020-01-28
 
-Sample code for log-likelihood calibration
-==========================================
+# Sample code for log-likelihood calibration
 
-About this document
-===================
+# About this document
 
-This document was generated from an R markdown file on 2019-01-17 12:19:09. It illustrates how to set up a calibration with a log-likelihood objective.
+This document was generated from an R markdown file on 2020-01-28
+10:54:01. It illustrates how to set up a calibration with a
+log-likelihood objective.
 
-Setting up a calibration on daily data
-======================================
+# Setting up a calibration on daily data
 
-We will use some sample data from (MMH - Minamata?) included in the package
+We will use some sample data from (MMH - Minamata?) included in the
+package
 
 ``` r
 library(lubridate)
@@ -29,13 +29,16 @@ evap <- sampleSeries('MMH', 'evap')[sSpan]
 flow <- sampleSeries('MMH', 'flow')[sSpan]
 ```
 
-We need to adjust the observed flow, as the SWIFTv1 legacy missing value code is not consistent with default handling in SAK.
+We need to adjust the observed flow, as the SWIFTv1 legacy missing value
+code is not consistent with default handling in SAK.
 
 ``` r
 flow[flow<0] <- NA
 ```
 
-Let's create a single catchment setup, using daily data. We need so specify the simulation time step to be consistent with the daily input data.
+Let’s create a single catchment setup, using daily data. We need so
+specify the simulation time step to be consistent with the daily input
+data.
 
 ``` r
 ms <- createSubarea('GR4J', 1.0)
@@ -53,7 +56,10 @@ playSubareaInput(ms, input=rain, subAreaName, "P")
 playSubareaInput(ms, input=evap, subAreaName, "E")
 ```
 
-Model variables identifiers are hierarchical, with separators '.' and '|' supported. The "dot" notation should now be preferred, as some R functions producing data frames may change the variable names and replace some characters with '.'.
+Model variables identifiers are hierarchical, with separators ‘.’ and
+‘|’ supported. The “dot” notation should now be preferred, as some R
+functions producing data frames may change the variable names and
+replace some characters with ‘.’.
 
 ``` r
 subareaId <- paste0("subarea.", subAreaName)
@@ -72,7 +78,8 @@ gr4StateNames <- paste0(rootId, c('runoff', 'S', 'R', 'Perc'))
 for (name in gr4StateNames) { recordState(ms, name) }
 ```
 
-Let's check that one simulation runs fine, before we build a calibration definition.
+Let’s check that one simulation runs fine, before we build a calibration
+definition.
 
 ``` r
 execSimulation(ms)
@@ -81,9 +88,10 @@ names(sState) <- shortVarId(names(sState))
 zoo::plot.zoo(sState)
 ```
 
-<img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-7-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./log_likelihood_files/figure-gfm/unnamed-chunk-7-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-Let's build the objective calculator that will guide the calibration process:
+Let’s build the objective calculator that will guide the calibration
+process:
 
 ``` r
 w <- uchronia::mkDate(1992, 01, 01)
@@ -93,7 +101,11 @@ zoo::index(flow) <- zoo::index(modRunoff)
 objective <- createObjective(ms, runoffDepthVarname, flow, 'log-likelihood', w, e)
 ```
 
-Define the feasible parameter space, using a generic parameter set for the model parameters. This is 'wrapped' by a log-likelihood parameter set with the extra parameters used in the log likelihood calculation, but which exposes all the parameters as 8 independent degrees of freedom to the optimizer.
+Define the feasible parameter space, using a generic parameter set for
+the model parameters. This is ‘wrapped’ by a log-likelihood parameter
+set with the extra parameters used in the log likelihood calculation,
+but which exposes all the parameters as 8 independent degrees of freedom
+to the optimizer.
 
 ``` r
 (pSpecGr4j <- joki::getFreeParams('GR4J'))
@@ -142,7 +154,8 @@ parameterizerAsDataFrame(p)
     ## 10                 ct   0.1722113    0.1722113   0.1722113
     ## 11            censopt   0.0000000    0.0000000   0.0000000
 
-Check that the objective calculator works, at least with the default values in the feasible parameter space:
+Check that the objective calculator works, at least with the default
+values in the feasible parameter space:
 
 ``` r
 score <- getScore(objective, p)
@@ -151,7 +164,7 @@ print(score)
 
     ## $scores
     ## Log-likelihood 
-    ##      -464090.7 
+    ##      -463759.9 
     ## 
     ## $sysconfig
     ##                  Name         Min          Max       Value
@@ -172,9 +185,10 @@ modRunoff <- getRecorded(ms, runoffDepthVarname)
 joki::plotTwoSeries(flow, modRunoff, ylab="obs/mod runoff", startTime = start(flow), endTime = end(flow))
 ```
 
-<img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-11-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./log_likelihood_files/figure-gfm/unnamed-chunk-11-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-Build the optimiser definition, instrument with a logger.
+Build the optimiser definition, instrument with a
+logger.
 
 ``` r
 # term <- getMaxRuntimeTermination(maxHours = 0.3/60)  # ~20 second appears enough with SWIFT binaries in Release mode
@@ -195,7 +209,7 @@ calibWallTime <- endTime-startTime
 print(paste( 'Optimization completed in ', calibWallTime, attr(calibWallTime, 'units')))
 ```
 
-    ## [1] "Optimization completed in  29.0787487030029 secs"
+    ## [1] "Optimization completed in  50.4119968414307 secs"
 
 ``` r
 d <- getLoggerContent(optimizer)
@@ -205,9 +219,9 @@ geomOps <- mhplot::subsetByMessage(logMh)
 str(geomOps@data)
 ```
 
-    ## 'data.frame':    2812 obs. of  16 variables:
+    ## 'data.frame':    2575 obs. of  16 variables:
     ##  $ Category          : Factor w/ 7 levels "Complex No 0",..: 7 7 7 7 7 7 7 7 7 7 ...
-    ##  $ CurrentShuffle    : Factor w/ 38 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
+    ##  $ CurrentShuffle    : Factor w/ 37 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
     ##  $ Message           : Factor w/ 6 levels "Adding a random point in hypercube",..: 4 4 4 4 4 4 4 4 4 4 ...
     ##  $ Log.likelihood    : num  -1.00e+20 -1.00e+20 -1.00e+20 -7.71e+05 -1.00e+20 ...
     ##  $ a                 : num  -17.63 -26.11 -3.56 -28.56 -14.85 ...
@@ -230,9 +244,11 @@ for (pVar in pVarIds) {
 }
 ```
 
-<img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-2.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-3.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-4.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-5.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-6.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-7.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-8.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-9.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-10.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-15-11.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-2.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-3.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-4.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-5.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-6.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-7.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-8.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-9.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-10.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-11.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-Finally, get a visual of the runoff time series with the best known parameter set (the penultimate entry in the data frame with the log of the calibration process).
+Finally, get a visual of the runoff time series with the best known
+parameter set (the penultimate entry in the data frame with the log of
+the calibration process).
 
 ``` r
 sortedResults <- sortByScore(calibResults, 'Log-likelihood')
@@ -240,19 +256,19 @@ head(scoresAsDataFrame(sortedResults))
 ```
 
     ##   Log.likelihood subarea.Subarea.x1 subarea.Subarea.x2 subarea.Subarea.x3
-    ## 1       4045.065           1126.290          -3.476256           77.99925
-    ## 2       4033.313           1193.720          -4.092005           79.51965
-    ## 3       4019.339           1176.662          -3.886628           78.83296
-    ## 4       4016.760           1034.124          -4.447279           99.69464
-    ## 5       4015.909           1146.734          -4.091580           87.36938
-    ## 6       4013.671           1178.292          -3.764875           74.42727
+    ## 1       2924.671           266.1925          -29.60785           773.6771
+    ## 2       2923.107           191.3387          -29.28017           824.4254
+    ## 3       2920.818           176.7221          -27.53492           866.5888
+    ## 4       2911.518           177.2337          -28.48846           789.2143
+    ## 5       2911.046           280.0083          -28.70505           771.3981
+    ## 6       2902.444           231.8093          -26.57367           809.7063
     ##   subarea.Subarea.x4         b m        s         a   maxobs        ct
-    ## 1           1.055270 -2.268373 0 1.402992 -26.95914 17.22113 0.1722113
-    ## 2           1.068850 -2.176640 0 1.243679 -25.83251 17.22113 0.1722113
-    ## 3           1.023718 -2.624523 0 1.678404 -25.57058 17.22113 0.1722113
-    ## 4           1.048650 -2.149708 0 1.282698 -25.40359 17.22113 0.1722113
-    ## 5           1.069379 -2.300447 0 1.360183 -28.45221 17.22113 0.1722113
-    ## 6           1.009525 -2.670136 0 1.713397 -26.55811 17.22113 0.1722113
+    ## 1           1.033368 -1.850320 0 1.099840 -4.939078 17.22113 0.1722113
+    ## 2           1.147338 -2.099422 0 1.242173 -5.096023 17.22113 0.1722113
+    ## 3           1.032679 -2.056026 0 1.189237 -5.143367 17.22113 0.1722113
+    ## 4           1.165675 -2.045539 0 1.146694 -4.928836 17.22113 0.1722113
+    ## 5           1.082458 -2.118719 0 1.143031 -4.991464 17.22113 0.1722113
+    ## 6           1.035202 -2.024382 0 1.165068 -5.007636 17.22113 0.1722113
     ##   censopt
     ## 1       0
     ## 2       0
@@ -269,4 +285,4 @@ modRunoff <- getRecorded(ms, runoffDepthVarname)
 joki::plotTwoSeries(flow, modRunoff, ylab="obs/mod runoff", startTime = start(flow), endTime = end(flow))
 ```
 
-<img src="./log_likelihood_files/figure-markdown_github/unnamed-chunk-16-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./log_likelihood_files/figure-gfm/unnamed-chunk-16-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />

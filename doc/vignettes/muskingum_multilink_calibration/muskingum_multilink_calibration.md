@@ -1,18 +1,20 @@
-Linear Muskingum channel routing model - constrained subcatchment calibration
+Linear Muskingum channel routing model - constrained subcatchment
+calibration
 ================
 Jean-Michel Perraud
-2019-03-19
+2020-01-28
 
-Linear Muskingum channel routing model - constrained subcatchment calibration
-=============================================================================
+# Linear Muskingum channel routing model - constrained subcatchment calibration
 
-Purpose
-=======
+# Purpose
 
-This vignette focuses on explaining how to calibrate the linear version of Muskingum jointly across river reaches, respecting stability constraints across all these reaches. The second part of the document is an indepth explanation of the scheme that is also used as a reference for unit testing swift.
+This vignette focuses on explaining how to calibrate the linear version
+of Muskingum jointly across river reaches, respecting stability
+constraints across all these reaches. The second part of the document is
+an indepth explanation of the scheme that is also used as a reference
+for unit testing swift.
 
-Guidelines for global calibration of Muskingum constrainted parameters
-======================================================================
+# Guidelines for global calibration of Muskingum constrainted parameters
 
 ``` r
 library(ggplot2)
@@ -24,9 +26,12 @@ library(mhplot)
 library(DiagrammeR)
 ```
 
-For this example we will use data derived from the South Esk catchment in Tasmania.
+For this example we will use data derived from the South Esk catchment
+in Tasmania.
 
-We load and configure the model simulation in the next section, without detailed explanation; please read other introductory vignettes if this is unclear.
+We load and configure the model simulation in the next section, without
+detailed explanation; please read other introductory vignettes if this
+is unclear.
 
 ``` r
 modelId <- 'GR4J'
@@ -50,7 +55,11 @@ setSimulationTimeStep(simulation, 'hourly')
 configureHourlyGr4j(simulation)
 ```
 
-We can get a topologic view of the model setup (albeit crowded as this is a fairly large catchment.
+We can get a topologic view of the model setup (albeit crowded as this
+is a fairly large catchment).
+
+(Note: may not render yet through
+GitHub)
 
 ``` r
 DiagrammeR(GetCatchmentDOTGraph_R(simulation))
@@ -58,8 +67,14 @@ DiagrammeR(GetCatchmentDOTGraph_R(simulation))
 
 <!--html_preserve-->
 
-<script type="application/json" data-for="htmlwidget-07096207bc20e199bc8b">{"x":{"diagram":"graph TD;1_s(Subarea_1)-->1_l(Subarea_1);2_s(Subarea_2)-->2_l(Subarea_2);3_s(Subarea_3)-->3_l(Subarea_3);4_s(Subarea_4)-->4_l(Subarea_4);5_s(Subarea_5)-->5_l(Subarea_5);6_s(Subarea_6)-->6_l(Subarea_6);7_s(Subarea_7)-->7_l(Subarea_7);8_s(Subarea_8)-->8_l(Subarea_8);9_s(Subarea_9)-->9_l(Subarea_9);10_s(Subarea_10)-->10_l(Subarea_10);11_s(Subarea_11)-->11_l(Subarea_11);12_s(Subarea_12)-->12_l(Subarea_12);13_s(Subarea_13)-->13_l(Subarea_13);14_s(Subarea_14)-->14_l(Subarea_14);15_s(Subarea_15)-->15_l(Subarea_15);16_s(Subarea_16)-->16_l(Subarea_16);17_s(Subarea_17)-->17_l(Subarea_17);18_s(Subarea_18)-->18_l(Subarea_18);19_s(Subarea_19)-->19_l(Subarea_19);20_s(Subarea_20)-->20_l(Subarea_20);21_s(Subarea_21)-->21_l(Subarea_21);22_s(Subarea_22)-->22_l(Subarea_22);23_s(Subarea_23)-->23_l(Subarea_23);24_s(Subarea_24)-->24_l(Subarea_24);25_s(Subarea_25)-->25_l(Subarea_25);26_s(Subarea_26)-->26_l(Subarea_26);27_s(Subarea_27)-->27_l(Subarea_27);28_s(Subarea_28)-->28_l(Subarea_28);29_s(Subarea_29)-->29_l(Subarea_29);30_s(Subarea_30)-->30_l(Subarea_30);31_s(Subarea_31)-->31_l(Subarea_31);32_s(Subarea_32)-->32_l(Subarea_32);33_s(Subarea_33)-->33_l(Subarea_33);34_s(Subarea_34)-->34_l(Subarea_34);35_s(Subarea_35)-->35_l(Subarea_35);36_s(Subarea_36)-->36_l(Subarea_36);37_s(Subarea_37)-->37_l(Subarea_37);38_s(Subarea_38)-->38_l(Subarea_38);39_s(Subarea_39)-->39_l(Subarea_39);40_s(Subarea_40)-->40_l(Subarea_40);41_s(Subarea_41)-->41_l(Subarea_41);42_s(Subarea_42)-->42_l(Subarea_42);\n1_n[Node_1]-->1_l;1_l-->2_n[Node_2];2_n[Node_2]-->2_l;2_l-->5_n[Node_5];3_n[Node_3]-->3_l;3_l-->4_n[Node_4];4_n[Node_4]-->4_l;4_l-->5_n[Node_5];5_n[Node_5]-->5_l;5_l-->7_n[Node_7];6_n[Node_6]-->6_l;6_l-->7_n[Node_7];7_n[Node_7]-->7_l;7_l-->8_n[Node_8];8_n[Node_8]-->8_l;8_l-->9_n[Node_9];9_n[Node_9]-->9_l;9_l-->13_n[Node_13];10_n[Node_10]-->10_l;10_l-->11_n[Node_11];11_n[Node_11]-->11_l;11_l-->12_n[Node_12];12_n[Node_12]-->12_l;12_l-->13_n[Node_13];13_n[Node_13]-->13_l;13_l-->14_n[Node_14];14_n[Node_14]-->14_l;14_l-->15_n[Node_15];15_n[Node_15]-->15_l;15_l-->16_n[Node_16];16_n[Node_16]-->16_l;16_l-->18_n[Node_18];17_n[Node_17]-->17_l;17_l-->18_n[Node_18];18_n[Node_18]-->18_l;18_l-->26_n[Node_26];19_n[Node_19]-->19_l;19_l-->20_n[Node_20];20_n[Node_20]-->20_l;20_l-->21_n[Node_21];21_n[Node_21]-->21_l;21_l-->22_n[Node_22];22_n[Node_22]-->22_l;22_l-->23_n[Node_23];23_n[Node_23]-->23_l;23_l-->24_n[Node_24];24_n[Node_24]-->24_l;24_l-->25_n[Node_25];25_n[Node_25]-->25_l;25_l-->26_n[Node_26];26_n[Node_26]-->26_l;26_l-->29_n[Node_29];27_n[Node_27]-->27_l;27_l-->28_n[Node_28];28_n[Node_28]-->28_l;28_l-->29_n[Node_29];29_n[Node_29]-->29_l;29_l-->30_n[Node_30];30_n[Node_30]-->30_l;30_l-->34_n[Node_34];31_n[Node_31]-->31_l;31_l-->32_n[Node_32];32_n[Node_32]-->32_l;32_l-->33_n[Node_33];33_n[Node_33]-->33_l;33_l-->34_n[Node_34];34_n[Node_34]-->34_l;34_l-->35_n[Node_35];35_n[Node_35]-->35_l;35_l-->36_n[Node_36];36_n[Node_36]-->36_l;36_l-->41_n[Node_41];37_n[Node_37]-->37_l;37_l-->38_n[Node_38];38_n[Node_38]-->38_l;38_l-->39_n[Node_39];39_n[Node_39]-->39_l;39_l-->40_n[Node_40];40_n[Node_40]-->40_l;40_l-->41_n[Node_41];41_n[Node_41]-->41_l;41_l-->42_n[Node_42];42_n[Node_42]-->42_l;42_l-->43_n[Outlet];\nstyle 1_s fill : #A2EB86 ;style 2_s fill : #A2EB86 ;style 3_s fill : #A2EB86 ;style 4_s fill : #A2EB86 ;style 5_s fill : #A2EB86 ;style 6_s fill : #A2EB86 ;style 7_s fill : #A2EB86 ;style 8_s fill : #A2EB86 ;style 9_s fill : #A2EB86 ;style 10_s fill : #A2EB86 ;style 11_s fill : #A2EB86 ;style 12_s fill : #A2EB86 ;style 13_s fill : #A2EB86 ;style 14_s fill : #A2EB86 ;style 15_s fill : #A2EB86 ;style 16_s fill : #A2EB86 ;style 17_s fill : #A2EB86 ;style 18_s fill : #A2EB86 ;style 19_s fill : #A2EB86 ;style 20_s fill : #A2EB86 ;style 21_s fill : #A2EB86 ;style 22_s fill : #A2EB86 ;style 23_s fill : #A2EB86 ;style 24_s fill : #A2EB86 ;style 25_s fill : #A2EB86 ;style 26_s fill : #A2EB86 ;style 27_s fill : #A2EB86 ;style 28_s fill : #A2EB86 ;style 29_s fill : #A2EB86 ;style 30_s fill : #A2EB86 ;style 31_s fill : #A2EB86 ;style 32_s fill : #A2EB86 ;style 33_s fill : #A2EB86 ;style 34_s fill : #A2EB86 ;style 35_s fill : #A2EB86 ;style 36_s fill : #A2EB86 ;style 37_s fill : #A2EB86 ;style 38_s fill : #A2EB86 ;style 39_s fill : #A2EB86 ;style 40_s fill : #A2EB86 ;style 41_s fill : #A2EB86 ;style 42_s fill : #A2EB86 ;\nstyle 1_l fill : #FFF289 ;style 2_l fill : #FFF289 ;style 3_l fill : #FFF289 ;style 4_l fill : #FFF289 ;style 5_l fill : #FFF289 ;style 6_l fill : #FFF289 ;style 7_l fill : #FFF289 ;style 8_l fill : #FFF289 ;style 9_l fill : #FFF289 ;style 10_l fill : #FFF289 ;style 11_l fill : #FFF289 ;style 12_l fill : #FFF289 ;style 13_l fill : #FFF289 ;style 14_l fill : #FFF289 ;style 15_l fill : #FFF289 ;style 16_l fill : #FFF289 ;style 17_l fill : #FFF289 ;style 18_l fill : #FFF289 ;style 19_l fill : #FFF289 ;style 20_l fill : #FFF289 ;style 21_l fill : #FFF289 ;style 22_l fill : #FFF289 ;style 23_l fill : #FFF289 ;style 24_l fill : #FFF289 ;style 25_l fill : #FFF289 ;style 26_l fill : #FFF289 ;style 27_l fill : #FFF289 ;style 28_l fill : #FFF289 ;style 29_l fill : #FFF289 ;style 30_l fill : #FFF289 ;style 31_l fill : #FFF289 ;style 32_l fill : #FFF289 ;style 33_l fill : #FFF289 ;style 34_l fill : #FFF289 ;style 35_l fill : #FFF289 ;style 36_l fill : #FFF289 ;style 37_l fill : #FFF289 ;style 38_l fill : #FFF289 ;style 39_l fill : #FFF289 ;style 40_l fill : #FFF289 ;style 41_l fill : #FFF289 ;style 42_l fill : #FFF289 ;\nstyle 1_n fill : #FFA070 ;style 2_n fill : #FFA070 ;style 3_n fill : #FFA070 ;style 4_n fill : #FFA070 ;style 5_n fill : #FFA070 ;style 6_n fill : #FFA070 ;style 7_n fill : #FFA070 ;style 8_n fill : #FFA070 ;style 9_n fill : #FFA070 ;style 10_n fill : #FFA070 ;style 11_n fill : #FFA070 ;style 12_n fill : #FFA070 ;style 13_n fill : #FFA070 ;style 14_n fill : #FFA070 ;style 15_n fill : #FFA070 ;style 16_n fill : #FFA070 ;style 17_n fill : #FFA070 ;style 18_n fill : #FFA070 ;style 19_n fill : #FFA070 ;style 20_n fill : #FFA070 ;style 21_n fill : #FFA070 ;style 22_n fill : #FFA070 ;style 23_n fill : #FFA070 ;style 24_n fill : #FFA070 ;style 25_n fill : #FFA070 ;style 26_n fill : #FFA070 ;style 27_n fill : #FFA070 ;style 28_n fill : #FFA070 ;style 29_n fill : #FFA070 ;style 30_n fill : #FFA070 ;style 31_n fill : #FFA070 ;style 32_n fill : #FFA070 ;style 33_n fill : #FFA070 ;style 34_n fill : #FFA070 ;style 35_n fill : #FFA070 ;style 36_n fill : #FFA070 ;style 37_n fill : #FFA070 ;style 38_n fill : #FFA070 ;style 39_n fill : #FFA070 ;style 40_n fill : #FFA070 ;style 41_n fill : #FFA070 ;style 42_n fill : #FFA070 ;style 43_n fill : #FFA070 ;"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-03fe8ac41b349549c610" class="DiagrammeR html-widget" style="width:960px;height:672px;">
+
+</div>
+
+<script type="application/json" data-for="htmlwidget-03fe8ac41b349549c610">{"x":{"diagram":"graph TD;1_s(Subarea_1)-->1_l(Subarea_1);2_s(Subarea_2)-->2_l(Subarea_2);3_s(Subarea_3)-->3_l(Subarea_3);4_s(Subarea_4)-->4_l(Subarea_4);5_s(Subarea_5)-->5_l(Subarea_5);6_s(Subarea_6)-->6_l(Subarea_6);7_s(Subarea_7)-->7_l(Subarea_7);8_s(Subarea_8)-->8_l(Subarea_8);9_s(Subarea_9)-->9_l(Subarea_9);10_s(Subarea_10)-->10_l(Subarea_10);11_s(Subarea_11)-->11_l(Subarea_11);12_s(Subarea_12)-->12_l(Subarea_12);13_s(Subarea_13)-->13_l(Subarea_13);14_s(Subarea_14)-->14_l(Subarea_14);15_s(Subarea_15)-->15_l(Subarea_15);16_s(Subarea_16)-->16_l(Subarea_16);17_s(Subarea_17)-->17_l(Subarea_17);18_s(Subarea_18)-->18_l(Subarea_18);19_s(Subarea_19)-->19_l(Subarea_19);20_s(Subarea_20)-->20_l(Subarea_20);21_s(Subarea_21)-->21_l(Subarea_21);22_s(Subarea_22)-->22_l(Subarea_22);23_s(Subarea_23)-->23_l(Subarea_23);24_s(Subarea_24)-->24_l(Subarea_24);25_s(Subarea_25)-->25_l(Subarea_25);26_s(Subarea_26)-->26_l(Subarea_26);27_s(Subarea_27)-->27_l(Subarea_27);28_s(Subarea_28)-->28_l(Subarea_28);29_s(Subarea_29)-->29_l(Subarea_29);30_s(Subarea_30)-->30_l(Subarea_30);31_s(Subarea_31)-->31_l(Subarea_31);32_s(Subarea_32)-->32_l(Subarea_32);33_s(Subarea_33)-->33_l(Subarea_33);34_s(Subarea_34)-->34_l(Subarea_34);35_s(Subarea_35)-->35_l(Subarea_35);36_s(Subarea_36)-->36_l(Subarea_36);37_s(Subarea_37)-->37_l(Subarea_37);38_s(Subarea_38)-->38_l(Subarea_38);39_s(Subarea_39)-->39_l(Subarea_39);40_s(Subarea_40)-->40_l(Subarea_40);41_s(Subarea_41)-->41_l(Subarea_41);42_s(Subarea_42)-->42_l(Subarea_42);\n1_n[Node_1]-->1_l;1_l-->2_n[Node_2];2_n[Node_2]-->2_l;2_l-->5_n[Node_5];3_n[Node_3]-->3_l;3_l-->4_n[Node_4];4_n[Node_4]-->4_l;4_l-->5_n[Node_5];5_n[Node_5]-->5_l;5_l-->7_n[Node_7];6_n[Node_6]-->6_l;6_l-->7_n[Node_7];7_n[Node_7]-->7_l;7_l-->8_n[Node_8];8_n[Node_8]-->8_l;8_l-->9_n[Node_9];9_n[Node_9]-->9_l;9_l-->13_n[Node_13];10_n[Node_10]-->10_l;10_l-->11_n[Node_11];11_n[Node_11]-->11_l;11_l-->12_n[Node_12];12_n[Node_12]-->12_l;12_l-->13_n[Node_13];13_n[Node_13]-->13_l;13_l-->14_n[Node_14];14_n[Node_14]-->14_l;14_l-->15_n[Node_15];15_n[Node_15]-->15_l;15_l-->16_n[Node_16];16_n[Node_16]-->16_l;16_l-->18_n[Node_18];17_n[Node_17]-->17_l;17_l-->18_n[Node_18];18_n[Node_18]-->18_l;18_l-->26_n[Node_26];19_n[Node_19]-->19_l;19_l-->20_n[Node_20];20_n[Node_20]-->20_l;20_l-->21_n[Node_21];21_n[Node_21]-->21_l;21_l-->22_n[Node_22];22_n[Node_22]-->22_l;22_l-->23_n[Node_23];23_n[Node_23]-->23_l;23_l-->24_n[Node_24];24_n[Node_24]-->24_l;24_l-->25_n[Node_25];25_n[Node_25]-->25_l;25_l-->26_n[Node_26];26_n[Node_26]-->26_l;26_l-->29_n[Node_29];27_n[Node_27]-->27_l;27_l-->28_n[Node_28];28_n[Node_28]-->28_l;28_l-->29_n[Node_29];29_n[Node_29]-->29_l;29_l-->30_n[Node_30];30_n[Node_30]-->30_l;30_l-->34_n[Node_34];31_n[Node_31]-->31_l;31_l-->32_n[Node_32];32_n[Node_32]-->32_l;32_l-->33_n[Node_33];33_n[Node_33]-->33_l;33_l-->34_n[Node_34];34_n[Node_34]-->34_l;34_l-->35_n[Node_35];35_n[Node_35]-->35_l;35_l-->36_n[Node_36];36_n[Node_36]-->36_l;36_l-->41_n[Node_41];37_n[Node_37]-->37_l;37_l-->38_n[Node_38];38_n[Node_38]-->38_l;38_l-->39_n[Node_39];39_n[Node_39]-->39_l;39_l-->40_n[Node_40];40_n[Node_40]-->40_l;40_l-->41_n[Node_41];41_n[Node_41]-->41_l;41_l-->42_n[Node_42];42_n[Node_42]-->42_l;42_l-->43_n[Outlet];\nstyle 1_s fill : #A2EB86 ;style 2_s fill : #A2EB86 ;style 3_s fill : #A2EB86 ;style 4_s fill : #A2EB86 ;style 5_s fill : #A2EB86 ;style 6_s fill : #A2EB86 ;style 7_s fill : #A2EB86 ;style 8_s fill : #A2EB86 ;style 9_s fill : #A2EB86 ;style 10_s fill : #A2EB86 ;style 11_s fill : #A2EB86 ;style 12_s fill : #A2EB86 ;style 13_s fill : #A2EB86 ;style 14_s fill : #A2EB86 ;style 15_s fill : #A2EB86 ;style 16_s fill : #A2EB86 ;style 17_s fill : #A2EB86 ;style 18_s fill : #A2EB86 ;style 19_s fill : #A2EB86 ;style 20_s fill : #A2EB86 ;style 21_s fill : #A2EB86 ;style 22_s fill : #A2EB86 ;style 23_s fill : #A2EB86 ;style 24_s fill : #A2EB86 ;style 25_s fill : #A2EB86 ;style 26_s fill : #A2EB86 ;style 27_s fill : #A2EB86 ;style 28_s fill : #A2EB86 ;style 29_s fill : #A2EB86 ;style 30_s fill : #A2EB86 ;style 31_s fill : #A2EB86 ;style 32_s fill : #A2EB86 ;style 33_s fill : #A2EB86 ;style 34_s fill : #A2EB86 ;style 35_s fill : #A2EB86 ;style 36_s fill : #A2EB86 ;style 37_s fill : #A2EB86 ;style 38_s fill : #A2EB86 ;style 39_s fill : #A2EB86 ;style 40_s fill : #A2EB86 ;style 41_s fill : #A2EB86 ;style 42_s fill : #A2EB86 ;\nstyle 1_l fill : #FFF289 ;style 2_l fill : #FFF289 ;style 3_l fill : #FFF289 ;style 4_l fill : #FFF289 ;style 5_l fill : #FFF289 ;style 6_l fill : #FFF289 ;style 7_l fill : #FFF289 ;style 8_l fill : #FFF289 ;style 9_l fill : #FFF289 ;style 10_l fill : #FFF289 ;style 11_l fill : #FFF289 ;style 12_l fill : #FFF289 ;style 13_l fill : #FFF289 ;style 14_l fill : #FFF289 ;style 15_l fill : #FFF289 ;style 16_l fill : #FFF289 ;style 17_l fill : #FFF289 ;style 18_l fill : #FFF289 ;style 19_l fill : #FFF289 ;style 20_l fill : #FFF289 ;style 21_l fill : #FFF289 ;style 22_l fill : #FFF289 ;style 23_l fill : #FFF289 ;style 24_l fill : #FFF289 ;style 25_l fill : #FFF289 ;style 26_l fill : #FFF289 ;style 27_l fill : #FFF289 ;style 28_l fill : #FFF289 ;style 29_l fill : #FFF289 ;style 30_l fill : #FFF289 ;style 31_l fill : #FFF289 ;style 32_l fill : #FFF289 ;style 33_l fill : #FFF289 ;style 34_l fill : #FFF289 ;style 35_l fill : #FFF289 ;style 36_l fill : #FFF289 ;style 37_l fill : #FFF289 ;style 38_l fill : #FFF289 ;style 39_l fill : #FFF289 ;style 40_l fill : #FFF289 ;style 41_l fill : #FFF289 ;style 42_l fill : #FFF289 ;\nstyle 1_n fill : #FFA070 ;style 2_n fill : #FFA070 ;style 3_n fill : #FFA070 ;style 4_n fill : #FFA070 ;style 5_n fill : #FFA070 ;style 6_n fill : #FFA070 ;style 7_n fill : #FFA070 ;style 8_n fill : #FFA070 ;style 9_n fill : #FFA070 ;style 10_n fill : #FFA070 ;style 11_n fill : #FFA070 ;style 12_n fill : #FFA070 ;style 13_n fill : #FFA070 ;style 14_n fill : #FFA070 ;style 15_n fill : #FFA070 ;style 16_n fill : #FFA070 ;style 17_n fill : #FFA070 ;style 18_n fill : #FFA070 ;style 19_n fill : #FFA070 ;style 20_n fill : #FFA070 ;style 21_n fill : #FFA070 ;style 22_n fill : #FFA070 ;style 23_n fill : #FFA070 ;style 24_n fill : #FFA070 ;style 25_n fill : #FFA070 ;style 26_n fill : #FFA070 ;style 27_n fill : #FFA070 ;style 28_n fill : #FFA070 ;style 29_n fill : #FFA070 ;style 30_n fill : #FFA070 ;style 31_n fill : #FFA070 ;style 32_n fill : #FFA070 ;style 33_n fill : #FFA070 ;style 34_n fill : #FFA070 ;style 35_n fill : #FFA070 ;style 36_n fill : #FFA070 ;style 37_n fill : #FFA070 ;style 38_n fill : #FFA070 ;style 39_n fill : #FFA070 ;style 40_n fill : #FFA070 ;style 41_n fill : #FFA070 ;style 42_n fill : #FFA070 ;style 43_n fill : #FFA070 ;"},"evals":[],"jsHooks":[]}</script>
+
 <!--/html_preserve-->
+
 We cookie cut to get a subcatchment near the headwaters.
 
 ``` r
@@ -69,16 +84,24 @@ DiagrammeR(GetCatchmentDOTGraph_R(subsim))
 
 <!--html_preserve-->
 
-<script type="application/json" data-for="htmlwidget-cfa29d27ed8efda7e987">{"x":{"diagram":"graph TD;1_s(Subarea_1)-->1_l(Subarea_1);2_s(Subarea_2)-->2_l(Subarea_2);3_s(Subarea_3)-->3_l(Subarea_3);4_s(Subarea_4)-->4_l(Subarea_4);\n2_n[Node_2]-->2_l;2_l-->5_n[Node_5];1_n[Node_1]-->1_l;1_l-->2_n[Node_2];4_n[Node_4]-->4_l;4_l-->5_n[Node_5];3_n[Node_3]-->3_l;3_l-->4_n[Node_4];\nstyle 1_s fill : #A2EB86 ;style 2_s fill : #A2EB86 ;style 3_s fill : #A2EB86 ;style 4_s fill : #A2EB86 ;\nstyle 2_l fill : #FFF289 ;style 1_l fill : #FFF289 ;style 4_l fill : #FFF289 ;style 3_l fill : #FFF289 ;\nstyle 5_n fill : #FFA070 ;style 2_n fill : #FFA070 ;style 1_n fill : #FFA070 ;style 4_n fill : #FFA070 ;style 3_n fill : #FFA070 ;"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c635b9f9b6495810cba5" class="DiagrammeR html-widget" style="width:960px;height:672px;">
+
+</div>
+
+<script type="application/json" data-for="htmlwidget-c635b9f9b6495810cba5">{"x":{"diagram":"graph TD;1_s(Subarea_1)-->1_l(Subarea_1);2_s(Subarea_2)-->2_l(Subarea_2);3_s(Subarea_3)-->3_l(Subarea_3);4_s(Subarea_4)-->4_l(Subarea_4);\n2_n[Node_2]-->2_l;2_l-->5_n[Node_5];1_n[Node_1]-->1_l;1_l-->2_n[Node_2];4_n[Node_4]-->4_l;4_l-->5_n[Node_5];3_n[Node_3]-->3_l;3_l-->4_n[Node_4];\nstyle 1_s fill : #A2EB86 ;style 2_s fill : #A2EB86 ;style 3_s fill : #A2EB86 ;style 4_s fill : #A2EB86 ;\nstyle 2_l fill : #FFF289 ;style 1_l fill : #FFF289 ;style 4_l fill : #FFF289 ;style 3_l fill : #FFF289 ;\nstyle 5_n fill : #FFA070 ;style 2_n fill : #FFA070 ;style 1_n fill : #FFA070 ;style 4_n fill : #FFA070 ;style 3_n fill : #FFA070 ;"},"evals":[],"jsHooks":[]}</script>
+
 <!--/html_preserve-->
-We configure the routing scheme to be linear (parameter N set and fixed to 1)
+
+We configure the routing scheme to be linear (parameter N set and fixed
+to 1)
 
 ``` r
 linkIds <- mkFullDataId('link', getLinkIds(subsim))
 setStateValue(subsim, mkFullDataId(linkIds, 'N'), rep(1.0, length(linkIds)))
 ```
 
-Let's have a look at the link properties and other default routing parameters
+Let’s have a look at the link properties and other default routing
+parameters
 
 ``` r
 lnkpnames <- c('Length', 'f', 'ManningsN', 'Slope', 'N', 'X', 'Alpha')
@@ -88,16 +111,20 @@ getStateValue(subsim,mkFullDataId('link.1', lnkpnames))
     ##    link.1.Length         link.1.f link.1.ManningsN     link.1.Slope 
     ##     6.140000e+03     1.000000e+00     1.000000e+00     1.000000e+00 
     ##         link.1.N         link.1.X     link.1.Alpha 
-    ##     1.000000e+00    4.651218e-310    2.223295e-322
+    ##     1.000000e+00    6.952873e-310    6.952873e-310
 
-X is between 0 and 0.5, without stability constraints. Setting a default Alpha is... trickier.
+X is between 0 and 0.5, without stability constraints. Setting a default
+Alpha is…
+trickier.
 
 ``` r
 setStateValue(subsim, mkFullDataId(linkIds, 'X'), rep(1e-6, length(linkIds)))
 setStateValue(subsim, mkFullDataId(linkIds, 'Alpha'), rep(0.0005, length(linkIds)))
 ```
 
-If we look at the subcatchment outflow in this configuration, it is a series of unfeasible values - at least one link was in an unfeasible zone for (Alpha, X)
+If we look at the subcatchment outflow in this configuration, it is a
+series of unfeasible values - at least one link was in an unfeasible
+zone for (Alpha, X)
 
 ``` r
 varId <- 'Catchment.StreamflowRate'
@@ -119,7 +146,8 @@ summary(someFlow)
     ##  3rd Qu.:2010-11-15 23:15:00   3rd Qu.:-19998          
     ##  Max.   :2010-11-20 23:00:00   Max.   :-19998
 
-We can double-check that the subarea does produce runoff yield; the links are where the model does not work yet.
+We can double-check that the subarea does produce runoff yield; the
+links are where the model does not work yet.
 
 ``` r
 summary(getRecorded(subsim, catOutflowId))
@@ -133,9 +161,14 @@ summary(getRecorded(subsim, catOutflowId))
     ##  3rd Qu.:2010-11-15 23:15:00   3rd Qu.:8.327e-06    
     ##  Max.   :2010-11-20 23:00:00   Max.   :1.701e-02
 
-So, given that each routing link parameters Alpha and X are subject to constraint that vary depending on 'Length', 'f', 'ManningsN', 'Slope', how do we get a pair (Alpha, X) that globaly respect these constraints? This is not complex science but complicated enough to get wrong.
+So, given that each routing link parameters Alpha and X are subject to
+constraint that vary depending on ‘Length’, ‘f’, ‘ManningsN’, ‘Slope’,
+how do we get a pair (Alpha, X) that globaly respect these constraints?
+This is not complex science but complicated enough to get wrong.
 
-'swift' offers facilities to remove the error prone tedium. First, `feasibleMuskingumBounds` lists the extremas of the feasible (Alpha, X) parameter space.
+‘swift’ offers facilities to remove the error prone tedium. First,
+`feasibleMuskingumBounds` lists the extremas of the feasible (Alpha, X)
+parameter space.
 
 ``` r
 (akbounds <- swift::feasibleMuskingumBounds(subsim, 1))
@@ -144,7 +177,8 @@ So, given that each routing link parameters Alpha and X are subject to constrain
     ##       min_alpha           max_x alpha_for_max_x 
     ##      0.08143322      0.37382040      0.13004771
 
-The numbers above can play a *crucial* role when setting up an optimizer for this model; more on this soon.
+The numbers above can play a *crucial* role when setting up an optimizer
+for this model; more on this soon.
 
 ``` r
 oneHour <- 1
@@ -192,7 +226,8 @@ pp(p)
     ## 1     X 0.0000010 0.3738204 0.1869102
     ## 2 Alpha 0.1001528 0.2600954 0.1300477
 
-Let's get a trace of the subcatchment outflow, as a synthetic data to calibrated against.
+Let’s get a trace of the subcatchment outflow, as a synthetic data to
+calibrated against.
 
 ``` r
 applySysConfig(p, subsim)
@@ -209,16 +244,17 @@ summary(someFlow)
     ##  3rd Qu.:2010-11-15 23:15:00   3rd Qu.:6.350e-04       
     ##  Max.   :2010-11-20 23:00:00   Max.   :2.683e-01
 
-We do now get a valid outflow since (Alpha-K) respects feasibility constraints on all links.
+We do now get a valid outflow since (Alpha-K) respects feasibility
+constraints on all
+links.
 
 ``` r
 autoplot(someFlow)
 ```
 
-<img src="./muskingum_multilink_calibration_files/figure-markdown_github/unnamed-chunk-16-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-16-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-Setting up calibration
-----------------------
+## Setting up calibration
 
 ``` r
 pSpecMaxBounds <- data.frame(
@@ -236,7 +272,12 @@ pp(pzc(subsim, pSpecMaxBounds))
     ## 1     X 0.00000100 3.738204e-01 0.0000010
     ## 2 Alpha 0.08143331 4.861449e+04 0.1300477
 
-If we were to use another (X, Alpha) point e.g. X=0.1869102, the feasible bounds for Alpha change drastically. If an optimizer samples this for an initial population of points (SCE), this is unnecessarily restrictive for Alpha. Many hydrological calibration schemes were designed without consideration on feasible space that are not hypercubes.
+If we were to use another (X, Alpha) point e.g. X=0.1869102, the
+feasible bounds for Alpha change drastically. If an optimizer samples
+this for an initial population of points (SCE), this is unnecessarily
+restrictive for Alpha. Many hydrological calibration schemes were
+designed without consideration on feasible space that are not
+hypercubes.
 
 ``` r
 pp(pzc(subsim, pSpecMusk))
@@ -246,7 +287,11 @@ pp(pzc(subsim, pSpecMusk))
     ## 1     X 0.0000010 0.3738204 0.1869102
     ## 2 Alpha 0.1001528 0.2600954 0.1300477
 
-While calibrating in the (Alpha,X) space is possible, perhaps preferable in some cases, (1/Alpha,X) has a triangular shaped feasibility region that may be easier to handle for optimizers that work with geometric transformation in the parameter space (SCE). Swift can add this on top of the constrained calibration:
+While calibrating in the (Alpha,X) space is possible, perhaps preferable
+in some cases, (1/Alpha,X) has a triangular shaped feasibility region
+that may be easier to handle for optimizers that work with geometric
+transformation in the parameter space (SCE). Swift can add this on top
+of the constrained calibration:
 
 ``` r
 # (X, 1/Alpha) parametrizer with dynamically constrained min/max bounds.
@@ -311,7 +356,7 @@ optimWallClock <- lubridate::as.duration(lubridate::interval(optimStartTime, opt
 optimWallClock
 ```
 
-    ## [1] "1.38240647315979s"
+    ## [1] "0.209973812103271s"
 
 ``` r
 optLog <- extractOptimizationLog(optimizer, fitnessName = "NSE")
@@ -321,7 +366,7 @@ shuffleLogs <- mhplot::subsetByCategory(optLog$data, pattern = "Initial.*|Shuffl
 mhplot::plotShuffles(shuffleLogs, 'X', 'inv_alpha', objLims = (0:1))
 ```
 
-<img src="./muskingum_multilink_calibration_files/figure-markdown_github/unnamed-chunk-24-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-24-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ``` r
 sortedResults <- sortByScore(calibResults, 'NSE')
@@ -354,12 +399,12 @@ pp(backtransform(q))
     ## 1     X 0.0000010 0.3737638 0.1871205
     ## 2 Alpha 0.1001787 0.2598031 0.1300674
 
-Seeding the optimisation point population with restrictive constraint bounds
-----------------------------------------------------------------------------
+## Seeding the optimisation point population with restrictive constraint bounds
 
 This section is a *counter-example*. Do not do this.
 
-Say, instead of seeding with alpha set to alpha\_for\_x\_max (0.37382040) we instead use a value cloase to its global minimum, 0.083:
+Say, instead of seeding with alpha set to alpha\_for\_x\_max
+(0.37382040) we instead use a value cloase to its global minimum, 0.083:
 
 ``` r
 pSpecRestrictiveBounds <- pSpecMaxBounds
@@ -380,7 +425,10 @@ pp(p)
     ## 1 inv_alpha 2.057e-05 12.27998772 12.048193
     ## 2         X 1.000e-06  0.01887681  0.000001
 
-X is now much more constrained in its feasible range, and initializing a population fails to cover large sections of the feasible triangle. If used in the optimizer (uniform random sampling)
+X is now much more constrained in its feasible range, and initializing a
+population fails to cover large sections of the feasible triangle. If
+used in the optimizer (uniform random
+sampling)
 
 ``` r
 termination <- swift::CreateSceTerminationWila_Pkg_R('relative standard deviation', c('0.001','0.0167'))
@@ -401,12 +449,16 @@ shuffleLogs <- mhplot::subsetByCategory(optLog$data, pattern = "Initial.*|Shuffl
 mhplot::plotShuffles(shuffleLogs, 'X', 'inv_alpha', objLims = (0:1))
 ```
 
-<img src="./muskingum_multilink_calibration_files/figure-markdown_github/unnamed-chunk-31-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" /> SCE does manage to converge towards the optimum, but it takes a larger number of iterations. Anecdotally, we observed cases where the calibration does fail to go near the optimum, when interplaying with a convergence criterion configured for "leniency".
+<img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-31-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+SCE does manage to converge towards the optimum, but it takes a larger
+number of iterations. Anecdotally, we observed cases where the
+calibration does fail to go near the optimum, when interplaying with a
+convergence criterion configured for “leniency”.
 
-Detailed explanation and unit test design
-=========================================
+# Detailed explanation and unit test design
 
-Default values for properties defining the relationship between Alpha and K (Muskingum-Cunge?)
+Default values for properties defining the relationship between Alpha
+and K (Muskingum-Cunge?)
 
 ``` r
 L_d <- 1000 # reach lengh in metres
@@ -419,7 +471,9 @@ oneHour <- 1
 K_d <- 2.0  
 ```
 
-For the case of a linear sub-case (exponent N=1.0 in the storage/outflow relationship) we can analytically solve the system of storage-outflow relationships and get C1, C2, C3, coefficients
+For the case of a linear sub-case (exponent N=1.0 in the storage/outflow
+relationship) we can analytically solve the system of storage-outflow
+relationships and get C1, C2, C3, coefficients
 
 ``` r
 getDenom <- function(K, X, delta_t=oneHour) {
@@ -443,7 +497,8 @@ linearMuskingum <- function(inflow, prevOutflow=0, prevInflow=0, K=oneHour, X=0.
 }
 ```
 
-We define functions that relate K, alpha and other reach properties, that we will use later for plotting feasible bounds.
+We define functions that relate K, alpha and other reach properties,
+that we will use later for plotting feasible bounds.
 
 ``` r
 # Gets the factor G in the relationship K = G * Alpha
@@ -467,15 +522,16 @@ getInvAlpha <- function(K=K_d, f=f_d, n=n_d, sc=sc_d, L=L_d) {
 }
 ```
 
-Constraints on the Linear (N=1) case of Muskingum parameters
-============================================================
+# Constraints on the Linear (N=1) case of Muskingum parameters
 
-It can be shown that given the following constraints must be satisfied to be in a stability zone (no negative outflows):
+It can be shown that given the following constraints must be satisfied
+to be in a stability zone (no negative outflows):
 
--   K &lt; delta\_t / (2 \* X)
--   K &gt; delta\_t / (2 \* (1 - X))
+  - K \< delta\_t / (2 \* X)
+  - K \> delta\_t / (2 \* (1 - X))
 
-We can derive the following functions defining the feasible boundaries for the triplet X, K, delta\_t, (and Alpha by proxy from K).
+We can derive the following functions defining the feasible boundaries
+for the triplet X, K, delta\_t, (and Alpha by proxy from K).
 
 ``` r
 upperKValue <- function(X, delta_t=oneHour) {
@@ -538,17 +594,19 @@ g <- ggplot(df, aes(x=X, y = kbound, color=type)) + geom_line() + ylab("K")
 g
 ```
 
-<img src="./muskingum_multilink_calibration_files/figure-markdown_github/unnamed-chunk-36-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-36-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-The feasible region is the area between these two curves:
+The feasible region is the area between these two
+curves:
 
 ``` r
 ggplot(d) + ggplot2::geom_ribbon(ggplot2::aes(x=X, ymin=lowerK, ymax=upperK, fill='red'), alpha=0.2)
 ```
 
-<img src="./muskingum_multilink_calibration_files/figure-markdown_github/unnamed-chunk-37-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-37-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-It is easier to work on the inverse of K on the Y axis, as the bounds become lines. We can also afford to visually go closer to X=0.
+It is easier to work on the inverse of K on the Y axis, as the bounds
+become lines. We can also afford to visually go closer to X=0.
 
 ``` r
 Xvals <- seq(from=1e-4, to=0.5-1e-4, length.out = 100)
@@ -569,9 +627,12 @@ ggplot(d_inv_wide) +
   ylab("1/K")
 ```
 
-<img src="./muskingum_multilink_calibration_files/figure-markdown_github/unnamed-chunk-38-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-38-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-So if we have two reaches of different lengths (or other properties), we can back transform the feasible Alpha regions for each reach and since since alpha is a linear function of X we visually get the following intersect of feasible regions.
+So if we have two reaches of different lengths (or other properties), we
+can back transform the feasible Alpha regions for each reach and since
+since alpha is a linear function of X we visually get the following
+intersect of feasible regions.
 
 ``` r
 getAlphaBounds <- function(L, f=f_d, n=n_d, sc=sc_d, delta_t=oneHour) {
@@ -605,14 +666,17 @@ ggplot() +
     ylab('Inverse alpha')
 ```
 
-<img src="./muskingum_multilink_calibration_files/figure-markdown_github/unnamed-chunk-39-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-39-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ``` r
 # See cpp unit test for 
 # in MNL algorithm constraint violated if ( (beta > delta_t / (2 * X) || beta < delta_t / (2 * (1 - X))
 ```
 
-Note that overall X is now constrained to be at most to be below 0.22 and the inverse of alpha from 0 to 12 at most (NOTE: visual shortcoming of previous plot, minimum X should be zero), if both reach are to be kept in their routing stablity zones.
+Note that overall X is now constrained to be at most to be below 0.22
+and the inverse of alpha from 0 to 12 at most (NOTE: visual shortcoming
+of previous plot, minimum X should be zero), if both reach are to be
+kept in their routing stablity zones.
 
 Now consider a region the following set of reach properties:
 
@@ -646,15 +710,16 @@ head(murray_nl)
     ## # A tibble: 6 x 13
     ##      ID Name   From    To RainST EvapST Length   Area Slope Frac_Urban
     ##   <dbl> <chr> <dbl> <dbl>  <dbl>  <dbl>  <dbl>  <dbl> <dbl>      <dbl>
-    ## 1     1 Suba…     1     2      1      1  36320 2.24e8     1          0
-    ## 2     2 Suba…     2     3      2      2  15109 1.75e8     1          0
-    ## 3     3 Suba…     3     8      3      3  34340 4.88e8     1          0
-    ## 4     4 Suba…     4     5      4      4  51064 4.47e8     1          0
-    ## 5     5 Suba…     5     6      5      5  23819 4.37e8     1          0
-    ## 6     6 Suba…     6     7      6      6  33835 3.75e8     1          0
-    ## # … with 3 more variables: Frac_Forest <dbl>, RLF <dbl>, Mann_n <dbl>
+    ## 1     1 Suba~     1     2      1      1  36320 2.24e8     1          0
+    ## 2     2 Suba~     2     3      2      2  15109 1.75e8     1          0
+    ## 3     3 Suba~     3     8      3      3  34340 4.88e8     1          0
+    ## 4     4 Suba~     4     5      4      4  51064 4.47e8     1          0
+    ## 5     5 Suba~     5     6      5      5  23819 4.37e8     1          0
+    ## 6     6 Suba~     6     7      6      6  33835 3.75e8     1          0
+    ## # ... with 3 more variables: Frac_Forest <dbl>, RLF <dbl>, Mann_n <dbl>
 
-We note that only Length varies across reaches so we will ignore other reach parameters. Let's overlay feasible regions for all reaches:
+We note that only Length varies across reaches so we will ignore other
+reach parameters. Let’s overlay feasible regions for all reaches:
 
 ``` r
 getFeasibleAlphaBounds <- function(reach_length) {
@@ -674,9 +739,12 @@ for (b in reach_bounds) {
 g + ylab('Inverse alpha')
 ```
 
-<img src="./muskingum_multilink_calibration_files/figure-markdown_github/unnamed-chunk-41-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-41-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-It is a bit crowded but you can intuit that the common area is quite small given the large difference in magnitude in the feasible triangles. Indeed, the extrema in reach lengths are two orders of magnitude different:
+It is a bit crowded but you can intuit that the common area is quite
+small given the large difference in magnitude in the feasible triangles.
+Indeed, the extrema in reach lengths are two orders of magnitude
+different:
 
 ``` r
 (length_range <- range(murray_nl$Length))
@@ -692,10 +760,9 @@ for (b in lapply(length_range, getFeasibleAlphaBounds)) {
 g + ylab('Inverse alpha')
 ```
 
-<img src="./muskingum_multilink_calibration_files/figure-markdown_github/unnamed-chunk-43-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-43-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-Unit test design
-================
+# Unit test design
 
 ``` r
 sc <- 1.11e-2 # reach slope in m/m
@@ -719,7 +786,7 @@ ggplot() +
     ylab('Inverse alpha')
 ```
 
-<img src="./muskingum_multilink_calibration_files/figure-markdown_github/unnamed-chunk-44-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-44-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ``` r
 inv_alpha <- 25
@@ -740,7 +807,8 @@ get_bounds <- function(L, X, alpha) {
 }
 ```
 
-Given other link properties are the same but lengths, to get min and max G we only need:
+Given other link properties are the same but lengths, to get min and max
+G we only need:
 
 ``` r
 min_G <- getKNoAlpha(f, n, sc, length_small)
@@ -818,7 +886,8 @@ X <- 0.1
 
     ## [1] 0.05386538
 
-Lower X to give a larger feasible alpha, to test in swift that user-specified bounds override that.
+Lower X to give a larger feasible alpha, to test in swift that
+user-specified bounds override that.
 
 ``` r
 X <- 0.05
@@ -842,19 +911,20 @@ c(
 
     ## [1] 0.3726070 0.1064591
 
-Non linear version of the routing
-=================================
+# Non linear version of the routing
 
 PLACEHOLDER
 
-For N different from 1, we have a case of a non-linear storage-flow relationship.
+For N different from 1, we have a case of a non-linear storage-flow
+relationship.
 
 ``` r
 inflow = 5
 q <- 0:40
 ```
 
-Storage-outflow relationship:
+Storage-outflow
+relationship:
 
 ``` r
 sqRelation <- function(q, alpha=alpha_d, f=f_d, n=n_d, sc=sc_d, X=X_d, inflow=0, L=L_d, N=1) {
@@ -890,7 +960,9 @@ rootFun <- function(z, ...) {rootEq(z, ...)}
 uniroot.all(rootFun, c(-10, 60))
 ```
 
-Given the default values for the parameters or constants in the routing formulation, the following example shows a case where the solution leads to negative outflows:
+Given the default values for the parameters or constants in the routing
+formulation, the following example shows a case where the solution leads
+to negative outflows:
 
 ``` r
 nlen <- 100
@@ -929,57 +1001,53 @@ routeFlow(rootEq, inflow, alpha=0.1, N=1.001)
 qplot(1:nlen, routeFlow(rootEq, inflow), xlab='time step', ylab='Outflow (m3/s)') + ggtitle('Outflow')
 ```
 
-Provenance
-----------
+## Provenance
 
-This document was generated from an R markdown file on 2019-03-19 11:43:45
+This document was generated from an R markdown file on 2020-01-28
+10:56:27
 
 ``` r
 sessionInfo()
 ```
 
-    ## R version 3.5.3 (2019-03-11)
-    ## Platform: x86_64-pc-linux-gnu (64-bit)
-    ## Running under: Debian GNU/Linux 9 (stretch)
+    ## R version 3.6.1 (2019-07-05)
+    ## Platform: x86_64-w64-mingw32/x64 (64-bit)
+    ## Running under: Windows 10 x64 (build 17763)
     ## 
     ## Matrix products: default
-    ## BLAS: /usr/lib/libblas/libblas.so.3.7.0
-    ## LAPACK: /usr/lib/lapack/liblapack.so.3.7.0
     ## 
     ## locale:
-    ##  [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C              
-    ##  [3] LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8    
-    ##  [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
-    ##  [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
-    ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-    ## [11] LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+    ## [1] LC_COLLATE=English_Australia.1252  LC_CTYPE=English_Australia.1252   
+    ## [3] LC_MONETARY=English_Australia.1252 LC_NUMERIC=C                      
+    ## [5] LC_TIME=English_Australia.1252    
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] bindrcpp_0.2.2   DiagrammeR_1.0.0 mhplot_0.5-1     stringr_1.3.1   
-    ##  [5] swift_0.8.8      Rcpp_1.0.0       readr_1.3.1      dplyr_0.7.8     
-    ##  [9] tidyr_0.8.2      ggplot2_3.1.0    knitr_1.21       rmarkdown_1.11  
+    ##  [1] mhplot_0.5-1     stringr_1.4.0    readr_1.3.1      dplyr_0.8.3     
+    ##  [5] tidyr_1.0.0      ggplot2_3.2.1    lubridate_1.7.4  DiagrammeR_1.0.1
+    ##  [9] swift_2.1.2      Rcpp_1.0.2       knitr_1.25       rmarkdown_1.16  
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] lubridate_1.7.4    mvtnorm_1.0-8      lattice_0.20-38   
-    ##  [4] visNetwork_2.0.5   msvs_0.3-0         zoo_1.8-4         
-    ##  [7] assertthat_0.2.0   digest_0.6.18      utf8_1.1.4        
-    ## [10] R6_2.3.0           plyr_1.8.4         evaluate_0.12     
-    ## [13] pillar_1.3.1       rlang_0.3.1        lazyeval_0.2.1    
-    ## [16] rstudioapi_0.9.0   labeling_0.3       webshot_0.5.1     
-    ## [19] downloader_0.4     htmlwidgets_1.3    igraph_1.2.2      
-    ## [22] munsell_0.5.0      compiler_3.5.3     influenceR_0.1.0  
-    ## [25] rgexf_0.15.3       xfun_0.4           pkgconfig_2.0.2   
-    ## [28] htmltools_0.3.6    tidyselect_0.2.5   tibble_2.0.1      
-    ## [31] gridExtra_2.3      XML_3.98-1.16      joki_0.4.0        
-    ## [34] fansi_0.4.0        viridisLite_0.3.0  crayon_1.3.4      
-    ## [37] withr_2.1.2        grid_3.5.3         jsonlite_1.6      
-    ## [40] gtable_0.2.0       magrittr_1.5       scales_1.0.0      
-    ## [43] cli_1.0.1          stringi_1.2.4      viridis_0.5.1     
-    ## [46] brew_1.0-6         xts_0.11-2         RColorBrewer_1.1-2
-    ## [49] tools_3.5.3        glue_1.3.0         purrr_0.3.0       
-    ## [52] hms_0.4.2          Rook_1.1-1         yaml_2.2.0        
-    ## [55] colorspace_1.4-0   cinterop_0.2-5     uchronia_0.4.3    
-    ## [58] bindr_0.1.1
+    ##  [1] mvtnorm_1.0-11     lattice_0.20-38    visNetwork_2.0.8  
+    ##  [4] msvs_0.3.1         zoo_1.8-6          utf8_1.1.4        
+    ##  [7] assertthat_0.2.1   zeallot_0.1.0      digest_0.6.21     
+    ## [10] R6_2.4.0           backports_1.1.4    evaluate_0.14     
+    ## [13] pillar_1.4.2       rlang_0.4.0        lazyeval_0.2.2    
+    ## [16] rstudioapi_0.10    labeling_0.3       webshot_0.5.1     
+    ## [19] downloader_0.4     htmlwidgets_1.3    igraph_1.2.4.1    
+    ## [22] munsell_0.5.0      compiler_3.6.1     influenceR_0.1.0  
+    ## [25] rgexf_0.15.3       xfun_0.9           pkgconfig_2.0.2   
+    ## [28] htmltools_0.3.6    tidyselect_0.2.5   tibble_2.1.3      
+    ## [31] gridExtra_2.3      XML_3.98-1.20      fansi_0.4.0       
+    ## [34] joki_0.4.0         viridisLite_0.3.0  crayon_1.3.4      
+    ## [37] withr_2.1.2        grid_3.6.1         jsonlite_1.6      
+    ## [40] gtable_0.3.0       lifecycle_0.1.0    magrittr_1.5      
+    ## [43] scales_1.0.0       cli_1.1.0          stringi_1.4.3     
+    ## [46] viridis_0.5.1      calibragem_0.8-0   ellipsis_0.3.0    
+    ## [49] brew_1.0-6         xts_0.11-2         vctrs_0.2.0       
+    ## [52] RColorBrewer_1.1-2 tools_3.6.1        glue_1.3.1        
+    ## [55] purrr_0.3.2        hms_0.5.1          Rook_1.1-1        
+    ## [58] yaml_2.2.0         colorspace_1.4-1   cinterop_0.3.0    
+    ## [61] uchronia_2.1.2

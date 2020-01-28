@@ -12,14 +12,11 @@ setwd('C:/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes')
 library(rmarkdown)
 
 infn <- c(
-'calibrate_subcatchments'
-,'calibration_initial_states' 
-,'ensemble_model_runs'
-,'error_correction_four_stages'
-,'getting_started'
-,'log_likelihood'
-,'meta_parameters'
-,'muskingum_multilink_calibration'
+"calibrate_multisite"         ,    "calibrate_subcatchments"        ,
+"calibration_initial_states"  ,    "ensemble_forecast_model_runs"   ,
+"ensemble_model_runs"         ,    "error_correction_four_stages"   ,
+"getting_started"             ,    "log_likelihood"                 ,
+"meta_parameters"             ,    "muskingum_multilink_calibration"
 )
 
 
@@ -53,6 +50,10 @@ Note the regex pattern to use:
 
 ```text
 /home/xxxxxx/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/[a-z_]*/
+```
+
+```text
+C:/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/[a-z_]*/
 ```
 
 and needs to be replaced with `./`

@@ -1,31 +1,37 @@
 Calibrating tied meta parameters
 ================
 Jean-Michel Perraud
-2019-01-17
+2020-01-28
 
-Sample code to define meta parameter sets over a catchment
-==========================================================
+# Sample code to define meta parameter sets over a catchment
 
-About this document
-===================
+# About this document
 
-This document was generated from an R markdown file on 2019-01-17 12:19:44. It illustrates how to set up a calibration where a global parameterization is set at the catchment level, with scaled values for each subareas. This method helps to keep the degrees of freedom of an optimisation to a minimum.
+This document was generated from an R markdown file on 2020-01-28
+10:54:59. It illustrates how to set up a calibration where a global
+parameterization is set at the catchment level, with scaled values for
+each subareas. This method helps to keep the degrees of freedom of an
+optimisation to a minimum.
 
-Getting started
-===============
+# Getting started
 
 ``` r
 library(swift)
 ```
 
-We need to adjust the observed flow, as the SWIFTv1 legacy missing value code is not consistent with default handling in SAK. Note that I *think* the flow included in the sample data is the Ovens catchment outlet, but I am not sure!
+We need to adjust the observed flow, as the SWIFTv1 legacy missing value
+code is not consistent with default handling in SAK. Note that I *think*
+the flow included in the sample data is the Ovens catchment outlet, but
+I am not sure\!
 
 ``` r
 flow <- sampleSeries('Abbeyard', 'flow')
 flow[which(flow < -1)] <- NA
 ```
 
-We create a system with areas similar to the real use case, but do note that test catchment structure is just an arbitrary default one, suitable for this example, but probably not a valid model.
+We create a system with areas similar to the real use case, but do note
+that test catchment structure is just an arbitrary default one, suitable
+for this example, but probably not a valid model.
 
 ``` r
 areasKm2 <- c(91.2627, 95.8716, 6.5610, 128.4822, 93.0042)
@@ -46,7 +52,8 @@ ms <- configureTestSimulation(ms, dataId = "Ovens", simulStart = s,
     varNameDataRain = 'rain', varNameDataPet = 'evap') 
 ```
 
-The package includes a function that flags possible inconsistencies prior to running a model (inconsistent time steps, etc.)
+The package includes a function that flags possible inconsistencies
+prior to running a model (inconsistent time steps, etc.)
 
 ``` r
 checkSimulation(ms)
@@ -55,7 +62,8 @@ checkSimulation(ms)
     ## $errors
     ## character(0)
 
-We need to adjust a couple of parameters for proper operation on hourly data for the GR4 model structure.
+We need to adjust a couple of parameters for proper operation on hourly
+data for the GR4 model structure.
 
 ``` r
 pGr4jHourly <- createGr4jhParameters()
@@ -70,7 +78,8 @@ parameterizerAsDataFrame(pGr4jHourly)
 applySysConfig(pGr4jHourly, ms)
 ```
 
-We now define a meta parameter set with area scaling applied to x4 and time scaling applied to x2 and x3.
+We now define a meta parameter set with area scaling applied to x4 and
+time scaling applied to x2 and x3.
 
 ``` r
 refArea <- 250
@@ -94,7 +103,9 @@ p <- wrapTransform(p)
 addTransform(p, 'log_x4', 'x4', 'log10')
 ```
 
-We can inspect the values of one of the subareas to check that the parameter values applied are indeed scaled. For instance x4 is scaled based on the area
+We can inspect the values of one of the subareas to check that the
+parameter values applied are indeed scaled. For instance x4 is scaled
+based on the area
 
 ``` r
 parameterizerAsDataFrame(p)
@@ -128,7 +139,8 @@ getStateValue(ms, x4ParamIds)
     ## subarea.lnk5.x4 
     ##       11.538202
 
-Build the definition of the optimisation task. TODO: improve ways to search for element keys by element names.
+Build the definition of the optimisation task. TODO: improve ways to
+search for element keys by element names.
 
 ``` r
 outflowVarname <- "Catchment.StreamflowRate"
@@ -142,7 +154,7 @@ calc <- getRecorded(ms, outflowVarname)
 joki::plotTwoSeries(flow, calc, startTime=end(flow)-lubridate::years(3), endTime=end(flow))
 ```
 
-<img src="./meta_parameters_files/figure-markdown_github/unnamed-chunk-12-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./meta_parameters_files/figure-gfm/unnamed-chunk-12-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ``` r
 objective <- createObjective(ms, outflowVarname, flow, 'NSE', w, e)
@@ -161,7 +173,11 @@ print(score)
     ## 3     x3   1  660.000000   7.891230
     ## 4     x1   1 5000.000000 650.488000
 
-We have our objectives defined, and the parameter space 'p' in which to search. Let's create an optimizer and we are ready to go. While the optimizer can be created in one line, we show how to choose one custom termination criterion and how to configure the optimizer to capture a detailed log of the process.
+We have our objectives defined, and the parameter space ‘p’ in which to
+search. Let’s create an optimizer and we are ready to go. While the
+optimizer can be created in one line, we show how to choose one custom
+termination criterion and how to configure the optimizer to capture a
+detailed log of the process.
 
 ``` r
 if(Sys.getenv('SWIFT_FULL') != "") {
@@ -177,7 +193,9 @@ optimizer <- createSceOptimSwift(objective, term, SCEpars=sceParams, urs)
 calibLogger <- setCalibrationLogger(optimizer, '')
 ```
 
-At this point you may want to specify the maximum number of cores that can be used by the optimizer, for instance if you wish to keep one core free to work in parallel on something else.
+At this point you may want to specify the maximum number of cores that
+can be used by the optimizer, for instance if you wish to keep one core
+free to work in parallel on something else.
 
 ``` r
 # TODO add an API entry point for SetMaxDegreeOfParallelismHardwareMinus
@@ -191,7 +209,7 @@ calibWallTime <- endTime-startTime
 print(paste( 'Optimization completed in ', calibWallTime, attr(calibWallTime, 'units')))
 ```
 
-    ## [1] "Optimization completed in  1.18915729522705 mins"
+    ## [1] "Optimization completed in  1.20513858397802 mins"
 
 Processing the calibration log:
 
@@ -203,9 +221,9 @@ geomOps <- mhplot::subsetByMessage(logMh)
 str(geomOps@data)
 ```
 
-    ## 'data.frame':    916 obs. of  9 variables:
+    ## 'data.frame':    1198 obs. of  9 variables:
     ##  $ Category      : Factor w/ 7 levels "Complex No 0",..: 7 7 7 7 7 7 7 7 7 7 ...
-    ##  $ CurrentShuffle: Factor w/ 12 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
+    ##  $ CurrentShuffle: Factor w/ 16 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
     ##  $ Message       : Factor w/ 5 levels "Adding a random point in hypercube",..: 3 3 3 3 3 3 3 3 3 3 ...
     ##  $ NSE           : num  -1.20e+04 1.31e-01 -1.29e-04 -1.02 -3.22e+03 ...
     ##  $ log_x4        : num  2.256 0.414 0.509 1.724 2.08 ...
@@ -214,7 +232,10 @@ str(geomOps@data)
     ##  $ x3            : num  41.4 469 82.6 614.2 83.7 ...
     ##  $ PointNumber   : int  1 2 3 4 5 6 7 8 9 10 ...
 
-We can then visualize how the calibration evolved. There are several types of visualisations included in the **mhplot** package, and numerous customizations possible, but starting with the overall population evolution:
+We can then visualize how the calibration evolved. There are several
+types of visualisations included in the **mhplot** package, and numerous
+customizations possible, but starting with the overall population
+evolution:
 
 ``` r
 pVarIds <- (parameterizerAsDataFrame(p))$Name
@@ -223,7 +244,7 @@ for (pVarId in pVarIds) {
 }
 ```
 
-<img src="./meta_parameters_files/figure-markdown_github/unnamed-chunk-18-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./meta_parameters_files/figure-markdown_github/unnamed-chunk-18-2.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./meta_parameters_files/figure-markdown_github/unnamed-chunk-18-3.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./meta_parameters_files/figure-markdown_github/unnamed-chunk-18-4.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./meta_parameters_files/figure-gfm/unnamed-chunk-18-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./meta_parameters_files/figure-gfm/unnamed-chunk-18-2.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./meta_parameters_files/figure-gfm/unnamed-chunk-18-3.png" style="display:block; margin: auto" style="display: block; margin: auto;" /><img src="./meta_parameters_files/figure-gfm/unnamed-chunk-18-4.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ``` r
 sortedResults <- sortByScore(calibResults, 'NSE')
@@ -231,7 +252,8 @@ bestPset <- getScoreAtIndex(sortedResults, 1)
 bestPset <- GetSystemConfigurationWila_R(bestPset)
 ```
 
-*swift* can back-transform a parameters to obtain the untransformed parameter set(s):
+*swift* can back-transform a parameters to obtain the untransformed
+parameter set(s):
 
 ``` r
 untfPset <- backtransform(bestPset)
@@ -240,14 +262,14 @@ untfPset <- backtransform(bestPset)
 
     ## $scores
     ##       NSE 
-    ## 0.6221004 
+    ## 0.6221243 
     ## 
     ## $sysconfig
     ##     Name Min         Max      Value
-    ## 1 log_x4   0    2.380211   1.491582
-    ## 2     x2 -27   27.000000 -12.615035
-    ## 3     x3   1  660.000000 144.507752
-    ## 4     x1   1 5000.000000 557.988125
+    ## 1 log_x4   0    2.380211   1.488763
+    ## 2     x2 -27   27.000000 -12.748777
+    ## 3     x3   1  660.000000 147.210803
+    ## 4     x1   1 5000.000000 548.429824
 
 ``` r
 (score <- getScore(objective, untfPset))
@@ -255,16 +277,16 @@ untfPset <- backtransform(bestPset)
 
     ## $scores
     ##       NSE 
-    ## 0.6221004 
+    ## 0.6221243 
     ## 
     ## $sysconfig
     ##   Name Min  Max     Value
-    ## 1   x2 -27   27 -12.61503
-    ## 2   x3   1  660 144.50775
-    ## 3   x4   1  240  31.01574
-    ## 4   x1   1 5000 557.98812
+    ## 1   x2 -27   27 -12.74878
+    ## 2   x3   1  660 147.21080
+    ## 3   x4   1  240  30.81507
+    ## 4   x1   1 5000 548.42982
 
-Finally, let's have a visual of the fitted streamflow data at Abbeyard:
+Finally, let’s have a visual of the fitted streamflow data at Abbeyard:
 
 ``` r
 applySysConfig(bestPset, ms)
@@ -273,4 +295,4 @@ modRunoff <- getRecorded(ms, outflowVarname)
 joki::plotTwoSeries(flow, modRunoff, startTime=end(modRunoff)-lubridate::years(3), endTime=end(modRunoff))
 ```
 
-<img src="./meta_parameters_files/figure-markdown_github/unnamed-chunk-21-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./meta_parameters_files/figure-gfm/unnamed-chunk-21-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />

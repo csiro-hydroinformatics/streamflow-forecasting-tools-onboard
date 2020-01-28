@@ -1,22 +1,24 @@
 Calibration with initial model memory states as parameters
 ================
 Jean-Michel Perraud
-2019-01-17
+2020-01-28
 
-Calibration with initial model memory states as parameters
-==========================================================
+# Calibration with initial model memory states as parameters
 
-About this document
-===================
+# About this document
 
-This document was generated from an R markdown file on 2019-01-17 12:17:53. It is a vignette to demonstrate features in SWIFT to calibrate a model with initial model states as a parameter.
+This document was generated from an R markdown file on 2020-01-28
+10:52:32. It is a vignette to demonstrate features in SWIFT to calibrate
+a model with initial model states as a parameter.
 
-Essentials of setting up a calibration of initial states
-========================================================
+# Essentials of setting up a calibration of initial states
 
-This vignette will illustrate how to define two *meta-parameters*, *S0* and *R0*, controlling the initial level of stores in the GR4J model, as fraction of the store capacities.
+This vignette will illustrate how to define two *meta-parameters*, *S0*
+and *R0*, controlling the initial level of stores in the GR4J model, as
+fraction of the store capacities.
 
-We'll load a simple catchment with one subarea only; the feature applies equally to catchment with multiple sub-areas
+We’ll load a simple catchment with one subarea only; the feature applies
+equally to catchment with multiple sub-areas
 
 ``` r
 library(swift)
@@ -26,7 +28,8 @@ ms <- createSubareaSimulation(dataId='MMH', simulStart='1990-01-01', simulEnd='2
     modelId=modelId, tstep='daily', varNameRain='P', varNamePet='E')
 ```
 
-We define a few model state identifiers, and set them to be recorded to time series.
+We define a few model state identifiers, and set them to be recorded to
+time series.
 
 ``` r
 gr4jModelVars <- runoffModelVarIds(modelId)
@@ -47,7 +50,9 @@ rVarId <- mkVarId('R')
 recordState(ms, c(runoffId, sVarId, rVarId))
 ```
 
-We'll set up a short runtime span, so that we illustrate the state initialisation feature.
+We’ll set up a short runtime span, so that we illustrate the state
+initialisation
+feature.
 
 ``` r
 obsRunoff <- sampleSeries('MMH', 'flow') #actually, this is a time series of runoff depth, not streamflow rate
@@ -58,7 +63,7 @@ e <- s + lubridate::days(90)
 setSimulationSpan(ms, s, e)
 ```
 
-Let's apply some default model parameters to the model:
+Let’s apply some default model parameters to the model:
 
 ``` r
 (pSpecGr4j <- joki::getFreeParams(modelId))
@@ -87,16 +92,18 @@ parameterizerAsDataFrame(p)
 applySysConfig(p, ms)
 ```
 
-We get a time series of *S* if we run it at this point; the starting value is zero.
+We get a time series of *S* if we run it at this point; the starting
+value is zero.
 
 ``` r
 execSimulation(ms)
 plot(getRecorded(ms, sVarId), main='GR4J S store. No state initializer')
 ```
 
-<img src="./calibration_initial_states_files/figure-markdown_github/unnamed-chunk-6-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./calibration_initial_states_files/figure-gfm/unnamed-chunk-6-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-Let's define *S0* and *R0* parameters such that for each GR4J model instance, *S = S0 \* x1* and *R = R0 \* x3*
+Let’s define *S0* and *R0* parameters such that for each GR4J model
+instance, *S = S0 \* x1* and *R = R0 \* x3*
 
 ``` r
 pStates <- linearParameterizer(
@@ -109,7 +116,8 @@ pStates <- linearParameterizer(
                       'each subarea')
 ```
 
-If one applies this parameterizer *pState* to the system, the the *S* store is set to the expected value relative to *x1*.
+If one applies this parameterizer *pState* to the system, the the *S*
+store is set to the expected value relative to *x1*.
 
 ``` r
 applySysConfig(pStates, ms)
@@ -119,16 +127,19 @@ getStateValue(ms, sVarId)
     ## subarea.Subarea.S 
     ##          585.4392
 
-**However** this is not enough to define a parameterizer as an initial state. If executing the simulation, the time series of *S* still starts at zero, because the resetting the model overrides the state *S*:
+**However** this is not enough to define a parameterizer as an initial
+state. If executing the simulation, the time series of *S* still starts
+at zero, because the resetting the model overrides the state *S*:
 
 ``` r
 execSimulation(ms)
 plot(getRecorded(ms, sVarId), main='GR4J S store; incomplete store initialization')
 ```
 
-<img src="./calibration_initial_states_files/figure-markdown_github/unnamed-chunk-9-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./calibration_initial_states_files/figure-gfm/unnamed-chunk-9-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-You need to define a new parameterizer, that makes sure that the model is reset to the expected initial value.
+You need to define a new parameterizer, that makes sure that the model
+is reset to the expected initial value.
 
 ``` r
 initParameterizer <- makeStateInitParameterizer(pStates)
@@ -137,11 +148,16 @@ execSimulation(ms)
 plot(getRecorded(ms, sVarId), main='GR4J S store, with a proper state initializer')
 ```
 
-<img src="./calibration_initial_states_files/figure-markdown_github/unnamed-chunk-10-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./calibration_initial_states_files/figure-gfm/unnamed-chunk-10-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
-There is logic in keeping the two previous steps in defining a parameterizer as separate, hence this present vignette emphasizes the importance of these two steps.
+There is logic in keeping the two previous steps in defining a
+parameterizer as separate, hence this present vignette emphasizes the
+importance of these two steps.
 
-Once you have defined this parameterizer using `{r eval=FALSE} makeStateInitParameterizer`, you can define a calibration objective the usual way. This vignette does not include calibration steps; please refer to other vignettes.
+Once you have defined this parameterizer using `{r eval=FALSE}
+makeStateInitParameterizer`, you can define a calibration objective the
+usual way. This vignette does not include calibration steps; please
+refer to other vignettes.
 
 ``` r
 p <- concatenateParameterizers(p, initParameterizer)
@@ -164,7 +180,7 @@ print(score)
 
     ## $scores
     ##       NSE 
-    ## -130.2095 
+    ## -5.894663 
     ## 
     ## $sysconfig
     ##                 Name Min  Max      Value

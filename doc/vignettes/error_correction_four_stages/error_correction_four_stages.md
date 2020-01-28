@@ -1,24 +1,31 @@
 Error correction - ERRIS
 ================
 Jean-Michel Perraud
-2019-01-17
+2020-01-28
 
-Error correction models - ERRIS
-===============================
+# Error correction models - ERRIS
 
-About this document
--------------------
+## About this document
 
-This document was generated from an R markdown file on 2019-01-17 12:17:56.
+This document was generated from an R markdown file on 2020-01-28
+10:52:38.
 
-[Li, Ming; Wang, QJ; Bennett, James; Robertson, David. Error reduction and representation in stages (ERRIS) in hydrological modelling for ensemble streamflow forecasting. Hydrology and Earth System Sciences. 2016; 20:3561-3579. https://doi.org/10.5194/hess-20-3561-2016](https://doi.org/10.5194/hess-20-3561-2016)
+[Li, Ming; Wang, QJ; Bennett, James; Robertson, David. Error reduction
+and representation in stages (ERRIS) in hydrological modelling for
+ensemble streamflow forecasting. Hydrology and Earth System
+Sciences. 2016; 20:3561-3579.
+https://doi.org/10.5194/hess-20-3561-2016](https://doi.org/10.5194/hess-20-3561-2016)
 
-Calibrating ERRIS
------------------
+## Calibrating ERRIS
 
 ### Model structure
 
-We use sample hourly data from the Adelaide catchment [this catchment in the Northern Territory, TBC](https://en.wikipedia.org/wiki/Adelaide_River). The catchment model set up is not the key point of this vignette so we do not comment on that section:
+We use sample hourly data from the Adelaide catchment [this catchment in
+the Northern Territory,
+TBC](https://en.wikipedia.org/wiki/Adelaide_River). The catchment model
+set up is not the key point of this vignette so we do not comment on
+that
+section:
 
 ``` r
 library(swift)
@@ -66,7 +73,8 @@ flowId <- mkFullDataId(nodeId, 'OutflowRate')
 recordState(simulation, flowId)
 ```
 
-We use pre-calibrated hydrologic parameters (reproducible with doc/error\_correction\_doc\_preparation.r in this package structure)
+We use pre-calibrated hydrologic parameters (reproducible with
+doc/error\_correction\_doc\_preparation.r in this package structure)
 
 ``` r
 p <- templateHydroParameterizer(simulation)
@@ -114,7 +122,7 @@ execSimulation(simulation)
 obsVsCalc(flowRateTs, getRecorded(simulation, flowId))
 ```
 
-<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-6-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-6-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ### Set up the error correction model
 
@@ -159,7 +167,8 @@ recordState(ecs,varIds=c(updatedFlowVarID, inputFlowVarID))
 termination <- swift::CreateSceTerminationWila_Pkg_R('relative standard deviation', c('0.05','0.0167'))
 ```
 
-We could set up a four-stages estimation in one go, but we will instead work in each stages for didactic purposes.
+We could set up a four-stages estimation in one go, but we will instead
+work in each stages for didactic purposes.
 
 ``` r
 censOpt = 0.0
@@ -171,21 +180,21 @@ stageOnePset = CalibrateERRISStageOne_R(estimator)
 print(parameterizerAsDataFrame(stageOnePset))
 ```
 
-    ##              Name    Min    Max        Value
-    ## 1         Epsilon  -20.0    0.0   -7.5856486
-    ## 2          Lambda  -30.0    5.0   -0.6330786
-    ## 3               D    0.0    0.0    0.0000000
-    ## 4              Mu    0.0    0.0    0.0000000
-    ## 5             Rho    0.0    0.0    0.0000000
-    ## 6  Sigma1_Falling    0.0    0.0    0.0000000
-    ## 7   Sigma1_Rising    0.0    0.0    0.0000000
-    ## 8  Sigma2_Falling    0.0    0.0    0.0000000
-    ## 9   Sigma2_Rising    0.0    0.0    0.0000000
-    ## 10 Weight_Falling    1.0    1.0    1.0000000
-    ## 11  Weight_Rising    1.0    1.0    1.0000000
-    ## 12        CensThr    0.0    0.0    0.0000000
-    ## 13        CensOpt    0.0    0.0    0.0000000
-    ## 14         MaxObs 1126.3 1126.3 1126.3000000
+    ##              Name    Min    Max       Value
+    ## 1         Epsilon  -20.0    0.0   -8.676488
+    ## 2          Lambda  -30.0    5.0   -1.451523
+    ## 3               D    0.0    0.0    0.000000
+    ## 4              Mu    0.0    0.0    0.000000
+    ## 5             Rho    0.0    0.0    0.000000
+    ## 6  Sigma1_Falling    0.0    0.0    0.000000
+    ## 7   Sigma1_Rising    0.0    0.0    0.000000
+    ## 8  Sigma2_Falling    0.0    0.0    0.000000
+    ## 9   Sigma2_Rising    0.0    0.0    0.000000
+    ## 10 Weight_Falling    1.0    1.0    1.000000
+    ## 11  Weight_Rising    1.0    1.0    1.000000
+    ## 12        CensThr    0.0    0.0    0.000000
+    ## 13        CensOpt    0.0    0.0    0.000000
+    ## 14         MaxObs 1126.3 1126.3 1126.300000
 
 #### Stage 2
 
@@ -198,21 +207,21 @@ stageTwoPset = CalibrateERRISStageTwo_R(estimator, stageOnePset)
 print(parameterizerAsDataFrame(stageTwoPset))
 ```
 
-    ##              Name          Min          Max        Value
-    ## 1               D    0.0000000    2.0000000    0.7796971
-    ## 2              Mu -100.0000000  100.0000000   -0.9128785
-    ## 3   Sigma1_Rising   -6.9077553    6.9077553    0.2084395
-    ## 4         CensOpt    0.0000000    0.0000000    0.0000000
-    ## 5         CensThr    0.0000000    0.0000000    0.0000000
-    ## 6         Epsilon   -7.5856486   -7.5856486   -7.5856486
-    ## 7          Lambda   -0.6330786   -0.6330786   -0.6330786
-    ## 8          MaxObs 1126.3000000 1126.3000000 1126.3000000
-    ## 9             Rho    0.0000000    0.0000000    0.0000000
-    ## 10 Sigma1_Falling    0.0000000    0.0000000    0.0000000
-    ## 11 Sigma2_Falling    0.0000000    0.0000000    0.0000000
-    ## 12  Sigma2_Rising    0.0000000    0.0000000    0.0000000
-    ## 13 Weight_Falling    1.0000000    1.0000000    1.0000000
-    ## 14  Weight_Rising    1.0000000    1.0000000    1.0000000
+    ##              Name         Min         Max        Value
+    ## 1               D    0.000000    2.000000    0.7386187
+    ## 2              Mu -100.000000  100.000000   -3.5225392
+    ## 3   Sigma1_Rising   -6.907755    6.907755    0.9109061
+    ## 4         CensOpt    0.000000    0.000000    0.0000000
+    ## 5         CensThr    0.000000    0.000000    0.0000000
+    ## 6         Epsilon   -8.676488   -8.676488   -8.6764883
+    ## 7          Lambda   -1.451523   -1.451523   -1.4515233
+    ## 8          MaxObs 1126.300000 1126.300000 1126.3000000
+    ## 9             Rho    0.000000    0.000000    0.0000000
+    ## 10 Sigma1_Falling    0.000000    0.000000    0.0000000
+    ## 11 Sigma2_Falling    0.000000    0.000000    0.0000000
+    ## 12  Sigma2_Rising    0.000000    0.000000    0.0000000
+    ## 13 Weight_Falling    1.000000    1.000000    1.0000000
+    ## 14  Weight_Rising    1.000000    1.000000    1.0000000
 
 ``` r
 mkEcIds <- function(p) {
@@ -226,7 +235,7 @@ execSimulation(ecs)
 obsVsCalc(flowRateTsGapped, getRecorded(ecs, updatedFlowVarID))
 ```
 
-<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-13-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-13-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 A helper function to process the calibration log:
 
@@ -247,7 +256,7 @@ d <- prepOptimLog(estimator, fitnessName = "Log.likelihood")
 print(mhplot::plotParamEvolution(d$geomOps, 'Sigma1_Rising', c(0, max(d$data@data$Log.likelihood))))
 ```
 
-<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-15-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-15-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 #### Stage 3
 
@@ -257,15 +266,15 @@ print(parameterizerAsDataFrame(stageThreePset))
 ```
 
     ##              Name          Min          Max        Value
-    ## 1             Rho    0.0000000    1.0000000    0.9948151
-    ## 2   Sigma1_Rising   -6.9077553    6.9077553   -1.8524683
+    ## 1             Rho    0.0000000    1.0000000    0.9880881
+    ## 2   Sigma1_Rising   -6.9077553    6.9077553   -0.9134793
     ## 3         CensOpt    0.0000000    0.0000000    0.0000000
     ## 4         CensThr    0.0000000    0.0000000    0.0000000
-    ## 5               D    0.7796971    0.7796971    0.7796971
-    ## 6         Epsilon   -7.5856486   -7.5856486   -7.5856486
-    ## 7          Lambda   -0.6330786   -0.6330786   -0.6330786
+    ## 5               D    0.7386187    0.7386187    0.7386187
+    ## 6         Epsilon   -8.6764883   -8.6764883   -8.6764883
+    ## 7          Lambda   -1.4515233   -1.4515233   -1.4515233
     ## 8          MaxObs 1126.3000000 1126.3000000 1126.3000000
-    ## 9              Mu   -0.9128785   -0.9128785   -0.9128785
+    ## 9              Mu   -3.5225392   -3.5225392   -3.5225392
     ## 10 Sigma1_Falling    0.0000000    0.0000000    0.0000000
     ## 11 Sigma2_Falling    0.0000000    0.0000000    0.0000000
     ## 12  Sigma2_Rising    0.0000000    0.0000000    0.0000000
@@ -277,7 +286,7 @@ d <- prepOptimLog(estimator, fitnessName = "Log.likelihood")
 print(mhplot::plotParamEvolution(d$geomOps, 'Rho', c(0, max(d$data@data$Log.likelihood))))
 ```
 
-<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-17-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-17-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 #### Stage 3a, generating and fitting M and S if free
 
@@ -287,22 +296,22 @@ print(parameterizerAsDataFrame(stageThreePsetMS))
 ```
 
     ##              Name          Min          Max        Value
-    ## 1             Rho    0.0000000    1.0000000    0.9948151
-    ## 2   Sigma1_Rising   -6.9077553    6.9077553   -1.8524683
+    ## 1             Rho    0.0000000    1.0000000    0.9880881
+    ## 2   Sigma1_Rising   -6.9077553    6.9077553   -0.9134793
     ## 3         CensOpt    0.0000000    0.0000000    0.0000000
     ## 4         CensThr    0.0000000    0.0000000    0.0000000
-    ## 5               D    0.7796971    0.7796971    0.7796971
-    ## 6         Epsilon   -7.5856486   -7.5856486   -7.5856486
-    ## 7          Lambda   -0.6330786   -0.6330786   -0.6330786
+    ## 5               D    0.7386187    0.7386187    0.7386187
+    ## 6         Epsilon   -8.6764883   -8.6764883   -8.6764883
+    ## 7          Lambda   -1.4515233   -1.4515233   -1.4515233
     ## 8          MaxObs 1126.3000000 1126.3000000 1126.3000000
-    ## 9              Mu   -0.9128785   -0.9128785   -0.9128785
+    ## 9              Mu   -3.5225392   -3.5225392   -3.5225392
     ## 10 Sigma1_Falling    0.0000000    0.0000000    0.0000000
     ## 11 Sigma2_Falling    0.0000000    0.0000000    0.0000000
     ## 12  Sigma2_Rising    0.0000000    0.0000000    0.0000000
     ## 13 Weight_Falling    1.0000000    1.0000000    1.0000000
     ## 14  Weight_Rising    1.0000000    1.0000000    1.0000000
-    ## 15         MNoise -100.0000000  100.0000000   -1.6149544
-    ## 16         SNoise  -10.0000000   10.0000000    1.3524924
+    ## 15         MNoise -100.0000000  100.0000000   -2.5833943
+    ## 16         SNoise  -10.0000000   10.0000000    1.8858371
 
 ``` r
 applySysConfig(mkEcIds(stageThreePsetMS), ecs)
@@ -310,7 +319,7 @@ execSimulation(ecs)
 obsVsCalc(flowRateTsGapped, getRecorded(ecs, updatedFlowVarID))
 ```
 
-<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-19-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-19-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 #### Stage 4, rising limb
 
@@ -320,17 +329,17 @@ print(parameterizerAsDataFrame(stageFourPsetRising))
 ```
 
     ##              Name          Min          Max        Value
-    ## 1   Sigma1_Rising   -6.9077553    6.9077553   -1.9247004
-    ## 2   Sigma2_Rising   -6.9077553    6.9077553   -0.3119869
-    ## 3   Weight_Rising    0.5000000    1.0000000    0.8561796
+    ## 1   Sigma1_Rising   -6.9077553    6.9077553   -1.0822514
+    ## 2   Sigma2_Rising   -6.9077553    6.9077553    0.6662236
+    ## 3   Weight_Rising    0.5000000    1.0000000    0.8770708
     ## 4         CensOpt    0.0000000    0.0000000    0.0000000
     ## 5         CensThr    0.0000000    0.0000000    0.0000000
-    ## 6               D    0.7796971    0.7796971    0.7796971
-    ## 7         Epsilon   -7.5856486   -7.5856486   -7.5856486
-    ## 8          Lambda   -0.6330786   -0.6330786   -0.6330786
+    ## 6               D    0.7386187    0.7386187    0.7386187
+    ## 7         Epsilon   -8.6764883   -8.6764883   -8.6764883
+    ## 8          Lambda   -1.4515233   -1.4515233   -1.4515233
     ## 9          MaxObs 1126.3000000 1126.3000000 1126.3000000
-    ## 10             Mu   -0.9128785   -0.9128785   -0.9128785
-    ## 11            Rho    0.9948151    0.9948151    0.9948151
+    ## 10             Mu   -3.5225392   -3.5225392   -3.5225392
+    ## 11            Rho    0.9880881    0.9880881    0.9880881
     ## 12 Sigma1_Falling    0.0000000    0.0000000    0.0000000
     ## 13 Sigma2_Falling    0.0000000    0.0000000    0.0000000
     ## 14 Weight_Falling    1.0000000    1.0000000    1.0000000
@@ -340,7 +349,7 @@ d <- prepOptimLog(estimator, fitnessName = "Log.likelihood")
 print(mhplot::plotParamEvolution(d$geomOps, 'Weight_Rising', c(0, max(d$data@data$Log.likelihood))))
 ```
 
-<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-21-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-21-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 ``` r
 applySysConfig(mkEcIds(stageFourPsetRising), ecs)
@@ -348,7 +357,7 @@ execSimulation(ecs)
 obsVsCalc(flowRateTsGapped, getRecorded(ecs, updatedFlowVarID))
 ```
 
-<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-22-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-22-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 #### Stage 4, falling limbs
 
@@ -358,17 +367,17 @@ print(parameterizerAsDataFrame(stageFourPsetFalling))
 ```
 
     ##              Name          Min          Max        Value
-    ## 1   Sigma1_Rising   -6.9077553    6.9077553   -4.0841234
-    ## 2   Sigma2_Rising   -6.9077553    6.9077553   -1.6123716
-    ## 3   Weight_Rising    0.5000000    1.0000000    0.7853106
+    ## 1   Sigma1_Rising   -6.9077553    6.9077553   -3.1021521
+    ## 2   Sigma2_Rising   -6.9077553    6.9077553   -0.6290198
+    ## 3   Weight_Rising    0.5000000    1.0000000    0.8131939
     ## 4         CensOpt    0.0000000    0.0000000    0.0000000
     ## 5         CensThr    0.0000000    0.0000000    0.0000000
-    ## 6               D    0.7796971    0.7796971    0.7796971
-    ## 7         Epsilon   -7.5856486   -7.5856486   -7.5856486
-    ## 8          Lambda   -0.6330786   -0.6330786   -0.6330786
+    ## 6               D    0.7386187    0.7386187    0.7386187
+    ## 7         Epsilon   -8.6764883   -8.6764883   -8.6764883
+    ## 8          Lambda   -1.4515233   -1.4515233   -1.4515233
     ## 9          MaxObs 1126.3000000 1126.3000000 1126.3000000
-    ## 10             Mu   -0.9128785   -0.9128785   -0.9128785
-    ## 11            Rho    0.9948151    0.9948151    0.9948151
+    ## 10             Mu   -3.5225392   -3.5225392   -3.5225392
+    ## 11            Rho    0.9880881    0.9880881    0.9880881
     ## 12 Sigma1_Falling    0.0000000    0.0000000    0.0000000
     ## 13 Sigma2_Falling    0.0000000    0.0000000    0.0000000
     ## 14 Weight_Falling    1.0000000    1.0000000    1.0000000
@@ -378,7 +387,7 @@ Nd <- prepOptimLog(estimator, fitnessName = "Log.likelihood")
 print(mhplot::plotParamEvolution(d$geomOps, 'Weight_Rising', c(0, max(d$data@data$Log.likelihood))))
 ```
 
-<img src="./error_correction_four_stages_files/figure-markdown_github/unnamed-chunk-24-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+<img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-24-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
 
 #### Final consolidated parameter set
 
@@ -392,24 +401,24 @@ print(parameterizerAsDataFrame(finalPset))
     ##              Name          Min          Max        Value
     ## 1         CensThr    0.0000000    0.0000000    0.0000000
     ## 2         CensOpt    0.0000000    0.0000000    0.0000000
-    ## 3          MNoise -100.0000000  100.0000000   -1.6149544
-    ## 4          SNoise  -10.0000000   10.0000000    1.3524924
-    ## 5          Lambda   -0.6330786   -0.6330786   -0.6330786
-    ## 6         Epsilon   -7.5856486   -7.5856486   -7.5856486
-    ## 7              Mu   -0.9128785   -0.9128785   -0.9128785
-    ## 8               D    0.7796971    0.7796971    0.7796971
-    ## 9             Rho    0.9948151    0.9948151    0.9948151
+    ## 3          MNoise -100.0000000  100.0000000   -2.5833943
+    ## 4          SNoise  -10.0000000   10.0000000    1.8858371
+    ## 5          Lambda   -1.4515233   -1.4515233   -1.4515233
+    ## 6         Epsilon   -8.6764883   -8.6764883   -8.6764883
+    ## 7              Mu   -3.5225392   -3.5225392   -3.5225392
+    ## 8               D    0.7386187    0.7386187    0.7386187
+    ## 9             Rho    0.9880881    0.9880881    0.9880881
     ## 10         MaxObs 1126.3000000 1126.3000000 1126.3000000
-    ## 11  Sigma1_Rising   -6.9077553    6.9077553   -1.9247004
-    ## 12  Sigma2_Rising   -6.9077553    6.9077553   -0.3119869
-    ## 13  Weight_Rising    0.5000000    1.0000000    0.8561796
-    ## 14 Sigma1_Falling   -6.9077553    6.9077553   -4.0841234
-    ## 15 Sigma2_Falling   -6.9077553    6.9077553   -1.6123716
-    ## 16 Weight_Falling    0.5000000    1.0000000    0.7853106
+    ## 11  Sigma1_Rising   -6.9077553    6.9077553   -1.0822514
+    ## 12  Sigma2_Rising   -6.9077553    6.9077553    0.6662236
+    ## 13  Weight_Rising    0.5000000    1.0000000    0.8770708
+    ## 14 Sigma1_Falling   -6.9077553    6.9077553   -3.1021521
+    ## 15 Sigma2_Falling   -6.9077553    6.9077553   -0.6290198
+    ## 16 Weight_Falling    0.5000000    1.0000000    0.8131939
 
 ### Legacy call
 
-Check that the previous "one stop shop" call gives the same results.
+Check that the previous “one stop shop” call gives the same results.
 
 ``` r
 dummyDate <- simstart
@@ -426,17 +435,17 @@ print(parameterizerAsDataFrame(psetFullEstimate))
     ##                        Name          Min          Max        Value
     ## 1         node.2.ec.CensThr    0.0000000    0.0000000    0.0000000
     ## 2         node.2.ec.CensOpt    0.0000000    0.0000000    0.0000000
-    ## 3          node.2.ec.MNoise -100.0000000  100.0000000   -1.6149544
-    ## 4          node.2.ec.SNoise  -10.0000000   10.0000000    1.3524924
-    ## 5          node.2.ec.Lambda   -0.6330786   -0.6330786   -0.6330786
-    ## 6         node.2.ec.Epsilon   -7.5856486   -7.5856486   -7.5856486
-    ## 7              node.2.ec.Mu   -0.9128785   -0.9128785   -0.9128785
-    ## 8               node.2.ec.D    0.7796971    0.7796971    0.7796971
-    ## 9             node.2.ec.Rho    0.9948151    0.9948151    0.9948151
+    ## 3          node.2.ec.MNoise -100.0000000  100.0000000   -2.5833943
+    ## 4          node.2.ec.SNoise  -10.0000000   10.0000000    1.8858371
+    ## 5          node.2.ec.Lambda   -1.4515233   -1.4515233   -1.4515233
+    ## 6         node.2.ec.Epsilon   -8.6764883   -8.6764883   -8.6764883
+    ## 7              node.2.ec.Mu   -3.5225392   -3.5225392   -3.5225392
+    ## 8               node.2.ec.D    0.7386187    0.7386187    0.7386187
+    ## 9             node.2.ec.Rho    0.9880881    0.9880881    0.9880881
     ## 10         node.2.ec.MaxObs 1126.3000000 1126.3000000 1126.3000000
-    ## 11  node.2.ec.Sigma1_Rising   -6.9077553    6.9077553   -1.9247004
-    ## 12  node.2.ec.Sigma2_Rising   -6.9077553    6.9077553   -0.3119869
-    ## 13  node.2.ec.Weight_Rising    0.5000000    1.0000000    0.8561796
-    ## 14 node.2.ec.Sigma1_Falling   -6.9077553    6.9077553   -4.0841234
-    ## 15 node.2.ec.Sigma2_Falling   -6.9077553    6.9077553   -1.6123716
-    ## 16 node.2.ec.Weight_Falling    0.5000000    1.0000000    0.7853106
+    ## 11  node.2.ec.Sigma1_Rising   -6.9077553    6.9077553   -1.0822514
+    ## 12  node.2.ec.Sigma2_Rising   -6.9077553    6.9077553    0.6662236
+    ## 13  node.2.ec.Weight_Rising    0.5000000    1.0000000    0.8770708
+    ## 14 node.2.ec.Sigma1_Falling   -6.9077553    6.9077553   -3.1021521
+    ## 15 node.2.ec.Sigma2_Falling   -6.9077553    6.9077553   -0.6290198
+    ## 16 node.2.ec.Weight_Falling    0.5000000    1.0000000    0.8131939
