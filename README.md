@@ -8,7 +8,7 @@ This repository is a public entry point for people interested in a suite of hydr
 
 This documentation introduces a set of software tools for ensemble streamflow forecasting techniques. The core is written in C++, but in practice users access the features via packages in R, python, or Matlab. Hands-on hydrologic modellers can browse through some [sample modelling workflows in R package vignettes](./doc/sample_workflows.md) to get an idea of the features.
 
-An overview of the tools is available [there](https://www.csiro.au/en/Research/LWF/Areas/Water-resources/Assessing-water-resources/WIRADA/Data-and-tools), under the section "Flood and short-term streamflow forecasting". 
+An overview of the research and outcomes is available [at this page](https://www.csiro.au/en/Research/LWF/Areas/Water/Assessing-water-resources/WIRADA/Research/Water-forecasting).
 
 A high level description of the software stack with the main components follows. This stack is built mostly on open source software; see [csiro-hydroinformatics](https://github.com/csiro-hydroinformatics), notably [uchronia-time-series](https://github.com/csiro-hydroinformatics/uchronia-time-series). We also intend to open source the semi-distributed modelling engine.
 
