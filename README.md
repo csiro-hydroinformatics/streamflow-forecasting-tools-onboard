@@ -4,20 +4,19 @@ This repository is a public entry point for people interested in a suite of hydr
 
 ![Ensemble forecasting simulation](./img/ens_streamflow_forecast.png "Ensemble forecasting simulation")
 
-
 ## Capabilities
 
 This documentation introduces a set of software tools for ensemble streamflow forecasting techniques. The core is written in C++, but in practice users access the features via packages in R, python, or Matlab. Hands-on hydrologic modellers can browse through some [sample modelling workflows in R package vignettes](./doc/sample_workflows.md) to get an idea of the features.
 
 An overview of the tools is available [there](https://www.csiro.au/en/Research/LWF/Areas/Water-resources/Assessing-water-resources/WIRADA/Data-and-tools), under the section "Flood and short-term streamflow forecasting". 
 
-A high level description of the software stack with the main components follows.
+A high level description of the software stack with the main components follows. This stack is built mostly on open source software; see [csiro-hydroinformatics](https://github.com/csiro-hydroinformatics), notably [uchronia-time-series](https://github.com/csiro-hydroinformatics/uchronia-time-series). We also intend to open source the semi-distributed modelling engine.
 
 ![Software stack](./img/architecture_poster.png "Software stack")
 
 ## Installation
 
-Software packages are not publicly downloadable but access for evaluation or research purposes can be arranged upon request. Once you have received a link to downloadable packages and files, follow the instructions for your platform:
+Software packages are not all publicly downloadable, but access for evaluation or research purposes can easily be arranged upon request. Contact [jean-michel.perraud@csiro.au](mailto:jean-michel.perraud@csiro.au) and/or [david.robertson@csiro.au](mailto:david.robertson@csiro.au). Once you have received a link to downloadable packages and files, follow the instructions for your platform:
 
 * [Installing on Window](./doc/install_windows.md)
 * [Installing on Linux](./doc/install_linux.md)
