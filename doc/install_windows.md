@@ -53,7 +53,17 @@ install.packages(c('rpp','calibragem'), repos=c('file:///E:/software/R_pkgs', 'h
 
 ### Python packages
 
-[miniconda3](https://docs.conda.io/en/latest/miniconda.html)
+#### __Python environments__
+
+We **strongly** advise you to use python virtual environments to execute these tools via python.
+
+There are various methods for these, but typically `venv` or `conda`
+
+This section documents the process using `conda`.
+
+We recommend you use [miniconda3](https://docs.conda.io/en/latest/miniconda.html), but you may have already it installed on your Windows box by e.g. your IT department installation management software.
+
+This document assumes you start from the base environment, for instance:
 
 ```text
 (base) C:\Users\xxxyyy>conda env list
@@ -67,6 +77,8 @@ We recommend you use the `mamba` package, a newer drop-in replacement for `conda
 ```bat
 conda install -c conda-forge mamba
 ```
+
+#### __Installing hydroforecast packages__
 
 Below remember to replace `mamba` by `conda` if you have not installed mamba.
 
