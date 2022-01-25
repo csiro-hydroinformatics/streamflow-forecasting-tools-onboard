@@ -84,7 +84,7 @@ Below remember to replace `mamba` by `conda` if you have not installed mamba.
 
 ```bat
 set env_name="hydrofc"
-mamba create -n %env_name% -c conda-forge xarray cffi pandas numpy matplotlib ipykernel jsonpickle
+mamba create -n %env_name% -c conda-forge xarray cffi pandas numpy matplotlib ipykernel jsonpickle netcdf4
 ```
 
 Register the new conda environment as a "kernel" for jupyter notebooks
