@@ -64,7 +64,7 @@ setSimulationSpan(simulation, simstart, simend)
 
 ``` r
 templateHydroParameterizer <- function(simulation) {
-  calibragem::defineParameterizerGr4jMuskingum(refArea=250, timeSpan=3600L, simulation=simulation, objfun='NSE', deltaT=1L)
+  calibragem::defineParameterizerGr4jMuskingum(refArea=250, timeSpan=3600L, simulation=simulation, paramNameK="Alpha", objfun='NSE', deltaT=1L)
 }
 
 nodeId <- 'node.2'

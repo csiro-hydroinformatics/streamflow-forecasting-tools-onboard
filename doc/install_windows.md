@@ -1,10 +1,16 @@
 # Installing ensemble streamflow forecasting tools on Windows
 
+You will have been given one or more links to the location of C++ compiled libraries (windows DLLs), and R and/or Python packages.
+
+* libs.7z
+* R_pkgs.7z.7z
+* python.7z
+
 ## Installing shared (dynamic) libraries
 
-This documentation is fairly prescriptive in terms of the location where you would install dynamic libraries. You can still choose the top level folder where you would install these libraries. This document uses "c:\local".
+This documentation is fairly prescriptive in terms of the location where you would install dynamic libraries. You can still choose the top level folder where you would install these libraries. This document uses "c:\local", and you are encourage to adhere to this convention if you can logistically can.
 
-You may have `7z` in your command line prompt, otherwise use Windows Explorer:
+You may have `7z` in your command line prompt, otherwise use Windows Explorer to extract the zip file from the 7Zip graphical user interface :
 
 ```bat
 mkdir c:\local
@@ -12,7 +18,7 @@ cd c:\local
 7z x libs.7z
 ```
 
-This should have created the folder `C:\local\libs\64`. A 32 bits folder may be present but is deprecated as of 2017-12: operating systems are now largely 64 bits and we recommend you use 64 bits toolsets.
+This should have created the folder `C:\local\libs\64`. A 32 bits folder may be present but is deprecated since 2017-12: operating systems are now largely 64 bits and we strongly recommend you use 64 bits toolsets.
 
 ### Adding environment variable LIBRARY_PATH
 
@@ -24,6 +30,10 @@ Go to the Control Panel, System and Security\System, Search for the string "envi
 * for the field "Variable value:" use c:\local\libs  (if you unzipped libs.7z into c:\local in the previous section)
 
 ## Installing packages
+
+You can choose to install various higher level languages: R, Python, Matlab, C# and potentially others.
+
+This section documents R and Python. You can install either, or both, depending on your needs.
 
 ### R packages
 
@@ -57,7 +67,7 @@ install.packages(c('rpp','calibragem'), repos=c('file:///E:/software/R_pkgs', 'h
 
 We **strongly** advise you to use python virtual environments to execute these tools via python.
 
-There are various methods for these, but typically `venv` or `conda`
+There are various methods for these, but typically `venv` (virtual environments) or `conda`
 
 This section documents the process using `conda`.
 
@@ -72,7 +82,7 @@ This document assumes you start from the base environment, for instance:
 base                  *  C:\Users\xxxyyy\Miniconda3
 ```
 
-We recommend you use the `mamba` package, a newer drop-in replacement for `conda`. This is optional.
+We recommend you use the `mamba` package, a newer and faster drop-in replacement for `conda`. This is optional.
 
 ```bat
 conda install -c conda-forge mamba
@@ -84,7 +94,8 @@ Below remember to replace `mamba` by `conda` if you have not installed mamba.
 
 ```bat
 set env_name="hydrofc"
-mamba create -n %env_name% -c conda-forge xarray cffi pandas numpy matplotlib ipykernel jsonpickle netcdf4
+mamba create -n %env_name% -c conda-forge python=3.9 xarray cffi pandas numpy matplotlib ipykernel jsonpickle netcdf4 seaborn
+REM note to self seaborn used in swift2 sample notebooks, so somewhat optional.
 ```
 
 Register the new conda environment as a "kernel" for jupyter notebooks
@@ -102,23 +113,27 @@ You may already have jupyter-lab installed in another conda environment. You may
 mamba install -c conda-forge jupyterlab
 ```
 
+You may need to install some additional conda packages depending on the notebooks you are using.
+
 We can now install "our" packages. we can install from 'wheels', or from source code (for developers)
 
-Two dependencies `refcount` and `cinterop` are on pypi:
+Two dependencies `refcount` and `cinterop` are on pypi, but should also be in the zip archive as wheels as well; prefer the latter.
+
+To install "wheels", which you may have gotten from a zip file:
 
 ```bat
-pip install refcount cinterop
-```
+cd  C:\tmp\sf
+7z x python.7z
 
-To install swift and uchronia from "wheels", which you may have gotten from a zip file:
-
-```bat
-cd  C:\local\python
 :: Adapt the following to the versions you have.
-pip install uchronia-2.3.7-py2.py3-none-any.whl
-pip install swift2-2.3.7-py2.py3-none-any.whl
-:: pip install fogss-2.3.7-py2.py3-none-any.whl
+pip install --force-reinstall --no-deps refcount-0.9.3-py2.py3-none-any.whl
+pip install --force-reinstall --no-deps cinterop-0.9.0-py2.py3-none-any.whl
+pip install --force-reinstall --no-deps uchronia-2.3.7-py2.py3-none-any.whl
+pip install --force-reinstall --no-deps swift2-2.3.7-py2.py3-none-any.whl
+pip install --force-reinstall --no-deps fogss-0.3-py2.py3-none-any.whl
 ```
+
+#### __Installing hydroforecast packages in dev mode__
 
 To install instead in development mode, for some or all of the 4 packages:
 
