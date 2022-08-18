@@ -24,7 +24,7 @@ This should have created the folder `C:\local\libs\64`. A 32 bits folder may be 
 
 The packages in R, python, (etc.) need a way to search for these native libraries. To do so, you should set up a User- or System-level environmental variable `LIBRARY_PATH`. The approach borrows from what is customary (albeit variable) on most Linux system for dynamic library resolution.
 
-Go to the Control Panel, System and Security\System, Search for the string "environment", and it should give you the link to edit environment variables for your account.
+Go to the Control Panel, System and Security\System, Search for the string "environment", and it should give you the link to **Edit environment variables for your account**.
 
 * for the field "Variable name:" use `LIBRARY_PATH`
 * for the field "Variable value:" use c:\local\libs  (if you unzipped libs.7z into c:\local in the previous section)
@@ -37,13 +37,22 @@ This section documents R and Python. You can install either, or both, depending 
 
 ### R packages
 
-At the time of writing, instructions should work for R versions 3.3 and 3.4. It should be possible to install in ulterior versions but a bit of a workaround may be required.
+At the time of writing, instructions should work for R versions 4.2. It should be possible to install in ulterior versions but changes may be required. On Windows binary packages are version-specific, so by default packages for older versions may not be available, but could be built upon request.
+
+Most users will not (and should not) write to the default R library. You may already have installed additional packages, in which case R would have proposed to create a personal library instead. You can check this with: `.libPaths()`
+
+```
+[1] "C:/Users/xxxyyy/AppData/Local/R/win-library/4.2"
+[2] "C:/Program Files/R/R-4.2.1/library"             
+```
+
+An alternate possibility is to specify a custom library directory via the `R_LIBS` environment variable.
 
 #### Adding an R_LIBS environment variable
 
-This step is recommended but not compulsory.
+This step is not compulsory.
 
-While not required, we advise you set up an additional R library location, specified via an environment variable `R_LIBS` at the machine or user level. This can facilitate access to R packages for all users and upgrades to newer version of R down the track. you can install the packages in the other library folders that R creates (user-specific if you do not have admin rights)
+While not required, you can set up an additional R library location, specified via an environment variable `R_LIBS` at the machine or user level. This can facilitate access to R packages for all users and upgrades to newer version of R down the track. you can install the packages in the other library folders that R creates (user-specific if you do not have admin rights)
 
 #### Installing an R package
 
@@ -107,7 +116,7 @@ python -m ipykernel install --user --name %env_name% --display-name "HFC"
 
 From here on all commands are done from within this new conda environment
 
-You may already have jupyter-lab installed in another conda environment. You may use it to run 'hydrofc' notebooks. If not, install jupyter-lab in this new environment with:
+You may already have `jupyter-lab` installed in another conda environment. You may use it to run 'hydrofc' notebooks. If not, install `jupyter-lab` in this new environment with:
 
 ```bat
 mamba install -c conda-forge jupyterlab
@@ -145,7 +154,7 @@ set CSIRO_BITBUCKET=c:\src
 ```bat
 cd %GITHUB_REPOS%\pyrefcount
 python setup.py develop
-cd %GITHUB_REPOS%\rcpp-interop-commons\bindings\python\cinterop
+cd %GITHUB_REPOS%\c-interop\bindings\python\cinterop
 python setup.py develop
 
 cd %CSIRO_BITBUCKET%\datatypes\bindings\python\uchronia\
