@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Streamflow Forecasting Onboarding – error_correction_four_stages</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../../">
+<link href="../../../../.././img/favicon.png" rel="icon" type="image/png">
+<script src="../../../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../../.././img/favicon.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../installation.html">
+ <span class="menu-text">Installation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../documentation.html">
+ <span class="menu-text">Documentation</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/csiro-hydroinformatics/"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#error-correction---erris" id="toc-error-correction---erris" class="nav-link active" data-scroll-target="#error-correction---erris">Error correction - ERRIS</a></li>
+  <li><a href="#error-correction-models---erris" id="toc-error-correction-models---erris" class="nav-link" data-scroll-target="#error-correction-models---erris">Error correction models - ERRIS</a>
+  <ul class="collapse">
+  <li><a href="#about-this-document" id="toc-about-this-document" class="nav-link" data-scroll-target="#about-this-document">About this document</a></li>
+  <li><a href="#calibrating-erris" id="toc-calibrating-erris" class="nav-link" data-scroll-target="#calibrating-erris">Calibrating ERRIS</a>
+  <ul class="collapse">
+  <li><a href="#model-structure" id="toc-model-structure" class="nav-link" data-scroll-target="#model-structure">Model structure</a></li>
+  <li><a href="#set-up-the-error-correction-model" id="toc-set-up-the-error-correction-model" class="nav-link" data-scroll-target="#set-up-the-error-correction-model">Set up the error correction model</a></li>
+  <li><a href="#erris-calibration-in-stages" id="toc-erris-calibration-in-stages" class="nav-link" data-scroll-target="#erris-calibration-in-stages">ERRIS calibration in stages</a></li>
+  <li><a href="#legacy-call" id="toc-legacy-call" class="nav-link" data-scroll-target="#legacy-call">Legacy call</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="error-correction---erris" class="level1">
+<h1>Error correction - ERRIS</h1>
+<p>Jean-Michel Perraud 2020-01-28</p>
+</section>
+<section id="error-correction-models---erris" class="level1">
+<h1>Error correction models - ERRIS</h1>
+<section id="about-this-document" class="level2">
+<h2 class="anchored" data-anchor-id="about-this-document">About this document</h2>
+<p>This document was generated from an R markdown file on 2020-01-28 10:52:38.</p>
+<p><a href="https://doi.org/10.5194/hess-20-3561-2016">Li, Ming; Wang, QJ; Bennett, James; Robertson, David. Error reduction and representation in stages (ERRIS) in hydrological modelling for ensemble streamflow forecasting. Hydrology and Earth System Sciences. 2016; 20:3561-3579. https://doi.org/10.5194/hess-20-3561-2016</a></p>
+</section>
+<section id="calibrating-erris" class="level2">
+<h2 class="anchored" data-anchor-id="calibrating-erris">Calibrating ERRIS</h2>
+<section id="model-structure" class="level3">
+<h3 class="anchored" data-anchor-id="model-structure">Model structure</h3>
+<p>We use sample hourly data from the Adelaide catchment <a href="https://en.wikipedia.org/wiki/Adelaide_River">this catchment in the Northern Territory, TBC</a>. The catchment model set up is not the key point of this vignette so we do not comment on that section:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(swift)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>catchmentStructure <span class="ot">&lt;-</span> <span class="fu">sampleCatchmentModel</span>(<span class="at">siteId =</span> <span class="st">"Adelaide"</span>, <span class="at">configId =</span> <span class="st">"catchment"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>hydromodel <span class="ot">&lt;-</span> <span class="st">"GR4J"</span>;</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>channel_routing <span class="ot">&lt;-</span> <span class="st">'MuskingumNonLinear'</span>;</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>hydroModelRainfallId <span class="ot">&lt;-</span><span class="st">'P'</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>hydroModelEvapId <span class="ot">&lt;-</span><span class="st">'E'</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># set models</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>insimulation <span class="ot">&lt;-</span> <span class="fu">swapModel</span>(catchmentStructure, <span class="at">modelId =</span> hydromodel ,<span class="at">what =</span> <span class="st">"runoff"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>simulation <span class="ot">&lt;-</span> <span class="fu">swapModel</span>(insimulation, <span class="at">modelId =</span> channel_routing ,<span class="at">what =</span> <span class="st">"channel_routing"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>saId <span class="ot">&lt;-</span> <span class="fu">getSubareaIds</span>(simulation)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">length</span>(saId) <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>precipTs <span class="ot">&lt;-</span> <span class="fu">sampleSeries</span>(<span class="at">siteId =</span> <span class="st">"Adelaide"</span>, <span class="at">varName =</span> <span class="st">"rain"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>evapTs <span class="ot">&lt;-</span> <span class="fu">sampleSeries</span>(<span class="at">siteId =</span> <span class="st">"Adelaide"</span>, <span class="at">varName =</span> <span class="st">"evap"</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>flowRateTs <span class="ot">&lt;-</span> <span class="fu">sampleSeries</span>(<span class="at">siteId =</span> <span class="st">"Adelaide"</span>, <span class="at">varName =</span> <span class="st">"flow"</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">playInput</span>(simulation, precipTs, <span class="fu">mkFullDataId</span>(<span class="st">'subarea'</span>, saId, hydroModelRainfallId))</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">playInput</span>(simulation, evapTs, <span class="fu">mkFullDataId</span>(<span class="st">'subarea'</span>, saId, hydroModelEvapId))</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">configureHourlyGr4j</span>(simulation)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">setSimulationTimeStep</span>(simulation, <span class="st">'hourly'</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Small time interval only, to reduce runtimes in this vignette</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>simstart <span class="ot">&lt;-</span> uchronia<span class="sc">::</span><span class="fu">mkDate</span>(<span class="dv">2010</span>,<span class="dv">12</span>,<span class="dv">1</span>)  </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>simend <span class="ot">&lt;-</span> uchronia<span class="sc">::</span><span class="fu">mkDate</span>(<span class="dv">2011</span>,<span class="dv">6</span>,<span class="dv">30</span>,<span class="dv">23</span>)  </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>simwarmup <span class="ot">&lt;-</span> simstart</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="fu">setSimulationSpan</span>(simulation, simstart, simend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>templateHydroParameterizer <span class="ot">&lt;-</span> <span class="cf">function</span>(simulation) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  calibragem<span class="sc">::</span><span class="fu">defineParameterizerGr4jMuskingum</span>(<span class="at">refArea=</span><span class="dv">250</span>, <span class="at">timeSpan=</span>3600L, <span class="at">simulation=</span>simulation, <span class="at">paramNameK=</span><span class="st">"Alpha"</span>, <span class="at">objfun=</span><span class="st">'NSE'</span>, <span class="at">deltaT=</span>1L)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>nodeId <span class="ot">&lt;-</span> <span class="st">'node.2'</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>flowId <span class="ot">&lt;-</span> <span class="fu">mkFullDataId</span>(nodeId, <span class="st">'OutflowRate'</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">recordState</span>(simulation, flowId)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We use pre-calibrated hydrologic parameters (reproducible with doc/error_correction_doc_preparation.r in this package structure)</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">templateHydroParameterizer</span>(simulation)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setMinParameterValue</span>(p, <span class="st">'R0'</span>, <span class="fl">0.0</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setMaxParameterValue</span>(p, <span class="st">'R0'</span>, <span class="fl">1.0</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">setMinParameterValue</span>(p, <span class="st">'S0'</span>, <span class="fl">0.0</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">setMaxParameterValue</span>(p, <span class="st">'S0'</span>, <span class="fl">1.0</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">SetParameterValue_R</span>( p, <span class="st">'log_x4'</span>, <span class="fl">1.017730e+00</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">SetParameterValue_R</span>( p, <span class="st">'log_x1'</span>, <span class="fl">2.071974e+00</span>  )</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">SetParameterValue_R</span>( p, <span class="st">'log_x3'</span>, <span class="fl">1.797909e+00</span>  )</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">SetParameterValue_R</span>( p, <span class="st">'asinh_x2'</span>, <span class="sc">-</span><span class="fl">1.653842e+00</span>)  </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">SetParameterValue_R</span>( p, <span class="st">'R0'</span>, <span class="fl">2.201930e-11</span>  )</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">SetParameterValue_R</span>( p, <span class="st">'S0'</span>, <span class="fl">3.104968e-11</span>  )</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">SetParameterValue_R</span>( p, <span class="st">'X'</span>, <span class="fl">6.595537e-03</span>   ) <span class="co"># Gotcha: needs to be set before alpha is changed.</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">SetParameterValue_R</span>( p, <span class="st">'Alpha'</span>, <span class="fl">6.670534e-01</span>   )</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">parameterizerAsDataFrame</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##       Name         Min        Max         Value
+## 1   log_x4  0.00000000 2.38021124  1.017730e+00
+## 2   log_x1  0.00000000 3.77815125  2.071974e+00
+## 3   log_x3  0.00000000 3.00000000  1.797909e+00
+## 4 asinh_x2 -3.98932681 3.98932681 -1.653842e+00
+## 5       R0  0.00000000 1.00000000  2.201930e-11
+## 6       S0  0.00000000 1.00000000  3.104968e-11
+## 7        X  0.00100000 0.01662228  6.595537e-03
+## 8    Alpha  0.01116157 1.68112917  6.670534e-01</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sViz <span class="ot">&lt;-</span> uchronia<span class="sc">::</span><span class="fu">mkDate</span>(<span class="dv">2010</span>,<span class="dv">12</span>,<span class="dv">1</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>eViz <span class="ot">&lt;-</span> uchronia<span class="sc">::</span><span class="fu">mkDate</span>(<span class="dv">2011</span>,<span class="dv">4</span>,<span class="dv">30</span>,<span class="dv">23</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>oneWetSeason <span class="ot">&lt;-</span> <span class="cf">function</span>(tts) {</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">window</span>(tts, <span class="at">start=</span>sViz, <span class="at">end=</span>eViz) </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>obsVsCalc <span class="ot">&lt;-</span> <span class="cf">function</span>(obs, calc, <span class="at">ylab=</span><span class="st">"flow (m3/s)"</span>) {</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  obs <span class="ot">&lt;-</span> <span class="fu">oneWetSeason</span>(obs)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  calc <span class="ot">&lt;-</span> <span class="fu">oneWetSeason</span>(calc)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    joki<span class="sc">::</span><span class="fu">plotTwoSeries</span>(obs, calc, <span class="at">ylab=</span>ylab, <span class="at">startTime =</span> <span class="fu">start</span>(calc), <span class="at">endTime =</span> <span class="fu">end</span>(calc))</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">applySysConfig</span>(p, simulation)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">execSimulation</span>(simulation)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="fu">obsVsCalc</span>(flowRateTs, <span class="fu">getRecorded</span>(simulation, flowId))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-6-1.png" style="display:block; margin: auto"></p>
+</section>
+<section id="set-up-the-error-correction-model" class="level3">
+<h3 class="anchored" data-anchor-id="set-up-the-error-correction-model">Set up the error correction model</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="fu">getNodeIds</span>(simulation), </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getNodeNames</span>(simulation))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## [[1]]
+## [1] "2" "1"
+## 
+## [[2]]
+## [1] "Outlet" "Node_1"</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>errorModelElementId <span class="ot">&lt;-</span> <span class="st">'node.2'</span>;</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setErrorCorrectionModel</span>(simulation, <span class="st">'ERRIS'</span>, errorModelElementId, <span class="at">length=</span><span class="sc">-</span><span class="dv">1</span>, <span class="at">seed=</span><span class="dv">0</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>flowRateTsGapped <span class="ot">&lt;-</span> flowRateTs</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>flowRateTsGapped[<span class="st">'2011-02'</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(flowRateTsGapped)</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">playInput</span>(simulation,flowRateTsGapped,<span class="at">varIds=</span><span class="fu">mkFullDataId</span>(errorModelElementId,<span class="st">"ec"</span>,<span class="st">"Observation"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, prepare a model with error correction, and set up for generation</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ecs <span class="ot">&lt;-</span> swift<span class="sc">::</span><span class="fu">CloneModel_R</span>(simulation)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setStateValue</span>(ecs,<span class="fu">mkFullDataId</span>(nodeId,<span class="st">"ec"</span>,<span class="st">"Generating"</span>),<span class="cn">FALSE</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>updatedFlowVarID <span class="ot">&lt;-</span> <span class="fu">mkFullDataId</span>(nodeId,<span class="st">"ec"</span>,<span class="st">"Updated"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>inputFlowVarID <span class="ot">&lt;-</span> <span class="fu">mkFullDataId</span>(nodeId,<span class="st">"ec"</span>,<span class="st">"Input"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">recordState</span>(ecs,<span class="at">varIds=</span><span class="fu">c</span>(updatedFlowVarID, inputFlowVarID))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="erris-calibration-in-stages" class="level3">
+<h3 class="anchored" data-anchor-id="erris-calibration-in-stages">ERRIS calibration in stages</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#termination &lt;- getMaxRuntimeTermination(0.005)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>termination <span class="ot">&lt;-</span> swift<span class="sc">::</span><span class="fu">CreateSceTerminationWila_Pkg_R</span>(<span class="st">'relative standard deviation'</span>, <span class="fu">c</span>(<span class="st">'0.05'</span>,<span class="st">'0.0167'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We could set up a four-stages estimation in one go, but we will instead work in each stages for didactic purposes.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>censOpt <span class="ot">=</span> <span class="fl">0.0</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>estimator <span class="ot">&lt;-</span> <span class="fu">createERRISParameterEstimator</span> (simulation, flowRateTs, errorModelElementId,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">estimationStart =</span> simstart, <span class="at">estimationEnd=</span>simend, <span class="at">censThr=</span><span class="fl">0.0</span>, censOpt,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                                            termination, <span class="at">restrictionOn=</span><span class="cn">TRUE</span>, <span class="at">weightedLeastSquare=</span><span class="cn">FALSE</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>stageOnePset <span class="ot">=</span> <span class="fu">CalibrateERRISStageOne_R</span>(estimator)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">parameterizerAsDataFrame</span>(stageOnePset))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##              Name    Min    Max       Value
+## 1         Epsilon  -20.0    0.0   -8.676488
+## 2          Lambda  -30.0    5.0   -1.451523
+## 3               D    0.0    0.0    0.000000
+## 4              Mu    0.0    0.0    0.000000
+## 5             Rho    0.0    0.0    0.000000
+## 6  Sigma1_Falling    0.0    0.0    0.000000
+## 7   Sigma1_Rising    0.0    0.0    0.000000
+## 8  Sigma2_Falling    0.0    0.0    0.000000
+## 9   Sigma2_Rising    0.0    0.0    0.000000
+## 10 Weight_Falling    1.0    1.0    1.000000
+## 11  Weight_Rising    1.0    1.0    1.000000
+## 12        CensThr    0.0    0.0    0.000000
+## 13        CensOpt    0.0    0.0    0.000000
+## 14         MaxObs 1126.3 1126.3 1126.300000</code></pre>
+<section id="stage-2" class="level4">
+<h4 class="anchored" data-anchor-id="stage-2">Stage 2</h4>
+<p>Stage two can be logged:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">SetERRISVerboseCalibration_R</span>(estimator, <span class="cn">TRUE</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>stageTwoPset <span class="ot">=</span> <span class="fu">CalibrateERRISStageTwo_R</span>(estimator, stageOnePset)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">parameterizerAsDataFrame</span>(stageTwoPset))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##              Name         Min         Max        Value
+## 1               D    0.000000    2.000000    0.7386187
+## 2              Mu -100.000000  100.000000   -3.5225392
+## 3   Sigma1_Rising   -6.907755    6.907755    0.9109061
+## 4         CensOpt    0.000000    0.000000    0.0000000
+## 5         CensThr    0.000000    0.000000    0.0000000
+## 6         Epsilon   -8.676488   -8.676488   -8.6764883
+## 7          Lambda   -1.451523   -1.451523   -1.4515233
+## 8          MaxObs 1126.300000 1126.300000 1126.3000000
+## 9             Rho    0.000000    0.000000    0.0000000
+## 10 Sigma1_Falling    0.000000    0.000000    0.0000000
+## 11 Sigma2_Falling    0.000000    0.000000    0.0000000
+## 12  Sigma2_Rising    0.000000    0.000000    0.0000000
+## 13 Weight_Falling    1.000000    1.000000    1.0000000
+## 14  Weight_Rising    1.000000    1.000000    1.0000000</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mkEcIds <span class="ot">&lt;-</span> <span class="cf">function</span>(p) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">parameterizerAsDataFrame</span>(p)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>Name <span class="ot">&lt;-</span> <span class="fu">mkFullDataId</span>(nodeId, <span class="st">'ec'</span>, df<span class="sc">$</span>Name)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">createParameterizer</span>(<span class="st">'Generic'</span>,df)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">applySysConfig</span>(<span class="fu">mkEcIds</span>(stageTwoPset), ecs)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">execSimulation</span>(ecs)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">obsVsCalc</span>(flowRateTsGapped, <span class="fu">getRecorded</span>(ecs, updatedFlowVarID))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-13-1.png" style="display:block; margin: auto"></p>
+<p>A helper function to process the calibration log:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>prepOptimLog <span class="ot">&lt;-</span> <span class="cf">function</span>(estimator, <span class="at">fitnessName =</span> <span class="st">"Log.likelihood"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  optimLog <span class="ot">=</span> <span class="fu">getLoggerContent</span>(estimator)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># head(optimLog)</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  optimLog<span class="sc">$</span>PointNumber <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(optimLog)   </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  logMh <span class="ot">&lt;-</span> mhplot<span class="sc">::</span><span class="fu">mkOptimLog</span>(optimLog, <span class="at">fitness =</span> fitnessName, <span class="at">messages =</span> <span class="st">"Message"</span>, <span class="at">categories =</span> <span class="st">"Category"</span>) </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  geomOps <span class="ot">&lt;-</span> mhplot<span class="sc">::</span><span class="fu">subsetByMessage</span>(logMh)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">data=</span>logMh, <span class="at">geomOps=</span>geomOps)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">prepOptimLog</span>(estimator, <span class="at">fitnessName =</span> <span class="st">"Log.likelihood"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mhplot<span class="sc">::</span><span class="fu">plotParamEvolution</span>(d<span class="sc">$</span>geomOps, <span class="st">'Sigma1_Rising'</span>, <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(d<span class="sc">$</span>data<span class="sc">@</span>data<span class="sc">$</span>Log.likelihood))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-15-1.png" style="display:block; margin: auto"></p>
+</section>
+<section id="stage-3" class="level4">
+<h4 class="anchored" data-anchor-id="stage-3">Stage 3</h4>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>stageThreePset <span class="ot">=</span> <span class="fu">CalibrateERRISStageThree_R</span>(estimator, stageTwoPset)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">parameterizerAsDataFrame</span>(stageThreePset))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##              Name          Min          Max        Value
+## 1             Rho    0.0000000    1.0000000    0.9880881
+## 2   Sigma1_Rising   -6.9077553    6.9077553   -0.9134793
+## 3         CensOpt    0.0000000    0.0000000    0.0000000
+## 4         CensThr    0.0000000    0.0000000    0.0000000
+## 5               D    0.7386187    0.7386187    0.7386187
+## 6         Epsilon   -8.6764883   -8.6764883   -8.6764883
+## 7          Lambda   -1.4515233   -1.4515233   -1.4515233
+## 8          MaxObs 1126.3000000 1126.3000000 1126.3000000
+## 9              Mu   -3.5225392   -3.5225392   -3.5225392
+## 10 Sigma1_Falling    0.0000000    0.0000000    0.0000000
+## 11 Sigma2_Falling    0.0000000    0.0000000    0.0000000
+## 12  Sigma2_Rising    0.0000000    0.0000000    0.0000000
+## 13 Weight_Falling    1.0000000    1.0000000    1.0000000
+## 14  Weight_Rising    1.0000000    1.0000000    1.0000000</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">prepOptimLog</span>(estimator, <span class="at">fitnessName =</span> <span class="st">"Log.likelihood"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mhplot<span class="sc">::</span><span class="fu">plotParamEvolution</span>(d<span class="sc">$</span>geomOps, <span class="st">'Rho'</span>, <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(d<span class="sc">$</span>data<span class="sc">@</span>data<span class="sc">$</span>Log.likelihood))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-17-1.png" style="display:block; margin: auto"></p>
+</section>
+<section id="stage-3a-generating-and-fitting-m-and-s-if-free" class="level4">
+<h4 class="anchored" data-anchor-id="stage-3a-generating-and-fitting-m-and-s-if-free">Stage 3a, generating and fitting M and S if free</h4>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>stageThreePsetMS <span class="ot">=</span> <span class="fu">CalibrateERRISStageThreeMS_R</span>(estimator, stageThreePset)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">parameterizerAsDataFrame</span>(stageThreePsetMS))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##              Name          Min          Max        Value
+## 1             Rho    0.0000000    1.0000000    0.9880881
+## 2   Sigma1_Rising   -6.9077553    6.9077553   -0.9134793
+## 3         CensOpt    0.0000000    0.0000000    0.0000000
+## 4         CensThr    0.0000000    0.0000000    0.0000000
+## 5               D    0.7386187    0.7386187    0.7386187
+## 6         Epsilon   -8.6764883   -8.6764883   -8.6764883
+## 7          Lambda   -1.4515233   -1.4515233   -1.4515233
+## 8          MaxObs 1126.3000000 1126.3000000 1126.3000000
+## 9              Mu   -3.5225392   -3.5225392   -3.5225392
+## 10 Sigma1_Falling    0.0000000    0.0000000    0.0000000
+## 11 Sigma2_Falling    0.0000000    0.0000000    0.0000000
+## 12  Sigma2_Rising    0.0000000    0.0000000    0.0000000
+## 13 Weight_Falling    1.0000000    1.0000000    1.0000000
+## 14  Weight_Rising    1.0000000    1.0000000    1.0000000
+## 15         MNoise -100.0000000  100.0000000   -2.5833943
+## 16         SNoise  -10.0000000   10.0000000    1.8858371</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">applySysConfig</span>(<span class="fu">mkEcIds</span>(stageThreePsetMS), ecs)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">execSimulation</span>(ecs)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">obsVsCalc</span>(flowRateTsGapped, <span class="fu">getRecorded</span>(ecs, updatedFlowVarID))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-19-1.png" style="display:block; margin: auto"></p>
+</section>
+<section id="stage-4-rising-limb" class="level4">
+<h4 class="anchored" data-anchor-id="stage-4-rising-limb">Stage 4, rising limb</h4>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>stageFourPsetRising <span class="ot">=</span> <span class="fu">CalibrateERRISStageFour_R</span>(estimator, stageThreePsetMS, <span class="at">useRising =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">parameterizerAsDataFrame</span>(stageFourPsetRising))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##              Name          Min          Max        Value
+## 1   Sigma1_Rising   -6.9077553    6.9077553   -1.0822514
+## 2   Sigma2_Rising   -6.9077553    6.9077553    0.6662236
+## 3   Weight_Rising    0.5000000    1.0000000    0.8770708
+## 4         CensOpt    0.0000000    0.0000000    0.0000000
+## 5         CensThr    0.0000000    0.0000000    0.0000000
+## 6               D    0.7386187    0.7386187    0.7386187
+## 7         Epsilon   -8.6764883   -8.6764883   -8.6764883
+## 8          Lambda   -1.4515233   -1.4515233   -1.4515233
+## 9          MaxObs 1126.3000000 1126.3000000 1126.3000000
+## 10             Mu   -3.5225392   -3.5225392   -3.5225392
+## 11            Rho    0.9880881    0.9880881    0.9880881
+## 12 Sigma1_Falling    0.0000000    0.0000000    0.0000000
+## 13 Sigma2_Falling    0.0000000    0.0000000    0.0000000
+## 14 Weight_Falling    1.0000000    1.0000000    1.0000000</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">prepOptimLog</span>(estimator, <span class="at">fitnessName =</span> <span class="st">"Log.likelihood"</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mhplot<span class="sc">::</span><span class="fu">plotParamEvolution</span>(d<span class="sc">$</span>geomOps, <span class="st">'Weight_Rising'</span>, <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(d<span class="sc">$</span>data<span class="sc">@</span>data<span class="sc">$</span>Log.likelihood))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-21-1.png" style="display:block; margin: auto"></p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">applySysConfig</span>(<span class="fu">mkEcIds</span>(stageFourPsetRising), ecs)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">execSimulation</span>(ecs)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">obsVsCalc</span>(flowRateTsGapped, <span class="fu">getRecorded</span>(ecs, updatedFlowVarID))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-22-1.png" style="display:block; margin: auto"></p>
+</section>
+<section id="stage-4-falling-limbs" class="level4">
+<h4 class="anchored" data-anchor-id="stage-4-falling-limbs">Stage 4, falling limbs</h4>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>stageFourPsetFalling <span class="ot">=</span> <span class="fu">CalibrateERRISStageFour_R</span>(estimator, stageThreePsetMS, <span class="at">useRising =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">parameterizerAsDataFrame</span>(stageFourPsetFalling))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##              Name          Min          Max        Value
+## 1   Sigma1_Rising   -6.9077553    6.9077553   -3.1021521
+## 2   Sigma2_Rising   -6.9077553    6.9077553   -0.6290198
+## 3   Weight_Rising    0.5000000    1.0000000    0.8131939
+## 4         CensOpt    0.0000000    0.0000000    0.0000000
+## 5         CensThr    0.0000000    0.0000000    0.0000000
+## 6               D    0.7386187    0.7386187    0.7386187
+## 7         Epsilon   -8.6764883   -8.6764883   -8.6764883
+## 8          Lambda   -1.4515233   -1.4515233   -1.4515233
+## 9          MaxObs 1126.3000000 1126.3000000 1126.3000000
+## 10             Mu   -3.5225392   -3.5225392   -3.5225392
+## 11            Rho    0.9880881    0.9880881    0.9880881
+## 12 Sigma1_Falling    0.0000000    0.0000000    0.0000000
+## 13 Sigma2_Falling    0.0000000    0.0000000    0.0000000
+## 14 Weight_Falling    1.0000000    1.0000000    1.0000000</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>Nd <span class="ot">&lt;-</span> <span class="fu">prepOptimLog</span>(estimator, <span class="at">fitnessName =</span> <span class="st">"Log.likelihood"</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mhplot<span class="sc">::</span><span class="fu">plotParamEvolution</span>(d<span class="sc">$</span>geomOps, <span class="st">'Weight_Rising'</span>, <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(d<span class="sc">$</span>data<span class="sc">@</span>data<span class="sc">$</span>Log.likelihood))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./error_correction_four_stages_files/figure-gfm/unnamed-chunk-24-1.png" style="display:block; margin: auto"></p>
+</section>
+<section id="final-consolidated-parameter-set" class="level4">
+<h4 class="anchored" data-anchor-id="final-consolidated-parameter-set">Final consolidated parameter set</h4>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>finalPset <span class="ot">=</span> <span class="fu">ConcatenateERRISStagesParameters_R</span>(estimator, <span class="at">hydroParams =</span> <span class="fu">createParameterizer</span>(), <span class="at">stage1_result =</span>  stageOnePset, <span class="at">stage2_result =</span> stageTwoPset, </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">stage3_result =</span> stageThreePsetMS, <span class="at">stage4a_result =</span> stageFourPsetRising, <span class="at">stage4b_result =</span> stageFourPsetFalling, <span class="at">toLongParameterName =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">parameterizerAsDataFrame</span>(finalPset))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##              Name          Min          Max        Value
+## 1         CensThr    0.0000000    0.0000000    0.0000000
+## 2         CensOpt    0.0000000    0.0000000    0.0000000
+## 3          MNoise -100.0000000  100.0000000   -2.5833943
+## 4          SNoise  -10.0000000   10.0000000    1.8858371
+## 5          Lambda   -1.4515233   -1.4515233   -1.4515233
+## 6         Epsilon   -8.6764883   -8.6764883   -8.6764883
+## 7              Mu   -3.5225392   -3.5225392   -3.5225392
+## 8               D    0.7386187    0.7386187    0.7386187
+## 9             Rho    0.9880881    0.9880881    0.9880881
+## 10         MaxObs 1126.3000000 1126.3000000 1126.3000000
+## 11  Sigma1_Rising   -6.9077553    6.9077553   -1.0822514
+## 12  Sigma2_Rising   -6.9077553    6.9077553    0.6662236
+## 13  Weight_Rising    0.5000000    1.0000000    0.8770708
+## 14 Sigma1_Falling   -6.9077553    6.9077553   -3.1021521
+## 15 Sigma2_Falling   -6.9077553    6.9077553   -0.6290198
+## 16 Weight_Falling    0.5000000    1.0000000    0.8131939</code></pre>
+</section>
+</section>
+<section id="legacy-call" class="level3">
+<h3 class="anchored" data-anchor-id="legacy-call">Legacy call</h3>
+<p>Check that the previous “one stop shop” call gives the same results.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>dummyDate <span class="ot">&lt;-</span> simstart</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>psetFullEstimate <span class="ot">&lt;-</span> <span class="fu">estimateERRISParameters</span>(simulation, flowRateTs, errorModelElementId,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">warmupStart=</span>dummyDate, <span class="at">warmupEnd=</span>dummyDate, <span class="at">warmup=</span><span class="cn">FALSE</span>, <span class="at">estimationStart =</span> simstart, <span class="at">estimationEnd=</span>simend, <span class="at">censThr=</span><span class="fl">0.0</span>,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a> <span class="at">censOpt =</span> censOpt, <span class="at">exclusionStart=</span>dummyDate, <span class="at">exclusionEnd=</span>dummyDate, <span class="at">exclusion=</span><span class="cn">FALSE</span>, <span class="at">terminationCondition =</span> termination,</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">hydroParams =</span> <span class="cn">NULL</span>, <span class="at">errisParams =</span> <span class="cn">NULL</span>, <span class="at">restrictionOn =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">weightedLeastSquare =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">parameterizerAsDataFrame</span>(psetFullEstimate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##                        Name          Min          Max        Value
+## 1         node.2.ec.CensThr    0.0000000    0.0000000    0.0000000
+## 2         node.2.ec.CensOpt    0.0000000    0.0000000    0.0000000
+## 3          node.2.ec.MNoise -100.0000000  100.0000000   -2.5833943
+## 4          node.2.ec.SNoise  -10.0000000   10.0000000    1.8858371
+## 5          node.2.ec.Lambda   -1.4515233   -1.4515233   -1.4515233
+## 6         node.2.ec.Epsilon   -8.6764883   -8.6764883   -8.6764883
+## 7              node.2.ec.Mu   -3.5225392   -3.5225392   -3.5225392
+## 8               node.2.ec.D    0.7386187    0.7386187    0.7386187
+## 9             node.2.ec.Rho    0.9880881    0.9880881    0.9880881
+## 10         node.2.ec.MaxObs 1126.3000000 1126.3000000 1126.3000000
+## 11  node.2.ec.Sigma1_Rising   -6.9077553    6.9077553   -1.0822514
+## 12  node.2.ec.Sigma2_Rising   -6.9077553    6.9077553    0.6662236
+## 13  node.2.ec.Weight_Rising    0.5000000    1.0000000    0.8770708
+## 14 node.2.ec.Sigma1_Falling   -6.9077553    6.9077553   -3.1021521
+## 15 node.2.ec.Sigma2_Falling   -6.9077553    6.9077553   -0.6290198
+## 16 node.2.ec.Weight_Falling    0.5000000    1.0000000    0.8131939</code></pre>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© CC-By CSIRO</div>   
+    <div class="nav-footer-right">This page is built with <a href="https://quarto.org/">Quarto</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>

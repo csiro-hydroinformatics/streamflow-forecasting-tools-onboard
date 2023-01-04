@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Streamflow Forecasting Onboarding – muskingum_multilink_calibration</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../../">
+<link href="../../../../.././img/favicon.png" rel="icon" type="image/png">
+<script src="../../../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../../../styles.css">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../../.././img/favicon.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../installation.html">
+ <span class="menu-text">Installation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../documentation.html">
+ <span class="menu-text">Documentation</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/csiro-hydroinformatics/"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../../doc/blah.qmd" class="sidebar-item-text sidebar-link">Developer documentation</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../../doc/samples/sample_workflows_r.html" class="sidebar-item-text sidebar-link">Examples in R</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">R swift package vignettes</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../../doc/samples/R/vignettes/getting_started/getting_started.html" class="sidebar-item-text sidebar-link">Getting started with the swift R package</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../../doc/samples/R/vignettes/ensemble_model_runs/ensemble_model_runs.html" class="sidebar-item-text sidebar-link">Ensemble SWIFT model runs</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../../doc/samples/R/vignettes/ensemble_forecast_model_runs/ensemble_forecast_model_runs.html" class="sidebar-item-text sidebar-link">Ensemble Forecasting SWIFT model runs</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../../doc/samples/R/vignettes/meta_parameters/meta_parameters.html" class="sidebar-item-text sidebar-link">Calibrating tied meta parameters</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../../doc/samples/R/vignettes/calibrate_multisite/calibrate_multisite.html" class="sidebar-item-text sidebar-link">Calibration of a catchment using multisite multiobjective composition</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../../doc/samples/R/vignettes/calibrate_subcatchments/calibrate_subcatchments.html" class="sidebar-item-text sidebar-link">Calibration of subcatchments defined by multiple gauges in a catchment</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  doc/samples/R/vignettes/calibration_initial_states/calibration_initial_states.md)
+  </li>
+          <li class="sidebar-item">
+  doc/samples/R/vignettes/error_correction_four_stages/error_correction_four_stages.md)
+  </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../../doc/samples/R/vignettes/muskingum_multilink_calibration/muskingum_multilink_calibration.html" class="sidebar-item-text sidebar-link active">calibration</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#linear-muskingum-channel-routing-model---constrained-subcatchment-calibration" id="toc-linear-muskingum-channel-routing-model---constrained-subcatchment-calibration" class="nav-link active" data-scroll-target="#linear-muskingum-channel-routing-model---constrained-subcatchment-calibration">Linear Muskingum channel routing model - constrained subcatchment calibration</a></li>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#guidelines-for-global-calibration-of-muskingum-constrainted-parameters" id="toc-guidelines-for-global-calibration-of-muskingum-constrainted-parameters" class="nav-link" data-scroll-target="#guidelines-for-global-calibration-of-muskingum-constrainted-parameters">Guidelines for global calibration of Muskingum constrainted parameters</a>
+  <ul class="collapse">
+  <li><a href="#setting-up-calibration" id="toc-setting-up-calibration" class="nav-link" data-scroll-target="#setting-up-calibration">Setting up calibration</a></li>
+  <li><a href="#seeding-the-optimisation-point-population-with-restrictive-constraint-bounds" id="toc-seeding-the-optimisation-point-population-with-restrictive-constraint-bounds" class="nav-link" data-scroll-target="#seeding-the-optimisation-point-population-with-restrictive-constraint-bounds">Seeding the optimisation point population with restrictive constraint bounds</a></li>
+  </ul></li>
+  <li><a href="#detailed-explanation-and-unit-test-design" id="toc-detailed-explanation-and-unit-test-design" class="nav-link" data-scroll-target="#detailed-explanation-and-unit-test-design">Detailed explanation and unit test design</a></li>
+  <li><a href="#constraints-on-the-linear-n1-case-of-muskingum-parameters" id="toc-constraints-on-the-linear-n1-case-of-muskingum-parameters" class="nav-link" data-scroll-target="#constraints-on-the-linear-n1-case-of-muskingum-parameters">Constraints on the Linear (N=1) case of Muskingum parameters</a></li>
+  <li><a href="#unit-test-design" id="toc-unit-test-design" class="nav-link" data-scroll-target="#unit-test-design">Unit test design</a></li>
+  <li><a href="#non-linear-version-of-the-routing" id="toc-non-linear-version-of-the-routing" class="nav-link" data-scroll-target="#non-linear-version-of-the-routing">Non linear version of the routing</a>
+  <ul class="collapse">
+  <li><a href="#provenance" id="toc-provenance" class="nav-link" data-scroll-target="#provenance">Provenance</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<p>Linear Muskingum channel routing model - constrained subcatchment calibration ================ Jean-Michel Perraud 2020-01-28</p>
+<section id="linear-muskingum-channel-routing-model---constrained-subcatchment-calibration" class="level1">
+<h1>Linear Muskingum channel routing model - constrained subcatchment calibration</h1>
+</section>
+<section id="purpose" class="level1">
+<h1>Purpose</h1>
+<p>This vignette focuses on explaining how to calibrate the linear version of Muskingum jointly across river reaches, respecting stability constraints across all these reaches. The second part of the document is an indepth explanation of the scheme that is also used as a reference for unit testing swift.</p>
+</section>
+<section id="guidelines-for-global-calibration-of-muskingum-constrainted-parameters" class="level1">
+<h1>Guidelines for global calibration of Muskingum constrainted parameters</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(swift)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mhplot)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DiagrammeR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For this example we will use data derived from the South Esk catchment in Tasmania.</p>
+<p>We load and configure the model simulation in the next section, without detailed explanation; please read other introductory vignettes if this is unclear.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>modelId <span class="ot">&lt;-</span> <span class="st">'GR4J'</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>siteId <span class="ot">&lt;-</span> <span class="st">'South_Esk'</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>simulation <span class="ot">&lt;-</span> <span class="fu">sampleCatchmentModel</span>(<span class="at">siteId=</span>siteId, <span class="at">configId=</span><span class="st">'catchment'</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>simulation <span class="ot">&lt;-</span> <span class="fu">swapModel</span>(simulation, <span class="st">'MuskingumNonLinear'</span>, <span class="st">'channel_routing'</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># # revert back to derfautl values as expected from sample simulation..</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># sc &lt;- 1 # reach slope in m/m</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># n &lt;- 1  # default Manning's parameter value for the reach</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># f &lt;- 1  # "Fudge factor" to allow for a different range of Alpha values. </span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># oneHour &lt;- 1</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># delt &lt;- oneHour</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>seClimate <span class="ot">&lt;-</span> <span class="fu">sampleSeries</span>(<span class="at">siteId=</span>siteId, <span class="at">varName=</span><span class="st">'climate'</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>seFlows <span class="ot">&lt;-</span> <span class="fu">sampleSeries</span>(<span class="at">siteId=</span>siteId, <span class="at">varName=</span><span class="st">'flow'</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">playInput</span>(simulation, seClimate)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">setSimulationSpan</span>(simulation, <span class="fu">start</span>(seClimate), <span class="fu">end</span>(seClimate))</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">setSimulationTimeStep</span>(simulation, <span class="st">'hourly'</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">configureHourlyGr4j</span>(simulation)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can get a topologic view of the model setup (albeit crowded as this is a fairly large catchment).</p>
+<p>(Note: may not render yet through GitHub)</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DiagrammeR</span>(<span class="fu">GetCatchmentDOTGraph_R</span>(simulation))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!--html_preserve-->
+<div id="htmlwidget-03fe8ac41b349549c610" class="DiagrammeR html-widget" style="width:960px;height:672px;">
+
+</div>
+<script type="application/json" data-for="htmlwidget-03fe8ac41b349549c610">{"x":{"diagram":"graph TD;1_s(Subarea_1)-->1_l(Subarea_1);2_s(Subarea_2)-->2_l(Subarea_2);3_s(Subarea_3)-->3_l(Subarea_3);4_s(Subarea_4)-->4_l(Subarea_4);5_s(Subarea_5)-->5_l(Subarea_5);6_s(Subarea_6)-->6_l(Subarea_6);7_s(Subarea_7)-->7_l(Subarea_7);8_s(Subarea_8)-->8_l(Subarea_8);9_s(Subarea_9)-->9_l(Subarea_9);10_s(Subarea_10)-->10_l(Subarea_10);11_s(Subarea_11)-->11_l(Subarea_11);12_s(Subarea_12)-->12_l(Subarea_12);13_s(Subarea_13)-->13_l(Subarea_13);14_s(Subarea_14)-->14_l(Subarea_14);15_s(Subarea_15)-->15_l(Subarea_15);16_s(Subarea_16)-->16_l(Subarea_16);17_s(Subarea_17)-->17_l(Subarea_17);18_s(Subarea_18)-->18_l(Subarea_18);19_s(Subarea_19)-->19_l(Subarea_19);20_s(Subarea_20)-->20_l(Subarea_20);21_s(Subarea_21)-->21_l(Subarea_21);22_s(Subarea_22)-->22_l(Subarea_22);23_s(Subarea_23)-->23_l(Subarea_23);24_s(Subarea_24)-->24_l(Subarea_24);25_s(Subarea_25)-->25_l(Subarea_25);26_s(Subarea_26)-->26_l(Subarea_26);27_s(Subarea_27)-->27_l(Subarea_27);28_s(Subarea_28)-->28_l(Subarea_28);29_s(Subarea_29)-->29_l(Subarea_29);30_s(Subarea_30)-->30_l(Subarea_30);31_s(Subarea_31)-->31_l(Subarea_31);32_s(Subarea_32)-->32_l(Subarea_32);33_s(Subarea_33)-->33_l(Subarea_33);34_s(Subarea_34)-->34_l(Subarea_34);35_s(Subarea_35)-->35_l(Subarea_35);36_s(Subarea_36)-->36_l(Subarea_36);37_s(Subarea_37)-->37_l(Subarea_37);38_s(Subarea_38)-->38_l(Subarea_38);39_s(Subarea_39)-->39_l(Subarea_39);40_s(Subarea_40)-->40_l(Subarea_40);41_s(Subarea_41)-->41_l(Subarea_41);42_s(Subarea_42)-->42_l(Subarea_42);\n1_n[Node_1]-->1_l;1_l-->2_n[Node_2];2_n[Node_2]-->2_l;2_l-->5_n[Node_5];3_n[Node_3]-->3_l;3_l-->4_n[Node_4];4_n[Node_4]-->4_l;4_l-->5_n[Node_5];5_n[Node_5]-->5_l;5_l-->7_n[Node_7];6_n[Node_6]-->6_l;6_l-->7_n[Node_7];7_n[Node_7]-->7_l;7_l-->8_n[Node_8];8_n[Node_8]-->8_l;8_l-->9_n[Node_9];9_n[Node_9]-->9_l;9_l-->13_n[Node_13];10_n[Node_10]-->10_l;10_l-->11_n[Node_11];11_n[Node_11]-->11_l;11_l-->12_n[Node_12];12_n[Node_12]-->12_l;12_l-->13_n[Node_13];13_n[Node_13]-->13_l;13_l-->14_n[Node_14];14_n[Node_14]-->14_l;14_l-->15_n[Node_15];15_n[Node_15]-->15_l;15_l-->16_n[Node_16];16_n[Node_16]-->16_l;16_l-->18_n[Node_18];17_n[Node_17]-->17_l;17_l-->18_n[Node_18];18_n[Node_18]-->18_l;18_l-->26_n[Node_26];19_n[Node_19]-->19_l;19_l-->20_n[Node_20];20_n[Node_20]-->20_l;20_l-->21_n[Node_21];21_n[Node_21]-->21_l;21_l-->22_n[Node_22];22_n[Node_22]-->22_l;22_l-->23_n[Node_23];23_n[Node_23]-->23_l;23_l-->24_n[Node_24];24_n[Node_24]-->24_l;24_l-->25_n[Node_25];25_n[Node_25]-->25_l;25_l-->26_n[Node_26];26_n[Node_26]-->26_l;26_l-->29_n[Node_29];27_n[Node_27]-->27_l;27_l-->28_n[Node_28];28_n[Node_28]-->28_l;28_l-->29_n[Node_29];29_n[Node_29]-->29_l;29_l-->30_n[Node_30];30_n[Node_30]-->30_l;30_l-->34_n[Node_34];31_n[Node_31]-->31_l;31_l-->32_n[Node_32];32_n[Node_32]-->32_l;32_l-->33_n[Node_33];33_n[Node_33]-->33_l;33_l-->34_n[Node_34];34_n[Node_34]-->34_l;34_l-->35_n[Node_35];35_n[Node_35]-->35_l;35_l-->36_n[Node_36];36_n[Node_36]-->36_l;36_l-->41_n[Node_41];37_n[Node_37]-->37_l;37_l-->38_n[Node_38];38_n[Node_38]-->38_l;38_l-->39_n[Node_39];39_n[Node_39]-->39_l;39_l-->40_n[Node_40];40_n[Node_40]-->40_l;40_l-->41_n[Node_41];41_n[Node_41]-->41_l;41_l-->42_n[Node_42];42_n[Node_42]-->42_l;42_l-->43_n[Outlet];\nstyle 1_s fill : #A2EB86 ;style 2_s fill : #A2EB86 ;style 3_s fill : #A2EB86 ;style 4_s fill : #A2EB86 ;style 5_s fill : #A2EB86 ;style 6_s fill : #A2EB86 ;style 7_s fill : #A2EB86 ;style 8_s fill : #A2EB86 ;style 9_s fill : #A2EB86 ;style 10_s fill : #A2EB86 ;style 11_s fill : #A2EB86 ;style 12_s fill : #A2EB86 ;style 13_s fill : #A2EB86 ;style 14_s fill : #A2EB86 ;style 15_s fill : #A2EB86 ;style 16_s fill : #A2EB86 ;style 17_s fill : #A2EB86 ;style 18_s fill : #A2EB86 ;style 19_s fill : #A2EB86 ;style 20_s fill : #A2EB86 ;style 21_s fill : #A2EB86 ;style 22_s fill : #A2EB86 ;style 23_s fill : #A2EB86 ;style 24_s fill : #A2EB86 ;style 25_s fill : #A2EB86 ;style 26_s fill : #A2EB86 ;style 27_s fill : #A2EB86 ;style 28_s fill : #A2EB86 ;style 29_s fill : #A2EB86 ;style 30_s fill : #A2EB86 ;style 31_s fill : #A2EB86 ;style 32_s fill : #A2EB86 ;style 33_s fill : #A2EB86 ;style 34_s fill : #A2EB86 ;style 35_s fill : #A2EB86 ;style 36_s fill : #A2EB86 ;style 37_s fill : #A2EB86 ;style 38_s fill : #A2EB86 ;style 39_s fill : #A2EB86 ;style 40_s fill : #A2EB86 ;style 41_s fill : #A2EB86 ;style 42_s fill : #A2EB86 ;\nstyle 1_l fill : #FFF289 ;style 2_l fill : #FFF289 ;style 3_l fill : #FFF289 ;style 4_l fill : #FFF289 ;style 5_l fill : #FFF289 ;style 6_l fill : #FFF289 ;style 7_l fill : #FFF289 ;style 8_l fill : #FFF289 ;style 9_l fill : #FFF289 ;style 10_l fill : #FFF289 ;style 11_l fill : #FFF289 ;style 12_l fill : #FFF289 ;style 13_l fill : #FFF289 ;style 14_l fill : #FFF289 ;style 15_l fill : #FFF289 ;style 16_l fill : #FFF289 ;style 17_l fill : #FFF289 ;style 18_l fill : #FFF289 ;style 19_l fill : #FFF289 ;style 20_l fill : #FFF289 ;style 21_l fill : #FFF289 ;style 22_l fill : #FFF289 ;style 23_l fill : #FFF289 ;style 24_l fill : #FFF289 ;style 25_l fill : #FFF289 ;style 26_l fill : #FFF289 ;style 27_l fill : #FFF289 ;style 28_l fill : #FFF289 ;style 29_l fill : #FFF289 ;style 30_l fill : #FFF289 ;style 31_l fill : #FFF289 ;style 32_l fill : #FFF289 ;style 33_l fill : #FFF289 ;style 34_l fill : #FFF289 ;style 35_l fill : #FFF289 ;style 36_l fill : #FFF289 ;style 37_l fill : #FFF289 ;style 38_l fill : #FFF289 ;style 39_l fill : #FFF289 ;style 40_l fill : #FFF289 ;style 41_l fill : #FFF289 ;style 42_l fill : #FFF289 ;\nstyle 1_n fill : #FFA070 ;style 2_n fill : #FFA070 ;style 3_n fill : #FFA070 ;style 4_n fill : #FFA070 ;style 5_n fill : #FFA070 ;style 6_n fill : #FFA070 ;style 7_n fill : #FFA070 ;style 8_n fill : #FFA070 ;style 9_n fill : #FFA070 ;style 10_n fill : #FFA070 ;style 11_n fill : #FFA070 ;style 12_n fill : #FFA070 ;style 13_n fill : #FFA070 ;style 14_n fill : #FFA070 ;style 15_n fill : #FFA070 ;style 16_n fill : #FFA070 ;style 17_n fill : #FFA070 ;style 18_n fill : #FFA070 ;style 19_n fill : #FFA070 ;style 20_n fill : #FFA070 ;style 21_n fill : #FFA070 ;style 22_n fill : #FFA070 ;style 23_n fill : #FFA070 ;style 24_n fill : #FFA070 ;style 25_n fill : #FFA070 ;style 26_n fill : #FFA070 ;style 27_n fill : #FFA070 ;style 28_n fill : #FFA070 ;style 29_n fill : #FFA070 ;style 30_n fill : #FFA070 ;style 31_n fill : #FFA070 ;style 32_n fill : #FFA070 ;style 33_n fill : #FFA070 ;style 34_n fill : #FFA070 ;style 35_n fill : #FFA070 ;style 36_n fill : #FFA070 ;style 37_n fill : #FFA070 ;style 38_n fill : #FFA070 ;style 39_n fill : #FFA070 ;style 40_n fill : #FFA070 ;style 41_n fill : #FFA070 ;style 42_n fill : #FFA070 ;style 43_n fill : #FFA070 ;"},"evals":[],"jsHooks":[]}</script>
+<!--/html_preserve-->
+<p>We cookie cut to get a subcatchment near the headwaters.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>subsim <span class="ot">&lt;-</span> <span class="fu">subsetCatchment</span>(simulation, <span class="st">'node.5'</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DiagrammeR</span>(<span class="fu">GetCatchmentDOTGraph_R</span>(subsim))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!--html_preserve-->
+<div id="htmlwidget-c635b9f9b6495810cba5" class="DiagrammeR html-widget" style="width:960px;height:672px;">
+
+</div>
+<script type="application/json" data-for="htmlwidget-c635b9f9b6495810cba5">{"x":{"diagram":"graph TD;1_s(Subarea_1)-->1_l(Subarea_1);2_s(Subarea_2)-->2_l(Subarea_2);3_s(Subarea_3)-->3_l(Subarea_3);4_s(Subarea_4)-->4_l(Subarea_4);\n2_n[Node_2]-->2_l;2_l-->5_n[Node_5];1_n[Node_1]-->1_l;1_l-->2_n[Node_2];4_n[Node_4]-->4_l;4_l-->5_n[Node_5];3_n[Node_3]-->3_l;3_l-->4_n[Node_4];\nstyle 1_s fill : #A2EB86 ;style 2_s fill : #A2EB86 ;style 3_s fill : #A2EB86 ;style 4_s fill : #A2EB86 ;\nstyle 2_l fill : #FFF289 ;style 1_l fill : #FFF289 ;style 4_l fill : #FFF289 ;style 3_l fill : #FFF289 ;\nstyle 5_n fill : #FFA070 ;style 2_n fill : #FFA070 ;style 1_n fill : #FFA070 ;style 4_n fill : #FFA070 ;style 3_n fill : #FFA070 ;"},"evals":[],"jsHooks":[]}</script>
+<!--/html_preserve-->
+<p>We configure the routing scheme to be linear (parameter N set and fixed to 1)</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>linkIds <span class="ot">&lt;-</span> <span class="fu">mkFullDataId</span>(<span class="st">'link'</span>, <span class="fu">getLinkIds</span>(subsim))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setStateValue</span>(subsim, <span class="fu">mkFullDataId</span>(linkIds, <span class="st">'N'</span>), <span class="fu">rep</span>(<span class="fl">1.0</span>, <span class="fu">length</span>(linkIds)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s have a look at the link properties and other default routing parameters</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>lnkpnames <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Length'</span>, <span class="st">'f'</span>, <span class="st">'ManningsN'</span>, <span class="st">'Slope'</span>, <span class="st">'N'</span>, <span class="st">'X'</span>, <span class="st">'Alpha'</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getStateValue</span>(subsim,<span class="fu">mkFullDataId</span>(<span class="st">'link.1'</span>, lnkpnames))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##    link.1.Length         link.1.f link.1.ManningsN     link.1.Slope 
+##     6.140000e+03     1.000000e+00     1.000000e+00     1.000000e+00 
+##         link.1.N         link.1.X     link.1.Alpha 
+##     1.000000e+00    6.952873e-310    6.952873e-310</code></pre>
+<p>X is between 0 and 0.5, without stability constraints. Setting a default Alpha is… trickier.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setStateValue</span>(subsim, <span class="fu">mkFullDataId</span>(linkIds, <span class="st">'X'</span>), <span class="fu">rep</span>(<span class="fl">1e-6</span>, <span class="fu">length</span>(linkIds)))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setStateValue</span>(subsim, <span class="fu">mkFullDataId</span>(linkIds, <span class="st">'Alpha'</span>), <span class="fu">rep</span>(<span class="fl">0.0005</span>, <span class="fu">length</span>(linkIds)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If we look at the subcatchment outflow in this configuration, it is a series of unfeasible values - at least one link was in an unfeasible zone for (Alpha, X)</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>varId <span class="ot">&lt;-</span> <span class="st">'Catchment.StreamflowRate'</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>catOutflowId <span class="ot">&lt;-</span> <span class="st">'subarea.1.OutflowRate'</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">recordState</span>(subsim,varId)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">recordState</span>(subsim,catOutflowId)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">execSimulation</span>(subsim)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>someFlow <span class="ot">&lt;-</span> <span class="fu">getRecorded</span>(subsim, varId)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(someFlow)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##      Index                     Catchment.StreamflowRate
+##  Min.   :2010-11-01 00:00:00   Min.   :-19998          
+##  1st Qu.:2010-11-05 23:45:00   1st Qu.:-19998          
+##  Median :2010-11-10 23:30:00   Median :-19998          
+##  Mean   :2010-11-10 23:30:00   Mean   :-19998          
+##  3rd Qu.:2010-11-15 23:15:00   3rd Qu.:-19998          
+##  Max.   :2010-11-20 23:00:00   Max.   :-19998</code></pre>
+<p>We can double-check that the subarea does produce runoff yield; the links are where the model does not work yet.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">getRecorded</span>(subsim, catOutflowId))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##      Index                     subarea.1.OutflowRate
+##  Min.   :2010-11-01 00:00:00   Min.   :0.000e+00    
+##  1st Qu.:2010-11-05 23:45:00   1st Qu.:5.000e-08    
+##  Median :2010-11-10 23:30:00   Median :8.170e-07    
+##  Mean   :2010-11-10 23:30:00   Mean   :7.353e-04    
+##  3rd Qu.:2010-11-15 23:15:00   3rd Qu.:8.327e-06    
+##  Max.   :2010-11-20 23:00:00   Max.   :1.701e-02</code></pre>
+<p>So, given that each routing link parameters Alpha and X are subject to constraint that vary depending on ‘Length’, ‘f’, ‘ManningsN’, ‘Slope’, how do we get a pair (Alpha, X) that globaly respect these constraints? This is not complex science but complicated enough to get wrong.</p>
+<p>‘swift’ offers facilities to remove the error prone tedium. First, <code>feasibleMuskingumBounds</code> lists the extremas of the feasible (Alpha, X) parameter space.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>(akbounds <span class="ot">&lt;-</span> swift<span class="sc">::</span><span class="fu">feasibleMuskingumBounds</span>(subsim, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##       min_alpha           max_x alpha_for_max_x 
+##      0.08143322      0.37382040      0.13004771</code></pre>
+<p>The numbers above can play a <em>crucial</em> role when setting up an optimizer for this model; more on this soon.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>oneHour <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>pSpecMusk <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Name =</span> <span class="fu">c</span>(<span class="st">'X'</span>, <span class="st">'Alpha'</span>),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Value =</span> <span class="fu">c</span>( akbounds[<span class="st">'max_x'</span>] <span class="sc">/</span> <span class="dv">2</span>, akbounds[<span class="st">'alpha_for_max_x'</span>]),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Min=</span> <span class="fu">c</span>(<span class="fl">1.0E-06</span>, akbounds[<span class="st">'min_alpha'</span>]),   </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Max =</span> <span class="fu">c</span>(akbounds[<span class="st">'max_x'</span>], <span class="fl">1e5</span>), </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors=</span><span class="cn">FALSE</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic parameterizer</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>pzm <span class="ot">&lt;-</span> <span class="cf">function</span>(simulation, <span class="at">pSpecs=</span>pSpecMusk) {</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  akbounds <span class="ot">&lt;-</span> swift<span class="sc">::</span><span class="fu">feasibleMuskingumBounds</span>(simulation, <span class="dv">1</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  p_musk <span class="ot">&lt;-</span> <span class="fu">createParameterizer</span>(<span class="st">'generic links'</span>,pSpecs);</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  p_musk</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrapper parameterizer, with constraints added around.</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>pzc <span class="ot">&lt;-</span> <span class="cf">function</span>(simulation, <span class="at">pSpecs=</span>pSpecMusk) {</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  p_musk <span class="ot">&lt;-</span> <span class="fu">pzm</span>(simulation, pSpecs)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  p_musk_c <span class="ot">&lt;-</span> <span class="fu">createMuskingumParamConstraints</span>(p_musk, <span class="at">deltaT=</span>oneHour, <span class="st">"Alpha"</span>, <span class="st">"X"</span>, simulation)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>  p_musk_c</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> parameterizerAsDataFrame</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp</span>(<span class="fu">pzm</span>(subsim))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##    Name        Min          Max     Value
+## 1     X 0.00000100 3.738204e-01 0.1869102
+## 2 Alpha 0.08143322 1.000000e+05 0.1300477</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">pzc</span>(subsim)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pp</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##    Name       Min       Max     Value
+## 1     X 0.0000010 0.3738204 0.1869102
+## 2 Alpha 0.1001528 0.2600954 0.1300477</code></pre>
+<p>Let’s get a trace of the subcatchment outflow, as a synthetic data to calibrated against.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">applySysConfig</span>(p, subsim)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">execSimulation</span>(subsim)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>someFlow <span class="ot">&lt;-</span> <span class="fu">getRecorded</span>(subsim, varId)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(someFlow)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##      Index                     Catchment.StreamflowRate
+##  Min.   :2010-11-01 00:00:00   Min.   :0.000e+00       
+##  1st Qu.:2010-11-05 23:45:00   1st Qu.:8.700e-07       
+##  Median :2010-11-10 23:30:00   Median :8.688e-05       
+##  Mean   :2010-11-10 23:30:00   Mean   :6.165e-03       
+##  3rd Qu.:2010-11-15 23:15:00   3rd Qu.:6.350e-04       
+##  Max.   :2010-11-20 23:00:00   Max.   :2.683e-01</code></pre>
+<p>We do now get a valid outflow since (Alpha-K) respects feasibility constraints on all links.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(someFlow)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-16-1.png" style="display:block; margin: auto"></p>
+<section id="setting-up-calibration" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-calibration">Setting up calibration</h2>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>pSpecMaxBounds <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Name =</span>  <span class="fu">c</span>(<span class="st">'X'</span>,     <span class="st">'Alpha'</span>),</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Value =</span> <span class="fu">c</span>(<span class="fl">1.0E-6</span>, akbounds[<span class="st">'alpha_for_max_x'</span>]), <span class="co"># IMPORTANT to use these values.</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Min=</span>    <span class="fu">c</span>(<span class="fl">1.0E-6</span>, akbounds[<span class="st">'min_alpha'</span>]),   </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Max =</span>   <span class="fu">c</span>(akbounds[<span class="st">'max_x'</span>], <span class="fl">1e6</span>), <span class="co"># Alpha_max can get very large. </span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors=</span><span class="cn">FALSE</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="fu">pp</span>(<span class="fu">pzc</span>(subsim, pSpecMaxBounds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##    Name        Min          Max     Value
+## 1     X 0.00000100 3.738204e-01 0.0000010
+## 2 Alpha 0.08143331 4.861449e+04 0.1300477</code></pre>
+<p>If we were to use another (X, Alpha) point e.g.&nbsp;X=0.1869102, the feasible bounds for Alpha change drastically. If an optimizer samples this for an initial population of points (SCE), this is unnecessarily restrictive for Alpha. Many hydrological calibration schemes were designed without consideration on feasible space that are not hypercubes.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp</span>(<span class="fu">pzc</span>(subsim, pSpecMusk))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##    Name       Min       Max     Value
+## 1     X 0.0000010 0.3738204 0.1869102
+## 2 Alpha 0.1001528 0.2600954 0.1300477</code></pre>
+<p>While calibrating in the (Alpha,X) space is possible, perhaps preferable in some cases, (1/Alpha,X) has a triangular shaped feasibility region that may be easier to handle for optimizers that work with geometric transformation in the parameter space (SCE). Swift can add this on top of the constrained calibration:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (X, 1/Alpha) parametrizer with dynamically constrained min/max bounds.</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>pzer_inv <span class="ot">&lt;-</span> <span class="cf">function</span>(simulation, <span class="at">pSpecs=</span>pSpecMusk) {</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  p_musk_c <span class="ot">&lt;-</span> <span class="fu">pzc</span>(simulation, pSpecs)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  p_musk_inv_a <span class="ot">&lt;-</span> <span class="fu">wrapTransform</span>(p_musk_c)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addTransform</span>(p_musk_inv_a, <span class="st">'inv_alpha'</span>, <span class="st">'Alpha'</span>, <span class="st">'1/x'</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  p_musk_inv_a</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">pzer_inv</span>(subsim, pSpecMaxBounds)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="fu">pp</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##        Name       Min        Max    Value
+## 1 inv_alpha 2.057e-05 12.2799877 7.689486
+## 2         X 1.000e-06  0.3738204 0.000001</code></pre>
+<p>We check that backtransforming to (Alpha-X) works:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp</span>(<span class="fu">backtransform</span>(p))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##    Name        Min          Max     Value
+## 1     X 0.00000100 3.738204e-01 0.0000010
+## 2 Alpha 0.08143331 4.861449e+04 0.1300477</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>objectiveId <span class="ot">&lt;-</span> <span class="st">'NSE'</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>objective <span class="ot">&lt;-</span> <span class="fu">createObjective</span>(subsim, varId, <span class="at">observation=</span>someFlow, objectiveId, <span class="fu">start</span>(someFlow), <span class="fu">end</span>(someFlow))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> <span class="fu">getScore</span>(objective,p)  </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## $scores
+##       NSE 
+## 0.9997748 
+## 
+## $sysconfig
+##        Name       Min        Max    Value
+## 1 inv_alpha 2.057e-05 12.2799877 7.689486
+## 2         X 1.000e-06  0.3738204 0.000001</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">#termination &lt;- swift::CreateSceMaxRuntimeTerminationWila_R(1/60)</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>termination <span class="ot">&lt;-</span> swift<span class="sc">::</span><span class="fu">CreateSceTerminationWila_Pkg_R</span>(<span class="st">'relative standard deviation'</span>, <span class="fu">c</span>(<span class="st">'0.001'</span>,<span class="st">'0.0167'</span>))</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>sceParams <span class="ot">&lt;-</span> <span class="fu">getDefaultSceParameters</span>()</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>npars <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>sceParams <span class="ot">&lt;-</span> <span class="fu">SCEParameters</span>(npars)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>optimizer <span class="ot">&lt;-</span> <span class="fu">createSceOptimSwift</span>(objective,<span class="at">terminationCriterion =</span> termination, <span class="at">populationInitializer =</span> p,<span class="at">SCEpars =</span> sceParams)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>calibLogger <span class="ot">&lt;-</span> <span class="fu">setCalibrationLogger</span>(optimizer,<span class="st">"dummy"</span>)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>optimStartTime <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">now</span>();</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>calibResults <span class="ot">&lt;-</span> <span class="fu">executeOptimization</span>(optimizer)</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>optimEndTime <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">now</span>();</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>optimWallClock <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">as.duration</span>(lubridate<span class="sc">::</span><span class="fu">interval</span>(optimStartTime, optimEndTime))</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>optimWallClock</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## [1] "0.209973812103271s"</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>optLog <span class="ot">&lt;-</span> <span class="fu">extractOptimizationLog</span>(optimizer, <span class="at">fitnessName =</span> <span class="st">"NSE"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>geomOps <span class="ot">&lt;-</span> optLog<span class="sc">$</span>geomOps </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>shuffleLogs <span class="ot">&lt;-</span> mhplot<span class="sc">::</span><span class="fu">subsetByCategory</span>(optLog<span class="sc">$</span>data, <span class="at">pattern =</span> <span class="st">"Initial.*|Shuffling.*"</span>) </span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>mhplot<span class="sc">::</span><span class="fu">plotShuffles</span>(shuffleLogs, <span class="st">'X'</span>, <span class="st">'inv_alpha'</span>, <span class="at">objLims =</span> (<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-24-1.png" style="display:block; margin: auto"></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>sortedResults <span class="ot">&lt;-</span> <span class="fu">sortByScore</span>(calibResults, <span class="st">'NSE'</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">scoresAsDataFrame</span>(sortedResults))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##   NSE inv_alpha         X
+## 1   1  7.688320 0.1871205
+## 2   1  7.687345 0.1867482
+## 3   1  7.686741 0.1869934
+## 4   1  7.693171 0.1868937
+## 5   1  7.693687 0.1868359
+## 6   1  7.693877 0.1869150</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">getBestScore</span>(calibResults, <span class="st">'NSE'</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">GetSystemConfigurationWila_R</span>(q)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pp</span>(q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##        Name      Min       Max     Value
+## 1 inv_alpha 3.849069 9.9821603 7.6883204
+## 2         X 0.000001 0.3737638 0.1871205</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp</span>(<span class="fu">backtransform</span>(q))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##    Name       Min       Max     Value
+## 1     X 0.0000010 0.3737638 0.1871205
+## 2 Alpha 0.1001787 0.2598031 0.1300674</code></pre>
+</section>
+<section id="seeding-the-optimisation-point-population-with-restrictive-constraint-bounds" class="level2">
+<h2 class="anchored" data-anchor-id="seeding-the-optimisation-point-population-with-restrictive-constraint-bounds">Seeding the optimisation point population with restrictive constraint bounds</h2>
+<p>This section is a <em>counter-example</em>. Do not do this.</p>
+<p>Say, instead of seeding with alpha set to alpha_for_x_max (0.37382040) we instead use a value cloase to its global minimum, 0.083:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>pSpecRestrictiveBounds <span class="ot">&lt;-</span> pSpecMaxBounds</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>pSpecRestrictiveBounds<span class="sc">$</span>Value[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fl">0.083</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>pSpecRestrictiveBounds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##                  Name   Value        Min          Max
+##                     X 1.0e-06 0.00000100 3.738204e-01
+## alpha_for_max_x Alpha 8.3e-02 0.08143322 1.000000e+06</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">pzer_inv</span>(subsim, pSpecRestrictiveBounds)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pp</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##        Name       Min         Max     Value
+## 1 inv_alpha 2.057e-05 12.27998772 12.048193
+## 2         X 1.000e-06  0.01887681  0.000001</code></pre>
+<p>X is now much more constrained in its feasible range, and initializing a population fails to cover large sections of the feasible triangle. If used in the optimizer (uniform random sampling)</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>termination <span class="ot">&lt;-</span> swift<span class="sc">::</span><span class="fu">CreateSceTerminationWila_Pkg_R</span>(<span class="st">'relative standard deviation'</span>, <span class="fu">c</span>(<span class="st">'0.001'</span>,<span class="st">'0.0167'</span>))</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>sceParams <span class="ot">&lt;-</span> <span class="fu">getDefaultSceParameters</span>()</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>npars <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>sceParams <span class="ot">&lt;-</span> <span class="fu">SCEParameters</span>(npars)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>optimizer <span class="ot">&lt;-</span> <span class="fu">createSceOptimSwift</span>(objective,<span class="at">terminationCriterion =</span> termination, <span class="at">populationInitializer =</span> p,<span class="at">SCEpars =</span> sceParams)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>calibLogger <span class="ot">&lt;-</span> <span class="fu">setCalibrationLogger</span>(optimizer,<span class="st">"dummy"</span>)</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>calibResults <span class="ot">&lt;-</span> <span class="fu">executeOptimization</span>(optimizer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mhplot)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>optLog <span class="ot">&lt;-</span> <span class="fu">extractOptimizationLog</span>(optimizer, <span class="at">fitnessName =</span> <span class="st">"NSE"</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>geomOps <span class="ot">&lt;-</span> optLog<span class="sc">$</span>geomOps </span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>shuffleLogs <span class="ot">&lt;-</span> mhplot<span class="sc">::</span><span class="fu">subsetByCategory</span>(optLog<span class="sc">$</span>data, <span class="at">pattern =</span> <span class="st">"Initial.*|Shuffling.*"</span>) </span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>mhplot<span class="sc">::</span><span class="fu">plotShuffles</span>(shuffleLogs, <span class="st">'X'</span>, <span class="st">'inv_alpha'</span>, <span class="at">objLims =</span> (<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-31-1.png" style="display:block; margin: auto"> SCE does manage to converge towards the optimum, but it takes a larger number of iterations. Anecdotally, we observed cases where the calibration does fail to go near the optimum, when interplaying with a convergence criterion configured for “leniency”.</p>
+</section>
+</section>
+<section id="detailed-explanation-and-unit-test-design" class="level1">
+<h1>Detailed explanation and unit test design</h1>
+<p>Default values for properties defining the relationship between Alpha and K (Muskingum-Cunge?)</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>L_d <span class="ot">&lt;-</span> <span class="dv">1000</span> <span class="co"># reach lengh in metres</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>sc_d <span class="ot">&lt;-</span> <span class="fl">1e-2</span> <span class="co"># reach slope in m/m</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>n_d <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># default Manning's parameter value for the reach</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>f_d <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># "Fudge factor" to allow for a different range of Alpha values. </span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>alpha_d <span class="ot">&lt;-</span> <span class="fl">0.2</span>  <span class="co"># Alpha parameter from which K is derived along with reach properties</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>X_d <span class="ot">&lt;-</span> <span class="fl">0.3</span>  <span class="co"># attenuation (weighting) factor</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>oneHour <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>K_d <span class="ot">&lt;-</span> <span class="fl">2.0</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For the case of a linear sub-case (exponent N=1.0 in the storage/outflow relationship) we can analytically solve the system of storage-outflow relationships and get C1, C2, C3, coefficients</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>getDenom <span class="ot">&lt;-</span> <span class="cf">function</span>(K, X, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">2</span><span class="sc">*</span>K<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>X) <span class="sc">+</span> delta_t)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>getC1 <span class="ot">&lt;-</span> <span class="cf">function</span>(K, X, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  (delta_t <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>K<span class="sc">*</span>X) <span class="sc">/</span> <span class="fu">getDenom</span>(K, X, delta_t)</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>getC2 <span class="ot">&lt;-</span> <span class="cf">function</span>(K, X, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  (delta_t <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>K<span class="sc">*</span>X) <span class="sc">/</span> <span class="fu">getDenom</span>(K, X, delta_t)</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>getC3 <span class="ot">&lt;-</span> <span class="cf">function</span>(K, X, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">2</span><span class="sc">*</span>K<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>X) <span class="sc">-</span> delta_t) <span class="sc">/</span> <span class="fu">getDenom</span>(K, X, delta_t)</span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>linearMuskingum <span class="ot">&lt;-</span> <span class="cf">function</span>(inflow, <span class="at">prevOutflow=</span><span class="dv">0</span>, <span class="at">prevInflow=</span><span class="dv">0</span>, <span class="at">K=</span>oneHour, <span class="at">X=</span><span class="fl">0.5</span>) {</span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">getC1</span>(K,X)<span class="sc">*</span>inflow <span class="sc">+</span> <span class="fu">getC2</span>(K,X)<span class="sc">*</span>prevInflow <span class="sc">+</span> <span class="fu">getC3</span>(K,X)<span class="sc">*</span>prevOutflow</span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We define functions that relate K, alpha and other reach properties, that we will use later for plotting feasible bounds.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gets the factor G in the relationship K = G * Alpha</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>getKNoAlpha <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">f=</span>f_d, <span class="at">n=</span>n_d, <span class="at">sc=</span>sc_d, <span class="at">L=</span>L_d) {</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  f <span class="sc">*</span> n <span class="sc">*</span> (L<span class="sc">/</span><span class="dv">1000</span>) <span class="sc">/</span> <span class="fu">sqrt</span>(sc)  <span class="co"># </span><span class="al">NOTE</span><span class="co">: (L/1000 to match the swift implementation)</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="co"># relationship K = G * Alpha</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>getK <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">alpha=</span>alpha_d, <span class="at">f=</span>f_d, <span class="at">n=</span>n_d, <span class="at">sc=</span>sc_d, <span class="at">L=</span>L_d) {</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>  alpha <span class="sc">*</span> <span class="fu">getKNoAlpha</span>(<span class="at">f=</span>f, <span class="at">n=</span>n, <span class="at">sc=</span>sc, <span class="at">L=</span>L) </span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a><span class="co"># relationship Alpha = K / F</span></span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>getAlpha <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">K=</span>K_d, <span class="at">f=</span>f_d, <span class="at">n=</span>n_d, <span class="at">sc=</span>sc_d, <span class="at">L=</span>L_d) {</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>  K <span class="sc">/</span> <span class="fu">getKNoAlpha</span>(<span class="at">f=</span>f, <span class="at">n=</span>n, <span class="at">sc=</span>sc, <span class="at">L=</span>L)</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a><span class="co"># relationship 1/Alpha = G / K</span></span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>getInvAlpha <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">K=</span>K_d, <span class="at">f=</span>f_d, <span class="at">n=</span>n_d, <span class="at">sc=</span>sc_d, <span class="at">L=</span>L_d) {</span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span> <span class="sc">/</span> <span class="fu">getAlpha</span>(<span class="at">K=</span>K, <span class="at">f=</span>f, <span class="at">n=</span>n, <span class="at">sc=</span>sc, <span class="at">L=</span>L)</span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="constraints-on-the-linear-n1-case-of-muskingum-parameters" class="level1">
+<h1>Constraints on the Linear (N=1) case of Muskingum parameters</h1>
+<p>It can be shown that given the following constraints must be satisfied to be in a stability zone (no negative outflows):</p>
+<ul>
+<li>K &lt; delta_t / (2 * X)</li>
+<li>K &gt; delta_t / (2 * (1 - X))</li>
+</ul>
+<p>We can derive the following functions defining the feasible boundaries for the triplet X, K, delta_t, (and Alpha by proxy from K).</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>upperKValue <span class="ot">&lt;-</span> <span class="cf">function</span>(X, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  delta_t <span class="sc">/</span> (<span class="dv">2</span><span class="sc">*</span>X)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>lowerKValue <span class="ot">&lt;-</span> <span class="cf">function</span>(X, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  delta_t <span class="sc">/</span> (<span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>X))</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>upperInvKValue <span class="ot">&lt;-</span> <span class="cf">function</span>(X, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>X)) <span class="sc">/</span> delta_t</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>lowerInvKValue <span class="ot">&lt;-</span> <span class="cf">function</span>(X, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span><span class="sc">*</span>X <span class="sc">/</span> delta_t</span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>upperXValue <span class="ot">&lt;-</span> <span class="cf">function</span>(K, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>( <span class="dv">1</span> <span class="sc">-</span> delta_t <span class="sc">/</span> (<span class="dv">2</span><span class="sc">*</span>K) , delta_t <span class="sc">/</span> (<span class="dv">2</span><span class="sc">*</span>K) )</span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>upperXValueFromAlpha <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">alpha=</span>alpha_d, <span class="at">f=</span>f_d, <span class="at">n=</span>n_d, <span class="at">sc=</span>sc_d, <span class="at">L=</span>L_d, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">upperXValue</span>(<span class="fu">getK</span>(<span class="at">alpha =</span> alpha, <span class="at">f=</span>f, <span class="at">n=</span>n, <span class="at">sc=</span>sc, <span class="at">L=</span>L), <span class="at">delta_t=</span>delta_t)</span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>getFeasibleKInterval <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">X=</span>X_d, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">lowerKValue</span>(X, delta_t), <span class="fu">upperKValue</span>(X, delta_t))</span>
+<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-28"><a href="#cb52-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-29"><a href="#cb52-29" aria-hidden="true" tabindex="-1"></a>getFeasibleAlphaInterval <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">f=</span>f_d, <span class="at">n=</span>n_d, <span class="at">sc=</span>sc_d, <span class="at">L=</span>L_d, <span class="at">X=</span>X_d, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb52-30"><a href="#cb52-30" aria-hidden="true" tabindex="-1"></a>  G <span class="ot">&lt;-</span> <span class="fu">getKNoAlpha</span>(<span class="at">f=</span>f, <span class="at">n=</span>n, <span class="at">sc=</span>sc, <span class="at">L=</span>L) </span>
+<span id="cb52-31"><a href="#cb52-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># K = G * Alpha</span></span>
+<span id="cb52-32"><a href="#cb52-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">getFeasibleKInterval</span>(X, delta_t)<span class="sc">/</span>G</span>
+<span id="cb52-33"><a href="#cb52-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-34"><a href="#cb52-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-35"><a href="#cb52-35" aria-hidden="true" tabindex="-1"></a>getFeasibleInverseAlphaInterval <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">f=</span>f_d, <span class="at">n=</span>n_d, <span class="at">sc=</span>sc_d, <span class="at">L=</span>L_d, <span class="at">X=</span>X_d, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb52-36"><a href="#cb52-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rev</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="fu">getFeasibleAlphaInterval</span>(f, n, sc, L, X, delta_t))</span>
+<span id="cb52-37"><a href="#cb52-37" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-38"><a href="#cb52-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-39"><a href="#cb52-39" aria-hidden="true" tabindex="-1"></a>getFeasibleTimestepInterval <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">alpha=</span>alpha_d, <span class="at">f=</span>f_d, <span class="at">n=</span>n_d, <span class="at">sc=</span>sc_d, <span class="at">L=</span>L_d, <span class="at">X=</span>X_d) {</span>
+<span id="cb52-40"><a href="#cb52-40" aria-hidden="true" tabindex="-1"></a>    k <span class="ot">&lt;-</span> <span class="fu">getK</span>(alpha, f, n, sc, L)</span>
+<span id="cb52-41"><a href="#cb52-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="dv">2</span> <span class="sc">*</span> k <span class="sc">*</span> X, k)</span>
+<span id="cb52-42"><a href="#cb52-42" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Given a delta_t, plotting the upper and lower K for X:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>Xvals <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="fl">1e-2</span>, <span class="at">to=</span><span class="fl">0.49999</span>, <span class="at">by=</span><span class="fl">1e-2</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">X=</span>Xvals, </span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">upperK=</span><span class="fu">upperKValue</span>(Xvals),</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">lowerK=</span><span class="fu">lowerKValue</span>(Xvals)</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> <span class="fu">gather</span>(<span class="at">key=</span><span class="st">'type'</span>, <span class="at">value=</span><span class="st">'kbound'</span>, <span class="sc">-</span>X)</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x=</span>X, <span class="at">y =</span> kbound, <span class="at">color=</span>type)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"K"</span>)</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-36-1.png" style="display:block; margin: auto"></p>
+<p>The feasible region is the area between these two curves:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x=</span>X, <span class="at">ymin=</span>lowerK, <span class="at">ymax=</span>upperK, <span class="at">fill=</span><span class="st">'red'</span>), <span class="at">alpha=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-37-1.png" style="display:block; margin: auto"></p>
+<p>It is easier to work on the inverse of K on the Y axis, as the bounds become lines. We can also afford to visually go closer to X=0.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>Xvals <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="fl">1e-4</span>, <span class="at">to=</span><span class="fl">0.5-1e-4</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">X=</span>Xvals, </span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">upperK=</span><span class="fu">upperKValue</span>(Xvals),</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">lowerK=</span><span class="fu">lowerKValue</span>(Xvals)</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>d_inv_wide <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> </span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">transmute</span>(<span class="at">X=</span>X, <span class="at">upperInvK =</span> <span class="dv">1</span> <span class="sc">/</span> lowerK, <span class="at">lowerInvK =</span> <span class="dv">1</span> <span class="sc">/</span> upperK ) </span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>d_inv <span class="ot">&lt;-</span> d_inv_wide <span class="sc">%&gt;%</span> </span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gather</span>(<span class="at">key=</span><span class="st">'type'</span>, <span class="at">value=</span><span class="st">'kbound'</span>, <span class="sc">-</span>X)</span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d_inv_wide) <span class="sc">+</span> </span>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x=</span>X, <span class="at">ymin=</span>lowerInvK, <span class="at">ymax=</span>upperInvK, <span class="at">fill=</span><span class="st">'red'</span>), <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"1/K"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-38-1.png" style="display:block; margin: auto"></p>
+<p>So if we have two reaches of different lengths (or other properties), we can back transform the feasible Alpha regions for each reach and since since alpha is a linear function of X we visually get the following intersect of feasible regions.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>getAlphaBounds <span class="ot">&lt;-</span> <span class="cf">function</span>(L, <span class="at">f=</span>f_d, <span class="at">n=</span>n_d, <span class="at">sc=</span>sc_d, <span class="at">delta_t=</span>oneHour) {</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">X=</span>Xvals, </span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">upperK=</span><span class="fu">upperKValue</span>(Xvals, delta_t),</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">lowerK=</span><span class="fu">lowerKValue</span>(Xvals, delta_t)</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>  d_alpha_one <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> </span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">transmute</span>(<span class="at">X=</span>X, </span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">l_alpha =</span> <span class="fu">getAlpha</span>(<span class="at">K=</span>lowerK, <span class="at">f=</span>f, <span class="at">n=</span>n, <span class="at">sc=</span>sc, <span class="at">L=</span>L), </span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">u_alpha =</span> <span class="fu">getAlpha</span>(<span class="at">K=</span>upperK, <span class="at">f=</span>f, <span class="at">n=</span>n, <span class="at">sc=</span>sc, <span class="at">L=</span>L))</span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>  d_alpha_one</span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>inverseAlphaBounds <span class="ot">&lt;-</span> <span class="cf">function</span>(d_alpha) {</span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>  d_alpha <span class="sc">%&gt;%</span> </span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">transmute</span>(<span class="at">X=</span>X, <span class="at">u_inv_alpha =</span> <span class="dv">1</span> <span class="sc">/</span> l_alpha, <span class="at">l_inv_alpha =</span> <span class="dv">1</span> <span class="sc">/</span> u_alpha ) </span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>d_alpha_one <span class="ot">&lt;-</span> <span class="fu">getAlphaBounds</span>(<span class="at">L=</span><span class="dv">2000</span>)</span>
+<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a>d_alpha_two <span class="ot">&lt;-</span> <span class="fu">getAlphaBounds</span>(<span class="at">L=</span><span class="dv">7000</span>)</span>
+<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a>d_inv_alpha_wide_one <span class="ot">&lt;-</span> <span class="fu">inverseAlphaBounds</span>(d_alpha_one)</span>
+<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a>d_inv_alpha_wide_two <span class="ot">&lt;-</span> <span class="fu">inverseAlphaBounds</span>(d_alpha_two)</span>
+<span id="cb56-25"><a href="#cb56-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-26"><a href="#cb56-26" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb56-27"><a href="#cb56-27" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data=</span>d_inv_alpha_wide_one, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x=</span>X, <span class="at">ymin=</span>l_inv_alpha, <span class="at">ymax=</span>u_inv_alpha, <span class="at">fill=</span><span class="st">'red'</span>), <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb56-28"><a href="#cb56-28" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data=</span>d_inv_alpha_wide_two, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x=</span>X, <span class="at">ymin=</span>l_inv_alpha, <span class="at">ymax=</span>u_inv_alpha, <span class="at">fill=</span><span class="st">'blue'</span>), <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb56-29"><a href="#cb56-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">'Inverse alpha'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-39-1.png" style="display:block; margin: auto"></p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># See cpp unit test for </span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="co"># in MNL algorithm constraint violated if ( (beta &gt; delta_t / (2 * X) || beta &lt; delta_t / (2 * (1 - X))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that overall X is now constrained to be at most to be below 0.22 and the inverse of alpha from 0 to 12 at most (NOTE: visual shortcoming of previous plot, minimum X should be zero), if both reach are to be kept in their routing stablity zones.</p>
+<p>Now consider a region the following set of reach properties:</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="co"># murray_nl &lt;- readr::read_csv('c:/data/stsf/documentation/UpperMurray/node_link.csv')</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>murray_nl <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="fu">file.path</span>(swift<span class="sc">::</span><span class="fu">sampleDataDir</span>(), <span class="st">'UpperMurray/node_link.csv'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   ID = col_double(),
+##   Name = col_character(),
+##   From = col_double(),
+##   To = col_double(),
+##   RainST = col_double(),
+##   EvapST = col_double(),
+##   Length = col_double(),
+##   Area = col_double(),
+##   Slope = col_double(),
+##   Frac_Urban = col_double(),
+##   Frac_Forest = col_double(),
+##   RLF = col_double(),
+##   Mann_n = col_double()
+## )</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(murray_nl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## # A tibble: 6 x 13
+##      ID Name   From    To RainST EvapST Length   Area Slope Frac_Urban
+##   &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
+## 1     1 Suba~     1     2      1      1  36320 2.24e8     1          0
+## 2     2 Suba~     2     3      2      2  15109 1.75e8     1          0
+## 3     3 Suba~     3     8      3      3  34340 4.88e8     1          0
+## 4     4 Suba~     4     5      4      4  51064 4.47e8     1          0
+## 5     5 Suba~     5     6      5      5  23819 4.37e8     1          0
+## 6     6 Suba~     6     7      6      6  33835 3.75e8     1          0
+## # ... with 3 more variables: Frac_Forest &lt;dbl&gt;, RLF &lt;dbl&gt;, Mann_n &lt;dbl&gt;</code></pre>
+<p>We note that only Length varies across reaches so we will ignore other reach parameters. Let’s overlay feasible regions for all reaches:</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>getFeasibleAlphaBounds <span class="ot">&lt;-</span> <span class="cf">function</span>(reach_length) {</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  d_inv_alpha <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> </span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">transmute</span>(<span class="at">X=</span>X, </span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">l_inv_alpha =</span> <span class="fu">getInvAlpha</span>(lowerK, <span class="at">L=</span>reach_length), <span class="co"># lower K --&gt; upper invK --&gt; thus upper invAlpha </span></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">u_inv_alpha =</span> <span class="fu">getInvAlpha</span>(upperK, <span class="at">L=</span>reach_length)) </span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>  d_inv_alpha</span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>reach_bounds <span class="ot">&lt;-</span> <span class="fu">lapply</span>(murray_nl<span class="sc">$</span>Length, getFeasibleAlphaBounds)</span>
+<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>g <span class="ot">=</span> <span class="fu">ggplot</span>()</span>
+<span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (b <span class="cf">in</span> reach_bounds) {</span>
+<span id="cb62-13"><a href="#cb62-13" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> g <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data=</span>b, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x=</span>X, <span class="at">ymin=</span>l_inv_alpha, <span class="at">ymax=</span>u_inv_alpha, <span class="at">fill=</span><span class="st">'red'</span>), <span class="at">alpha=</span><span class="fl">0.1</span>)</span>
+<span id="cb62-14"><a href="#cb62-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb62-15"><a href="#cb62-15" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">'Inverse alpha'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-41-1.png" style="display:block; margin: auto"></p>
+<p>It is a bit crowded but you can intuit that the common area is quite small given the large difference in magnitude in the feasible triangles. Indeed, the extrema in reach lengths are two orders of magnitude different:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>(length_range <span class="ot">&lt;-</span> <span class="fu">range</span>(murray_nl<span class="sc">$</span>Length))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## [1]   502 52731</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">=</span> <span class="fu">ggplot</span>()</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (b <span class="cf">in</span> <span class="fu">lapply</span>(length_range, getFeasibleAlphaBounds)) {</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> g <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data=</span>b, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x=</span>X, <span class="at">ymin=</span>l_inv_alpha, <span class="at">ymax=</span>u_inv_alpha, <span class="at">fill=</span><span class="st">'red'</span>), <span class="at">alpha=</span><span class="dv">1</span>)</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>g <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">'Inverse alpha'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-43-1.png" style="display:block; margin: auto"></p>
+</section>
+<section id="unit-test-design" class="level1">
+<h1>Unit test design</h1>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fl">1.11e-2</span> <span class="co"># reach slope in m/m</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fl">0.98</span>  <span class="co"># default Manning's parameter value for the reach</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fl">0.99</span>  <span class="co"># "Fudge factor" to allow for a different range of Alpha values. </span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>oneHour <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>delt <span class="ot">&lt;-</span> oneHour</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>length_small <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>length_large <span class="ot">&lt;-</span> <span class="dv">7000</span></span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>d_alpha_one <span class="ot">&lt;-</span> <span class="fu">getAlphaBounds</span>(<span class="at">L=</span>length_small, f, n, sc, delt)</span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>d_alpha_two <span class="ot">&lt;-</span> <span class="fu">getAlphaBounds</span>(<span class="at">L=</span>length_large, f, n, sc, delt)</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>d_inv_alpha_wide_one <span class="ot">&lt;-</span> <span class="fu">inverseAlphaBounds</span>(d_alpha_one)</span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a>d_inv_alpha_wide_two <span class="ot">&lt;-</span> <span class="fu">inverseAlphaBounds</span>(d_alpha_two)</span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data=</span>d_inv_alpha_wide_one, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x=</span>X, <span class="at">ymin=</span>l_inv_alpha, <span class="at">ymax=</span>u_inv_alpha, <span class="at">fill=</span><span class="st">'red'</span>), <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_ribbon</span>(<span class="at">data=</span>d_inv_alpha_wide_two, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x=</span>X, <span class="at">ymin=</span>l_inv_alpha, <span class="at">ymax=</span>u_inv_alpha, <span class="at">fill=</span><span class="st">'blue'</span>), <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">'Inverse alpha'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./muskingum_multilink_calibration_files/figure-gfm/unnamed-chunk-44-1.png" style="display:block; margin: auto"></p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>inv_alpha <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>inv_alpha  <span class="co"># Alpha parameter from which K is derived along with reach properties</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fl">0.1</span>  <span class="co"># attenuation (weighting) factor</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>get_bounds <span class="ot">&lt;-</span> <span class="cf">function</span>(L, X, alpha) {</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>  alpha_bounds <span class="ot">&lt;-</span> <span class="fu">getFeasibleAlphaInterval</span>(f, n, sc, L, X, delt)</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  inv_alpha_bounds <span class="ot">&lt;-</span> <span class="fu">getFeasibleInverseAlphaInterval</span> (f, n, sc, L, X, delt)</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>  up_X <span class="ot">&lt;-</span> <span class="fu">upperXValueFromAlpha</span>(alpha, f, n, sc, L, delt)</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_frame</span>(</span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">l_alpha =</span> alpha_bounds[<span class="dv">1</span>],</span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">u_alpha =</span> alpha_bounds[<span class="dv">2</span>],</span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">l_inv_alpha =</span> inv_alpha_bounds[<span class="dv">1</span>],</span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">u_inv_alpha =</span> inv_alpha_bounds[<span class="dv">2</span>],</span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">u_x =</span> up_X</span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Given other link properties are the same but lengths, to get min and max G we only need:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>min_G <span class="ot">&lt;-</span> <span class="fu">getKNoAlpha</span>(f, n, sc, length_small)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>max_G <span class="ot">&lt;-</span> <span class="fu">getKNoAlpha</span>(f, n, sc, length_large)</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>(<span class="fu">c</span>(min_G, max_G))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## [1] 18.41746 64.46112</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>min_F <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>max_G  </span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>max_F <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>min_G  </span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>(<span class="fu">c</span>(min_F, max_F))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## [1] 0.01551323 0.05429630</code></pre>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>delta_t <span class="ot">&lt;-</span> <span class="fl">1.0</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>globalMinAlpha <span class="ot">&lt;-</span> <span class="cf">function</span>(min_G, delta_t){</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>  delta_t <span class="sc">/</span> ( <span class="dv">2</span> <span class="sc">*</span> min_G )</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>alphaForMaxX <span class="ot">&lt;-</span> <span class="cf">function</span>(min_G, max_G, delta_t) {</span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>  delta_t <span class="sc">/</span> <span class="dv">2</span> <span class="sc">*</span> (min_G <span class="sc">+</span> max_G) <span class="sc">/</span> (min_G <span class="sc">*</span> max_G) </span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>absMaxX <span class="ot">&lt;-</span> <span class="cf">function</span>(min_G, max_G) {</span>
+<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a>  min_G <span class="sc">/</span> (min_G <span class="sc">+</span> max_G) </span>
+<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-15"><a href="#cb72-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-16"><a href="#cb72-16" aria-hidden="true" tabindex="-1"></a><span class="co"># for unit test in swift\tests\api\parameterizers.cpp</span></span>
+<span id="cb72-17"><a href="#cb72-17" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">3</span>)</span>
+<span id="cb72-18"><a href="#cb72-18" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">absMaxX</span> (min_G, max_G)</span>
+<span id="cb72-19"><a href="#cb72-19" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">alphaForMaxX</span>(min_G, max_G, delta_t)</span>
+<span id="cb72-20"><a href="#cb72-20" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fu">globalMinAlpha</span>(min_G, delta_t)</span>
+<span id="cb72-21"><a href="#cb72-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-22"><a href="#cb72-22" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## [1] 0.22222222 0.03490476 0.02714815</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_bounds</span>(length_small, X, alpha)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## # A tibble: 1 x 5
+##   l_alpha u_alpha l_inv_alpha u_inv_alpha   u_x
+##     &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
+## 1  0.0302   0.271        3.68        33.2 0.321</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_bounds</span>(length_large, X, alpha)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## # A tibble: 1 x 5
+##   l_alpha u_alpha l_inv_alpha u_inv_alpha   u_x
+##     &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
+## 1 0.00862  0.0776        12.9        116. 0.194</code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>overallFeasibleAlpha <span class="ot">&lt;-</span> <span class="cf">function</span>(X) {</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>  bounds_len_small <span class="ot">&lt;-</span> <span class="fu">getFeasibleAlphaInterval</span>(f, n, sc, length_small, X, delta_t)</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>  bounds_len_large <span class="ot">&lt;-</span><span class="fu">getFeasibleAlphaInterval</span>(f, n, sc, length_large, X, delta_t)</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># smallest reach length (rather, smallest G) dictate the lower feasible alpha bound</span></span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># largest reach length (rather, smallest G) dictate the opper feasible alpha bound</span></span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(bounds_len_small[<span class="dv">1</span>], bounds_len_large[<span class="dv">2</span>])</span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>(alphaIntvx1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">overallFeasibleAlpha</span>(X)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## [1] 0.05386538</code></pre>
+<p>Lower X to give a larger feasible alpha, to test in swift that user-specified bounds override that.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>(alphaIntvx2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">overallFeasibleAlpha</span>(X)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## [1] 0.09185464</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>(alphaTest <span class="ot">&lt;-</span> (alphaIntvx1 <span class="sc">+</span> alphaIntvx2) <span class="sc">/</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## [1] 0.07286001</code></pre>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">upperXValueFromAlpha</span>(alphaTest, f, n, sc, length_small),</span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">upperXValueFromAlpha</span>(alphaTest, f, n, sc, length_large)</span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## [1] 0.3726070 0.1064591</code></pre>
+</section>
+<section id="non-linear-version-of-the-routing" class="level1">
+<h1>Non linear version of the routing</h1>
+<p>PLACEHOLDER</p>
+<p>For N different from 1, we have a case of a non-linear storage-flow relationship.</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>inflow <span class="ot">=</span> <span class="dv">5</span></span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">40</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Storage-outflow relationship:</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>sqRelation <span class="ot">&lt;-</span> <span class="cf">function</span>(q, <span class="at">alpha=</span>alpha_d, <span class="at">f=</span>f_d, <span class="at">n=</span>n_d, <span class="at">sc=</span>sc_d, <span class="at">X=</span>X_d, <span class="at">inflow=</span><span class="dv">0</span>, <span class="at">L=</span>L_d, <span class="at">N=</span><span class="dv">1</span>) {</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">getK</span>(<span class="at">alpha=</span>alpha, <span class="at">f=</span>f, <span class="at">n=</span>n, <span class="at">sc=</span>sc, <span class="at">L=</span>L) <span class="sc">*</span> (X <span class="sc">*</span> q <span class="sc">+</span> (<span class="dv">1</span><span class="sc">-</span>X)<span class="sc">*</span>inflow) <span class="sc">**</span> N </span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>rootEq <span class="ot">&lt;-</span> <span class="cf">function</span>(q, <span class="at">alpha=</span>alpha_d, <span class="at">f=</span>f_d, <span class="at">n=</span>n_d, <span class="at">sc=</span>sc_d, <span class="at">X=</span>X_d, <span class="at">inflow=</span><span class="dv">0</span>, <span class="at">L=</span>L_d, <span class="at">N=</span><span class="dv">1</span>, <span class="at">dt=</span><span class="dv">3600</span>, <span class="at">prevOutflow=</span><span class="dv">0</span>, <span class="at">prevInflow=</span><span class="dv">0</span>) { </span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqRelation</span>(q, alpha, f, n, sc, X, inflow, L, N) <span class="sc">-</span> (inflow <span class="sc">+</span> prevInflow <span class="sc">-</span> q <span class="sc">-</span> prevOutflow) <span class="sc">*</span> dt <span class="sc">/</span> <span class="dv">2</span> </span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>derivEq <span class="ot">&lt;-</span> <span class="cf">function</span>(q, <span class="at">alpha=</span>alpha_d, <span class="at">f=</span>f_d, <span class="at">n=</span>n_d, <span class="at">sc=</span>sc_d, <span class="at">X=</span>X_d, <span class="at">inflow=</span><span class="dv">0</span>, <span class="at">L=</span>L_d, <span class="at">N=</span><span class="dv">1</span>, <span class="at">dt=</span><span class="dv">3600</span>, <span class="at">prevOutflow=</span><span class="dv">0</span>, <span class="at">prevInflow=</span><span class="dv">0</span>) { </span>
+<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a>  N<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>X)<span class="sc">*</span><span class="fu">getK</span>(<span class="at">alpha=</span>alpha, <span class="at">f=</span>f, <span class="at">n=</span>n, <span class="at">sc=</span>sc, <span class="at">L=</span>L) <span class="sc">*</span> (X <span class="sc">*</span> q <span class="sc">+</span> (<span class="dv">1</span><span class="sc">-</span>X)<span class="sc">*</span>inflow) <span class="sc">**</span> (N<span class="dv">-1</span>) <span class="sc">+</span> dt <span class="sc">/</span> <span class="dv">2</span> </span>
+<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb87-12"><a href="#cb87-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-13"><a href="#cb87-13" aria-hidden="true" tabindex="-1"></a>n_power <span class="ot">=</span> <span class="fl">1.3</span></span>
+<span id="cb87-14"><a href="#cb87-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-15"><a href="#cb87-15" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(q, <span class="fu">sqRelation</span>(q, <span class="at">N=</span>n_power, <span class="at">inflow=</span>inflow), <span class="at">ylab=</span><span class="st">'Storage(m3)'</span>, <span class="at">xlab=</span><span class="st">'Outflow (m3/s)'</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">'S = f(Q)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(q, <span class="fu">rootEq</span>(q, <span class="at">N=</span>n_power, <span class="at">inflow=</span>inflow), <span class="at">ylab=</span><span class="st">'Value'</span>, <span class="at">xlab=</span><span class="st">'Outflow (m3/s)'</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">'F(Q); root finding'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(q, <span class="fu">derivEq</span>(q, <span class="at">N=</span>n_power, <span class="at">inflow=</span>inflow), <span class="at">ylab=</span><span class="st">'Value'</span>, <span class="at">xlab=</span><span class="st">'Outflow (m3/s)'</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">'DerivF(Q)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Using a solver to find the root.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rootSolve)</span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>rootFun <span class="ot">&lt;-</span> <span class="cf">function</span>(z, ...) {<span class="fu">rootEq</span>(z, ...)}</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a><span class="fu">uniroot.all</span>(rootFun, <span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">60</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Given the default values for the parameters or constants in the routing formulation, the following example shows a case where the solution leads to negative outflows:</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>nlen <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>inflow <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,nlen)</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>inflow[<span class="dv">4</span><span class="sc">:</span><span class="dv">9</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">20</span>,<span class="dv">15</span>,<span class="dv">10</span>,<span class="dv">5</span>,<span class="dv">3</span>)</span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>routeFlow <span class="ot">&lt;-</span> <span class="cf">function</span>(rootEqFun, inflow, ...) {</span>
+<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a>  nlen <span class="ot">&lt;-</span> <span class="fu">length</span>(inflow)</span>
+<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a>  outflow <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,nlen)</span>
+<span id="cb91-8"><a href="#cb91-8" aria-hidden="true" tabindex="-1"></a>  rootEqIndex <span class="ot">&lt;-</span> <span class="cf">function</span>(z, i) { <span class="fu">rootEqFun</span>(z, <span class="at">inflow=</span>inflow[i], <span class="at">prevOutflow=</span>outflow[i<span class="dv">-1</span>], <span class="at">prevInflow=</span>inflow[i<span class="dv">-1</span>], ...) } </span>
+<span id="cb91-9"><a href="#cb91-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>nlen) {</span>
+<span id="cb91-10"><a href="#cb91-10" aria-hidden="true" tabindex="-1"></a>    val <span class="ot">&lt;-</span> <span class="fu">uniroot.all</span>(<span class="cf">function</span>(z) {<span class="fu">rootEqIndex</span>(z, i)}, <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">60</span>))</span>
+<span id="cb91-11"><a href="#cb91-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="fu">length</span>(val) <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb91-12"><a href="#cb91-12" aria-hidden="true" tabindex="-1"></a>    outflow[i] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">length</span>(val) <span class="sc">==</span> <span class="dv">1</span>, val, <span class="cn">NA</span>)</span>
+<span id="cb91-13"><a href="#cb91-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb91-14"><a href="#cb91-14" aria-hidden="true" tabindex="-1"></a>  outflow</span>
+<span id="cb91-15"><a href="#cb91-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb91-16"><a href="#cb91-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-17"><a href="#cb91-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-18"><a href="#cb91-18" aria-hidden="true" tabindex="-1"></a>routeSeries <span class="ot">&lt;-</span> <span class="cf">function</span>(inflow, ...) {</span>
+<span id="cb91-19"><a href="#cb91-19" aria-hidden="true" tabindex="-1"></a>  nlen <span class="ot">&lt;-</span> <span class="fu">length</span>(inflow)</span>
+<span id="cb91-20"><a href="#cb91-20" aria-hidden="true" tabindex="-1"></a>  outflow <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,nlen)</span>
+<span id="cb91-21"><a href="#cb91-21" aria-hidden="true" tabindex="-1"></a>  routeIndex <span class="ot">&lt;-</span> <span class="cf">function</span>(i) { <span class="fu">linearMuskingum</span>(<span class="at">inflow=</span>inflow[i], <span class="at">prevOutflow=</span>outflow[i<span class="dv">-1</span>], <span class="at">prevInflow=</span>inflow[i<span class="dv">-1</span>], ...) } </span>
+<span id="cb91-22"><a href="#cb91-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>nlen) {</span>
+<span id="cb91-23"><a href="#cb91-23" aria-hidden="true" tabindex="-1"></a>    outflow[i] <span class="ot">&lt;-</span> <span class="fu">routeIndex</span>(i)</span>
+<span id="cb91-24"><a href="#cb91-24" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb91-25"><a href="#cb91-25" aria-hidden="true" tabindex="-1"></a>  outflow</span>
+<span id="cb91-26"><a href="#cb91-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb91-27"><a href="#cb91-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-28"><a href="#cb91-28" aria-hidden="true" tabindex="-1"></a><span class="fu">routeFlow</span>(rootEq, inflow, <span class="at">alpha=</span><span class="fl">0.1</span>, <span class="at">N=</span><span class="fl">1.001</span>)</span>
+<span id="cb91-29"><a href="#cb91-29" aria-hidden="true" tabindex="-1"></a><span class="co"># q &lt;- seq(from=0.01, to=0.011, length.out=50)</span></span>
+<span id="cb91-30"><a href="#cb91-30" aria-hidden="true" tabindex="-1"></a><span class="co"># qplot(, rootEqIndex(q,11), ylab='Value', xlab='Outflow (m3/s)') + ggtitle('DerivF(Q)')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="dv">1</span><span class="sc">:</span>nlen, <span class="fu">routeFlow</span>(rootEq, inflow), <span class="at">xlab=</span><span class="st">'time step'</span>, <span class="at">ylab=</span><span class="st">'Outflow (m3/s)'</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">'Outflow'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="provenance" class="level2">
+<h2 class="anchored" data-anchor-id="provenance">Provenance</h2>
+<p>This document was generated from an R markdown file on 2020-01-28 10:56:27</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## R version 3.6.1 (2019-07-05)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 10 x64 (build 17763)
+## 
+## Matrix products: default
+## 
+## locale:
+## [1] LC_COLLATE=English_Australia.1252  LC_CTYPE=English_Australia.1252   
+## [3] LC_MONETARY=English_Australia.1252 LC_NUMERIC=C                      
+## [5] LC_TIME=English_Australia.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] mhplot_0.5-1     stringr_1.4.0    readr_1.3.1      dplyr_0.8.3     
+##  [5] tidyr_1.0.0      ggplot2_3.2.1    lubridate_1.7.4  DiagrammeR_1.0.1
+##  [9] swift_2.1.2      Rcpp_1.0.2       knitr_1.25       rmarkdown_1.16  
+## 
+## loaded via a namespace (and not attached):
+##  [1] mvtnorm_1.0-11     lattice_0.20-38    visNetwork_2.0.8  
+##  [4] msvs_0.3.1         zoo_1.8-6          utf8_1.1.4        
+##  [7] assertthat_0.2.1   zeallot_0.1.0      digest_0.6.21     
+## [10] R6_2.4.0           backports_1.1.4    evaluate_0.14     
+## [13] pillar_1.4.2       rlang_0.4.0        lazyeval_0.2.2    
+## [16] rstudioapi_0.10    labeling_0.3       webshot_0.5.1     
+## [19] downloader_0.4     htmlwidgets_1.3    igraph_1.2.4.1    
+## [22] munsell_0.5.0      compiler_3.6.1     influenceR_0.1.0  
+## [25] rgexf_0.15.3       xfun_0.9           pkgconfig_2.0.2   
+## [28] htmltools_0.3.6    tidyselect_0.2.5   tibble_2.1.3      
+## [31] gridExtra_2.3      XML_3.98-1.20      fansi_0.4.0       
+## [34] joki_0.4.0         viridisLite_0.3.0  crayon_1.3.4      
+## [37] withr_2.1.2        grid_3.6.1         jsonlite_1.6      
+## [40] gtable_0.3.0       lifecycle_0.1.0    magrittr_1.5      
+## [43] scales_1.0.0       cli_1.1.0          stringi_1.4.3     
+## [46] viridis_0.5.1      calibragem_0.8-0   ellipsis_0.3.0    
+## [49] brew_1.0-6         xts_0.11-2         vctrs_0.2.0       
+## [52] RColorBrewer_1.1-2 tools_3.6.1        glue_1.3.1        
+## [55] purrr_0.3.2        hms_0.5.1          Rook_1.1-1        
+## [58] yaml_2.2.0         colorspace_1.4-1   cinterop_0.3.0    
+## [61] uchronia_2.1.2</code></pre>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© CC-By CSIRO</div>   
+    <div class="nav-footer-right">This page is built with <a href="https://quarto.org/">Quarto</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Streamflow Forecasting Onboarding – install_windows</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../.././img/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../.././img/favicon.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../installation.html" aria-current="page">
+ <span class="menu-text">Installation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../documentation.html">
+ <span class="menu-text">Documentation</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/csiro-hydroinformatics/"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../installation.html" class="sidebar-item-text sidebar-link">Installation</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/installation/install_windows.html" class="sidebar-item-text sidebar-link active">Installation: Windows</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/installation/install_linux.html" class="sidebar-item-text sidebar-link">Installation: Debian based Linux</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/installation/install_macosx.html" class="sidebar-item-text sidebar-link">Installation: MacOSX</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/installation/install_docker.html" class="sidebar-item-text sidebar-link">Installation: via Docker</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#installing-shared-dynamic-libraries" id="toc-installing-shared-dynamic-libraries" class="nav-link active" data-scroll-target="#installing-shared-dynamic-libraries">Installing shared (dynamic) libraries</a>
+  <ul class="collapse">
+  <li><a href="#adding-environment-variable-library_path" id="toc-adding-environment-variable-library_path" class="nav-link" data-scroll-target="#adding-environment-variable-library_path">Adding environment variable LIBRARY_PATH</a></li>
+  </ul></li>
+  <li><a href="#installing-packages" id="toc-installing-packages" class="nav-link" data-scroll-target="#installing-packages">Installing packages</a>
+  <ul class="collapse">
+  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages">R packages</a>
+  <ul class="collapse">
+  <li><a href="#adding-an-r_libs-environment-variable" id="toc-adding-an-r_libs-environment-variable" class="nav-link" data-scroll-target="#adding-an-r_libs-environment-variable">Adding an R_LIBS environment variable</a></li>
+  <li><a href="#installing-an-r-package" id="toc-installing-an-r-package" class="nav-link" data-scroll-target="#installing-an-r-package">Installing an R package</a></li>
+  </ul></li>
+  <li><a href="#python-packages" id="toc-python-packages" class="nav-link" data-scroll-target="#python-packages">Python packages</a>
+  <ul class="collapse">
+  <li><a href="#python-environments" id="toc-python-environments" class="nav-link" data-scroll-target="#python-environments"><strong>Python environments</strong></a></li>
+  <li><a href="#installing-hydroforecast-packages" id="toc-installing-hydroforecast-packages" class="nav-link" data-scroll-target="#installing-hydroforecast-packages"><strong>Installing hydroforecast packages</strong></a></li>
+  <li><a href="#installing-hydroforecast-packages-in-dev-mode" id="toc-installing-hydroforecast-packages-in-dev-mode" class="nav-link" data-scroll-target="#installing-hydroforecast-packages-in-dev-mode"><strong>Installing hydroforecast packages in dev mode</strong></a></li>
+  </ul></li>
+  <li><a href="#matlab-functions" id="toc-matlab-functions" class="nav-link" data-scroll-target="#matlab-functions">Matlab functions</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<p>You will have been given one or more links to the location of C++ compiled libraries (windows DLLs), and R and/or Python packages.</p>
+<ul>
+<li>libs.7z</li>
+<li>R_pkgs.7z.7z</li>
+<li>python.7z</li>
+</ul>
+<section id="installing-shared-dynamic-libraries" class="level1">
+<h1>Installing shared (dynamic) libraries</h1>
+<p>This documentation is fairly prescriptive in terms of the location where you would install dynamic libraries. You can still choose the top level folder where you would install these libraries. This document uses “c:”, and you are encourage to adhere to this convention if you can logistically can.</p>
+<p>You may have <code>7z</code> in your command line prompt, otherwise use Windows Explorer to extract the zip file from the 7Zip graphical user interface :</p>
+<pre class="bat"><code>mkdir c:\local
+cd c:\local
+7z x libs.7z</code></pre>
+<p>This should have created the folder <code>C:\local\libs\64</code>. A 32 bits folder may be present but is deprecated since 2017-12: operating systems are now largely 64 bits and we strongly recommend you use 64 bits toolsets.</p>
+<section id="adding-environment-variable-library_path" class="level2">
+<h2 class="anchored" data-anchor-id="adding-environment-variable-library_path">Adding environment variable LIBRARY_PATH</h2>
+<p>The packages in R, python, (etc.) need a way to search for these native libraries. To do so, you should set up a User- or System-level environmental variable <code>LIBRARY_PATH</code>. The approach borrows from what is customary (albeit variable) on most Linux system for dynamic library resolution.</p>
+<p>Go to the Control Panel, System and Security, Search for the string “environment”, and it should give you the link to <strong>Edit environment variables for your account</strong>.</p>
+<ul>
+<li>for the field “Variable name:” use <code>LIBRARY_PATH</code></li>
+<li>for the field “Variable value:” use c:(if you unzipped libs.7z into c:in the previous section)</li>
+</ul>
+</section>
+</section>
+<section id="installing-packages" class="level1">
+<h1>Installing packages</h1>
+<p>You can choose to install various higher level languages: R, Python, Matlab, C# and potentially others.</p>
+<p>This section documents R and Python. You can install either, or both, depending on your needs.</p>
+<section id="r-packages" class="level2">
+<h2 class="anchored" data-anchor-id="r-packages">R packages</h2>
+<p>At the time of writing, instructions should work for R versions 4.2. It should be possible to install in ulterior versions but changes may be required. On Windows binary packages are version-specific, so by default packages for older versions may not be available, but could be built upon request.</p>
+<p>Most users will not (and should not) write to the default R library. You may already have installed additional packages, in which case R would have proposed to create a personal library instead. You can check this with: <code>.libPaths()</code></p>
+<pre><code>[1] "C:/Users/xxxyyy/AppData/Local/R/win-library/4.2"
+[2] "C:/Program Files/R/R-4.2.1/library"             </code></pre>
+<p>An alternate possibility is to specify a custom library directory via the <code>R_LIBS</code> environment variable.</p>
+<section id="adding-an-r_libs-environment-variable" class="level3">
+<h3 class="anchored" data-anchor-id="adding-an-r_libs-environment-variable">Adding an R_LIBS environment variable</h3>
+<p>This step is not compulsory.</p>
+<p>While not required, you can set up an additional R library location, specified via an environment variable <code>R_LIBS</code> at the machine or user level. This can facilitate access to R packages for all users and upgrades to newer version of R down the track. you can install the packages in the other library folders that R creates (user-specific if you do not have admin rights)</p>
+</section>
+<section id="installing-an-r-package" class="level3">
+<h3 class="anchored" data-anchor-id="installing-an-r-package">Installing an R package</h3>
+<p>You should have been given pre-compiled R packages. If you have for instance a USB drive mapped to E:, the following command should install swift, and all its depencency packages. This may take some time to set up once, but is worth it - most of these packages are publicly, popular R packages providing powerful statistical and visualisation tools to complement SWIFT2.</p>
+<p><code>swift</code> is the main modelling package, <code>uchronia</code> is a closely related package for multi-dimensional time series handling.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">'uchronia'</span>,<span class="st">'swift'</span>), <span class="at">repos=</span><span class="fu">c</span>(<span class="st">'file:///E:/software/R_pkgs'</span>, <span class="st">'https://cran.csiro.au'</span>), <span class="at">type=</span><span class="st">'win.binary'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Other related packages but less mature or less often used are available:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">'rpp'</span>,<span class="st">'calibragem'</span>), <span class="at">repos=</span><span class="fu">c</span>(<span class="st">'file:///E:/software/R_pkgs'</span>, <span class="st">'https://cran.csiro.au'</span>), <span class="at">type=</span><span class="st">'win.binary'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="python-packages" class="level2">
+<h2 class="anchored" data-anchor-id="python-packages">Python packages</h2>
+<section id="python-environments" class="level3">
+<h3 class="anchored" data-anchor-id="python-environments"><strong>Python environments</strong></h3>
+<p>We <strong>strongly</strong> advise you to use python virtual environments to execute these tools via python.</p>
+<p>There are various methods for these, but typically <code>venv</code> (virtual environments) or <code>conda</code></p>
+<p>This section documents the process using <code>conda</code>.</p>
+<p>We recommend you use <a href="https://docs.conda.io/en/latest/miniconda.html">miniconda3</a>, but you may have already it installed on your Windows box by e.g.&nbsp;your IT department installation management software.</p>
+<p>This document assumes you start from the base environment, for instance:</p>
+<pre class="text"><code>(base) C:\Users\xxxyyy&gt;conda env list
+# conda environments:
+#
+base                  *  C:\Users\xxxyyy\Miniconda3</code></pre>
+<p>We recommend you use the <code>mamba</code> package, a newer and faster drop-in replacement for <code>conda</code>. This is optional.</p>
+<pre class="bat"><code>conda install -c conda-forge mamba</code></pre>
+</section>
+<section id="installing-hydroforecast-packages" class="level3">
+<h3 class="anchored" data-anchor-id="installing-hydroforecast-packages"><strong>Installing hydroforecast packages</strong></h3>
+<p>Below remember to replace <code>mamba</code> by <code>conda</code> if you have not installed mamba.</p>
+<pre class="bat"><code>set env_name="hydrofc"
+mamba create -n %env_name% -c conda-forge python=3.9 xarray cffi pandas numpy matplotlib ipykernel jsonpickle netcdf4 seaborn
+REM note to self seaborn used in swift2 sample notebooks, so somewhat optional.</code></pre>
+<p>Register the new conda environment as a “kernel” for jupyter notebooks</p>
+<pre class="bat"><code>conda activate %env_name%
+python -m ipykernel install --user --name %env_name% --display-name "HFC"</code></pre>
+<p>From here on all commands are done from within this new conda environment</p>
+<p>You may already have <code>jupyter-lab</code> installed in another conda environment. You may use it to run ‘hydrofc’ notebooks. If not, install <code>jupyter-lab</code> in this new environment with:</p>
+<pre class="bat"><code>mamba install -c conda-forge jupyterlab</code></pre>
+<p>You may need to install some additional conda packages depending on the notebooks you are using.</p>
+<p>We can now install “our” packages. we can install from ‘wheels’, or from source code (for developers)</p>
+<p>Two dependencies <code>refcount</code> and <code>cinterop</code> are on pypi, but should also be in the zip archive as wheels as well; prefer the latter.</p>
+<p>To install “wheels”, which you may have gotten from a zip file:</p>
+<pre class="bat"><code>cd  C:\tmp\sf
+7z x python.7z
+
+:: Adapt the following to the versions you have.
+pip install --force-reinstall --no-deps refcount-0.9.3-py2.py3-none-any.whl
+pip install --force-reinstall --no-deps cinterop-0.9.0-py2.py3-none-any.whl
+pip install --force-reinstall --no-deps uchronia-2.3.7-py2.py3-none-any.whl
+pip install --force-reinstall --no-deps swift2-2.3.7-py2.py3-none-any.whl
+pip install --force-reinstall --no-deps fogss-0.3-py2.py3-none-any.whl</code></pre>
+</section>
+<section id="installing-hydroforecast-packages-in-dev-mode" class="level3">
+<h3 class="anchored" data-anchor-id="installing-hydroforecast-packages-in-dev-mode"><strong>Installing hydroforecast packages in dev mode</strong></h3>
+<p>To install instead in development mode, for some or all of the 4 packages:</p>
+<pre class="bat"><code>set GITHUB_REPOS=c:\src
+set CSIRO_BITBUCKET=c:\src</code></pre>
+<pre class="bat"><code>cd %GITHUB_REPOS%\pyrefcount
+python setup.py develop
+cd %GITHUB_REPOS%\c-interop\bindings\python\cinterop
+python setup.py develop
+
+cd %CSIRO_BITBUCKET%\datatypes\bindings\python\uchronia\
+python setup.py develop
+cd %CSIRO_BITBUCKET%\swift\bindings\python\swift2\
+python setup.py develop
+:: fogss...</code></pre>
+<p>Now to exploresample notebooks</p>
+<p><code>mamba install -c conda-forge seaborn</code></p>
+<pre class="bat"><code>cd %userprofile%\Documents
+mkdir notebooks
+xcopy %CSIRO_BITBUCKET%\swift\bindings\python\swift2\notebooks\* .\
+
+jupyter-lab .</code></pre>
+<p>start with getting_started.ipynb</p>
+<p>TODO: recommend using <code>nbstripout</code> and <code>jupytext</code></p>
+</section>
+</section>
+<section id="matlab-functions" class="level2">
+<h2 class="anchored" data-anchor-id="matlab-functions">Matlab functions</h2>
+<p>This section is a placeholder</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© CC-By CSIRO</div>   
+    <div class="nav-footer-right">This page is built with <a href="https://quarto.org/">Quarto</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>

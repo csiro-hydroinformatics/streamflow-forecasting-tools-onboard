@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Streamflow Forecasting Onboarding – log_likelihood</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../../">
+<link href="../../../../.././img/favicon.png" rel="icon" type="image/png">
+<script src="../../../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../../.././img/favicon.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../installation.html">
+ <span class="menu-text">Installation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../../documentation.html">
+ <span class="menu-text">Documentation</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/csiro-hydroinformatics/"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#sample-code-for-log-likelihood-calibration" id="toc-sample-code-for-log-likelihood-calibration" class="nav-link active" data-scroll-target="#sample-code-for-log-likelihood-calibration">Sample code for log-likelihood calibration</a></li>
+  <li><a href="#sample-code-for-log-likelihood-calibration-1" id="toc-sample-code-for-log-likelihood-calibration-1" class="nav-link" data-scroll-target="#sample-code-for-log-likelihood-calibration-1">Sample code for log-likelihood calibration</a></li>
+  <li><a href="#about-this-document" id="toc-about-this-document" class="nav-link" data-scroll-target="#about-this-document">About this document</a></li>
+  <li><a href="#setting-up-a-calibration-on-daily-data" id="toc-setting-up-a-calibration-on-daily-data" class="nav-link" data-scroll-target="#setting-up-a-calibration-on-daily-data">Setting up a calibration on daily data</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="sample-code-for-log-likelihood-calibration" class="level1">
+<h1>Sample code for log-likelihood calibration</h1>
+<p>Jean-Michel Perraud 2020-01-28</p>
+</section>
+<section id="sample-code-for-log-likelihood-calibration-1" class="level1">
+<h1>Sample code for log-likelihood calibration</h1>
+</section>
+<section id="about-this-document" class="level1">
+<h1>About this document</h1>
+<p>This document was generated from an R markdown file on 2020-01-28 10:54:01. It illustrates how to set up a calibration with a log-likelihood objective.</p>
+</section>
+<section id="setting-up-a-calibration-on-daily-data" class="level1">
+<h1>Setting up a calibration on daily data</h1>
+<p>We will use some sample data from (MMH - Minamata?) included in the package</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(swift)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(swift_sample_data)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sSpan <span class="ot">&lt;-</span> <span class="st">'1990-01-01/2005-12-31'</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>rain <span class="ot">&lt;-</span> <span class="fu">sampleSeries</span>(<span class="st">'MMH'</span>, <span class="st">'rain'</span>)[sSpan]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>evap <span class="ot">&lt;-</span> <span class="fu">sampleSeries</span>(<span class="st">'MMH'</span>, <span class="st">'evap'</span>)[sSpan]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>flow <span class="ot">&lt;-</span> <span class="fu">sampleSeries</span>(<span class="st">'MMH'</span>, <span class="st">'flow'</span>)[sSpan]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We need to adjust the observed flow, as the SWIFTv1 legacy missing value code is not consistent with default handling in SAK.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>flow[flow<span class="sc">&lt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s create a single catchment setup, using daily data. We need so specify the simulation time step to be consistent with the daily input data.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ms <span class="ot">&lt;-</span> <span class="fu">createSubarea</span>(<span class="st">'GR4J'</span>, <span class="fl">1.0</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">start</span>(rain)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">end</span>(rain)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">setSimulationSpan</span>(ms, s, e)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">setSimulationTimeStep</span>(ms, <span class="st">'daily'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Assign input time series</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>subAreaName <span class="ot">&lt;-</span> <span class="fu">getSubareaNames</span>(ms)[<span class="dv">1</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">playSubareaInput</span>(ms, <span class="at">input=</span>rain, subAreaName, <span class="st">"P"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">playSubareaInput</span>(ms, <span class="at">input=</span>evap, subAreaName, <span class="st">"E"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Model variables identifiers are hierarchical, with separators ‘.’ and ‘|’ supported. The “dot” notation should now be preferred, as some R functions producing data frames may change the variable names and replace some characters with ‘.’.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>subareaId <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"subarea."</span>, subAreaName)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>rootId <span class="ot">&lt;-</span> <span class="fu">paste0</span>(subareaId, <span class="st">"."</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">getVariableIds</span>(ms, subareaId))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##  [1] "areaKm2"       "P"             "E"             "runoff"       
+##  [5] "S"             "R"             "Ps"            "Es"           
+##  [9] "Pr"            "ech1"          "ech2"          "Perc"         
+## [13] "x1"            "x2"            "x3"            "x4"           
+## [17] "UHExponent"    "PercFactor"    "OutflowVolume" "OutflowRate"</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>gr4StateNames <span class="ot">&lt;-</span> <span class="fu">paste0</span>(rootId, <span class="fu">c</span>(<span class="st">'runoff'</span>, <span class="st">'S'</span>, <span class="st">'R'</span>, <span class="st">'Perc'</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (name <span class="cf">in</span> gr4StateNames) { <span class="fu">recordState</span>(ms, name) }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s check that one simulation runs fine, before we build a calibration definition.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">execSimulation</span>(ms)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sState <span class="ot">&lt;-</span> <span class="fu">getRecorded</span>(ms, gr4StateNames[<span class="dv">2</span>])</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(sState) <span class="ot">&lt;-</span> <span class="fu">shortVarId</span>(<span class="fu">names</span>(sState))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>zoo<span class="sc">::</span><span class="fu">plot.zoo</span>(sState)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-7-1.png" style="display:block; margin: auto"></p>
+<p>Let’s build the objective calculator that will guide the calibration process:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> uchronia<span class="sc">::</span><span class="fu">mkDate</span>(<span class="dv">1992</span>, <span class="dv">01</span>, <span class="dv">01</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>runoffDepthVarname <span class="ot">&lt;-</span> gr4StateNames[<span class="dv">1</span>]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>modRunoff <span class="ot">&lt;-</span> <span class="fu">getRecorded</span>(ms, runoffDepthVarname)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>zoo<span class="sc">::</span><span class="fu">index</span>(flow) <span class="ot">&lt;-</span> zoo<span class="sc">::</span><span class="fu">index</span>(modRunoff)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>objective <span class="ot">&lt;-</span> <span class="fu">createObjective</span>(ms, runoffDepthVarname, flow, <span class="st">'log-likelihood'</span>, w, e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Define the feasible parameter space, using a generic parameter set for the model parameters. This is ‘wrapped’ by a log-likelihood parameter set with the extra parameters used in the log likelihood calculation, but which exposes all the parameters as 8 independent degrees of freedom to the optimizer.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(pSpecGr4j <span class="ot">&lt;-</span> joki<span class="sc">::</span><span class="fu">getFreeParams</span>(<span class="st">'GR4J'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##   Name      Value Min  Max
+## 1   x1 650.488000   1 3000
+## 2   x2  -0.280648 -27   27
+## 3   x3   7.891230   1  660
+## 4   x4  18.917200   1  240</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pSpecGr4j<span class="sc">$</span>Value <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">542.1981111</span>, <span class="sc">-</span><span class="fl">0.4127542</span>, <span class="fl">7.7403390</span>, <span class="fl">1.2388548</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>pSpecGr4j<span class="sc">$</span>Min <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="sc">-</span><span class="dv">30</span>, <span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>pSpecGr4j<span class="sc">$</span>Max <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3000</span>, <span class="dv">30</span>, <span class="dv">1000</span>, <span class="dv">240</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>pSpecGr4j<span class="sc">$</span>Name <span class="ot">&lt;-</span> <span class="fu">paste0</span>(rootId, pSpecGr4j<span class="sc">$</span>Name)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>maxobs <span class="ot">&lt;-</span> <span class="fu">max</span>(flow, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">createParameterizer</span>(<span class="at">type=</span><span class="st">'Generic'</span>, <span class="at">specs=</span>pSpecGr4j)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">setLogLikParamKeys</span>(<span class="at">a=</span><span class="st">'a'</span>, <span class="at">b=</span><span class="st">'b'</span>, <span class="at">m=</span><span class="st">'m'</span>, <span class="at">s=</span><span class="st">'s'</span>, <span class="at">ct=</span><span class="st">"ct"</span>, <span class="at">censopt=</span><span class="st">'censopt'</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>censorThreshold <span class="ot">&lt;-</span> maxobs <span class="sc">/</span> <span class="dv">100</span> <span class="co"># TBC</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>censopt <span class="ot">&lt;-</span> <span class="fl">0.0</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>loglik <span class="ot">&lt;-</span> <span class="fu">createParameterizer</span>(<span class="at">type=</span><span class="st">'no apply'</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="fu">addToHyperCube</span>(loglik, </span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>          <span class="fu">data.frame</span>( <span class="at">Name=</span><span class="fu">c</span>(<span class="st">'b'</span>,<span class="st">'m'</span>,<span class="st">'s'</span>,<span class="st">'a'</span>,<span class="st">'maxobs'</span>,<span class="st">'ct'</span>, <span class="st">'censopt'</span>),</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>          <span class="at">Min   =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">30</span>, <span class="dv">0</span>, <span class="dv">1</span>,    <span class="sc">-</span><span class="dv">30</span>, maxobs, censorThreshold, censopt),</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">Max   =</span> <span class="fu">c</span>(<span class="dv">0</span>,   <span class="dv">0</span>, <span class="dv">1000</span>, <span class="dv">1</span>, maxobs, censorThreshold, censopt),</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">Value =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">7</span>,  <span class="dv">0</span>, <span class="dv">100</span>,  <span class="sc">-</span><span class="dv">10</span>, maxobs, censorThreshold, censopt),</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>          <span class="at">stringsAsFactors=</span><span class="cn">FALSE</span>) )</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">concatenateParameterizers</span>(p, loglik)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="fu">parameterizerAsDataFrame</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##                  Name         Min          Max       Value
+## 1  subarea.Subarea.x1   1.0000000 3000.0000000 542.1981111
+## 2  subarea.Subarea.x2 -30.0000000   30.0000000  -0.4127542
+## 3  subarea.Subarea.x3   1.0000000 1000.0000000   7.7403390
+## 4  subarea.Subarea.x4   1.0000000  240.0000000   1.2388548
+## 5                   b -30.0000000    0.0000000  -7.0000000
+## 6                   m   0.0000000    0.0000000   0.0000000
+## 7                   s   1.0000000 1000.0000000 100.0000000
+## 8                   a -30.0000000    1.0000000 -10.0000000
+## 9              maxobs  17.2211304   17.2211304  17.2211304
+## 10                 ct   0.1722113    0.1722113   0.1722113
+## 11            censopt   0.0000000    0.0000000   0.0000000</code></pre>
+<p>Check that the objective calculator works, at least with the default values in the feasible parameter space:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> <span class="fu">getScore</span>(objective, p)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## $scores
+## Log-likelihood 
+##      -463759.9 
+## 
+## $sysconfig
+##                  Name         Min          Max       Value
+## 1  subarea.Subarea.x1   1.0000000 3000.0000000 542.1981111
+## 2  subarea.Subarea.x2 -30.0000000   30.0000000  -0.4127542
+## 3  subarea.Subarea.x3   1.0000000 1000.0000000   7.7403390
+## 4  subarea.Subarea.x4   1.0000000  240.0000000   1.2388548
+## 5                   b -30.0000000    0.0000000  -7.0000000
+## 6                   m   0.0000000    0.0000000   0.0000000
+## 7                   s   1.0000000 1000.0000000 100.0000000
+## 8                   a -30.0000000    1.0000000 -10.0000000
+## 9              maxobs  17.2211304   17.2211304  17.2211304
+## 10                 ct   0.1722113    0.1722113   0.1722113
+## 11            censopt   0.0000000    0.0000000   0.0000000</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>modRunoff <span class="ot">&lt;-</span> <span class="fu">getRecorded</span>(ms, runoffDepthVarname)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>joki<span class="sc">::</span><span class="fu">plotTwoSeries</span>(flow, modRunoff, <span class="at">ylab=</span><span class="st">"obs/mod runoff"</span>, <span class="at">startTime =</span> <span class="fu">start</span>(flow), <span class="at">endTime =</span> <span class="fu">end</span>(flow))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-11-1.png" style="display:block; margin: auto"></p>
+<p>Build the optimiser definition, instrument with a logger.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># term &lt;- getMaxRuntimeTermination(maxHours = 0.3/60)  # ~20 second appears enough with SWIFT binaries in Release mode</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># term &lt;- getMarginalTermination(tolerance = 1e-06, cutoffNoImprovement = 10, maxHours = 0.3/60) </span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>term <span class="ot">&lt;-</span> swift<span class="sc">::</span><span class="fu">CreateSceTerminationWila_Pkg_R</span>(<span class="st">'relative standard deviation'</span>, <span class="fu">c</span>(<span class="st">'0.05'</span>,<span class="st">'0.0167'</span>))</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>sceParams <span class="ot">&lt;-</span> <span class="fu">getDefaultSceParameters</span>()</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>urs <span class="ot">&lt;-</span> <span class="fu">createParameterSampler</span>(<span class="dv">0</span>, p, <span class="st">'urs'</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>optimizer <span class="ot">&lt;-</span> <span class="fu">createSceOptimSwift</span>(objective, term, <span class="at">SCEpars=</span>sceParams, urs)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>calibLogger <span class="ot">&lt;-</span> <span class="fu">setCalibrationLogger</span>(optimizer, <span class="st">''</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>startTime <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">now</span>()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>calibResults <span class="ot">&lt;-</span> <span class="fu">executeOptimization</span>(optimizer)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>endTime <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">now</span>()</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>calibWallTime <span class="ot">&lt;-</span> endTime<span class="sc">-</span>startTime</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>( <span class="st">'Optimization completed in '</span>, calibWallTime, <span class="fu">attr</span>(calibWallTime, <span class="st">'units'</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## [1] "Optimization completed in  50.4119968414307 secs"</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">getLoggerContent</span>(optimizer)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>PointNumber <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(d)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>logMh <span class="ot">&lt;-</span> mhplot<span class="sc">::</span><span class="fu">mkOptimLog</span>(d, <span class="at">fitness =</span> <span class="st">'Log.likelihood'</span>, <span class="at">messages =</span> <span class="st">"Message"</span>, <span class="at">categories =</span> <span class="st">"Category"</span>) </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>geomOps <span class="ot">&lt;-</span> mhplot<span class="sc">::</span><span class="fu">subsetByMessage</span>(logMh)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(geomOps<span class="sc">@</span>data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>## 'data.frame':    2575 obs. of  16 variables:
+##  $ Category          : Factor w/ 7 levels "Complex No 0",..: 7 7 7 7 7 7 7 7 7 7 ...
+##  $ CurrentShuffle    : Factor w/ 37 levels "","0","1","10",..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Message           : Factor w/ 6 levels "Adding a random point in hypercube",..: 4 4 4 4 4 4 4 4 4 4 ...
+##  $ Log.likelihood    : num  -1.00e+20 -1.00e+20 -1.00e+20 -7.71e+05 -1.00e+20 ...
+##  $ a                 : num  -17.63 -26.11 -3.56 -28.56 -14.85 ...
+##  $ b                 : num  -24.79 -4.05 -5.19 -4.51 -7.93 ...
+##  $ censopt           : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ ct                : num  0.172 0.172 0.172 0.172 0.172 ...
+##  $ m                 : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ maxobs            : num  17.2 17.2 17.2 17.2 17.2 ...
+##  $ s                 : num  710 977 784 196 354 ...
+##  $ subarea.Subarea.x1: num  2843 227 1651 2993 224 ...
+##  $ subarea.Subarea.x2: num  23 13.5 -13.6 26.2 -26.1 ...
+##  $ subarea.Subarea.x3: num  62.2 611.4 425.9 246.5 658.5 ...
+##  $ subarea.Subarea.x4: num  161.9 223.4 120 190.2 65.7 ...
+##  $ PointNumber       : int  1 2 3 4 5 6 7 8 9 10 ...</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>pVarIds <span class="ot">&lt;-</span> (<span class="fu">parameterizerAsDataFrame</span>(p))<span class="sc">$</span>Name</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pVar <span class="cf">in</span> pVarIds) {</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(mhplot<span class="sc">::</span><span class="fu">plotParamEvolution</span>(geomOps, pVar))</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-1.png" style="display:block; margin: auto"><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-2.png" style="display:block; margin: auto"><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-3.png" style="display:block; margin: auto"><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-4.png" style="display:block; margin: auto"><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-5.png" style="display:block; margin: auto"><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-6.png" style="display:block; margin: auto"><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-7.png" style="display:block; margin: auto"><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-8.png" style="display:block; margin: auto"><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-9.png" style="display:block; margin: auto"><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-10.png" style="display:block; margin: auto"><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-15-11.png" style="display:block; margin: auto"></p>
+<p>Finally, get a visual of the runoff time series with the best known parameter set (the penultimate entry in the data frame with the log of the calibration process).</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>sortedResults <span class="ot">&lt;-</span> <span class="fu">sortByScore</span>(calibResults, <span class="st">'Log-likelihood'</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">scoresAsDataFrame</span>(sortedResults))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>##   Log.likelihood subarea.Subarea.x1 subarea.Subarea.x2 subarea.Subarea.x3
+## 1       2924.671           266.1925          -29.60785           773.6771
+## 2       2923.107           191.3387          -29.28017           824.4254
+## 3       2920.818           176.7221          -27.53492           866.5888
+## 4       2911.518           177.2337          -28.48846           789.2143
+## 5       2911.046           280.0083          -28.70505           771.3981
+## 6       2902.444           231.8093          -26.57367           809.7063
+##   subarea.Subarea.x4         b m        s         a   maxobs        ct
+## 1           1.033368 -1.850320 0 1.099840 -4.939078 17.22113 0.1722113
+## 2           1.147338 -2.099422 0 1.242173 -5.096023 17.22113 0.1722113
+## 3           1.032679 -2.056026 0 1.189237 -5.143367 17.22113 0.1722113
+## 4           1.165675 -2.045539 0 1.146694 -4.928836 17.22113 0.1722113
+## 5           1.082458 -2.118719 0 1.143031 -4.991464 17.22113 0.1722113
+## 6           1.035202 -2.024382 0 1.165068 -5.007636 17.22113 0.1722113
+##   censopt
+## 1       0
+## 2       0
+## 3       0
+## 4       0
+## 5       0
+## 6       0</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>bestPset <span class="ot">&lt;-</span> <span class="fu">getScoreAtIndex</span>(sortedResults, <span class="dv">1</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">applySysConfig</span>(bestPset, ms)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">execSimulation</span>(ms)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>modRunoff <span class="ot">&lt;-</span> <span class="fu">getRecorded</span>(ms, runoffDepthVarname)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>joki<span class="sc">::</span><span class="fu">plotTwoSeries</span>(flow, modRunoff, <span class="at">ylab=</span><span class="st">"obs/mod runoff"</span>, <span class="at">startTime =</span> <span class="fu">start</span>(flow), <span class="at">endTime =</span> <span class="fu">end</span>(flow))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="./log_likelihood_files/figure-gfm/unnamed-chunk-16-1.png" style="display:block; margin: auto"></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© CC-By CSIRO</div>   
+    <div class="nav-footer-right">This page is built with <a href="https://quarto.org/">Quarto</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>
