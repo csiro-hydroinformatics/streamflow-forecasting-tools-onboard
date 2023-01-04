@@ -1,0 +1,24 @@
+---
+title: "Documentation"
+---
+
+Pointers to further technical documentation for using or developing features.
+
+# Sample workflows for modellers
+
+# Technical references
+
+[uchronia time series API documentation](https://csiro-hydroinformatics.github.io/uchronia-ts-doc)
+
+## Build pipelines
+
+The source code for Azure Devops pipelines are also available as of 2023-01 from github. Their public availability may change in the future though.
+
+* [hydro-forecast-windows-pipeline](https://github.com/csiro-hydroinformatics/hydro-forecast-windows-pipeline)
+* [hydro-forecast-linux-pipeline](https://github.com/csiro-hydroinformatics/hydro-forecast-linux-pipeline)
+
+# Publications
+
+[SWIFT2: High performance software for short-medium term ensemble streamflow forecasting research and operations](https://www.mssanz.org.au/modsim2015/L15/perraud.pdf)
+
+[SWIFT2: Advanced software for continuous ensemble short-term streamflow forecasting ](https://search.informit.com.au/documentSummary;dn=823693257390059;res=IELENG)

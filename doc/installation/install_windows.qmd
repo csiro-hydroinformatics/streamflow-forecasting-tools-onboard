@@ -1,12 +1,10 @@
-# Installing ensemble streamflow forecasting tools on Windows
-
 You will have been given one or more links to the location of C++ compiled libraries (windows DLLs), and R and/or Python packages.
 
 * libs.7z
 * R_pkgs.7z.7z
 * python.7z
 
-## Installing shared (dynamic) libraries
+# Installing shared (dynamic) libraries
 
 This documentation is fairly prescriptive in terms of the location where you would install dynamic libraries. You can still choose the top level folder where you would install these libraries. This document uses "c:\local", and you are encourage to adhere to this convention if you can logistically can.
 
@@ -20,7 +18,7 @@ cd c:\local
 
 This should have created the folder `C:\local\libs\64`. A 32 bits folder may be present but is deprecated since 2017-12: operating systems are now largely 64 bits and we strongly recommend you use 64 bits toolsets.
 
-### Adding environment variable LIBRARY_PATH
+## Adding environment variable LIBRARY_PATH
 
 The packages in R, python, (etc.) need a way to search for these native libraries. To do so, you should set up a User- or System-level environmental variable `LIBRARY_PATH`. The approach borrows from what is customary (albeit variable) on most Linux system for dynamic library resolution.
 
@@ -29,13 +27,13 @@ Go to the Control Panel, System and Security\System, Search for the string "envi
 * for the field "Variable name:" use `LIBRARY_PATH`
 * for the field "Variable value:" use c:\local\libs  (if you unzipped libs.7z into c:\local in the previous section)
 
-## Installing packages
+# Installing packages
 
 You can choose to install various higher level languages: R, Python, Matlab, C# and potentially others.
 
 This section documents R and Python. You can install either, or both, depending on your needs.
 
-### R packages
+## R packages
 
 At the time of writing, instructions should work for R versions 4.2. It should be possible to install in ulterior versions but changes may be required. On Windows binary packages are version-specific, so by default packages for older versions may not be available, but could be built upon request.
 
@@ -48,13 +46,13 @@ Most users will not (and should not) write to the default R library. You may alr
 
 An alternate possibility is to specify a custom library directory via the `R_LIBS` environment variable.
 
-#### Adding an R_LIBS environment variable
+### Adding an R_LIBS environment variable
 
 This step is not compulsory.
 
 While not required, you can set up an additional R library location, specified via an environment variable `R_LIBS` at the machine or user level. This can facilitate access to R packages for all users and upgrades to newer version of R down the track. you can install the packages in the other library folders that R creates (user-specific if you do not have admin rights)
 
-#### Installing an R package
+### Installing an R package
 
 You should have been given pre-compiled R packages. If you have for instance a USB drive mapped to E:, the following command should install swift, and all its depencency packages. This may take some time to set up once, but is worth it - most of these packages are publicly, popular R packages providing powerful statistical and visualisation tools to complement SWIFT2.
 
@@ -70,9 +68,9 @@ Other related packages but less mature or less often used are available:
 install.packages(c('rpp','calibragem'), repos=c('file:///E:/software/R_pkgs', 'https://cran.csiro.au'), type='win.binary')
 ```
 
-### Python packages
+## Python packages
 
-#### __Python environments__
+### __Python environments__
 
 We **strongly** advise you to use python virtual environments to execute these tools via python.
 
@@ -97,7 +95,7 @@ We recommend you use the `mamba` package, a newer and faster drop-in replacement
 conda install -c conda-forge mamba
 ```
 
-#### __Installing hydroforecast packages__
+### __Installing hydroforecast packages__
 
 Below remember to replace `mamba` by `conda` if you have not installed mamba.
 
@@ -142,7 +140,7 @@ pip install --force-reinstall --no-deps swift2-2.3.7-py2.py3-none-any.whl
 pip install --force-reinstall --no-deps fogss-0.3-py2.py3-none-any.whl
 ```
 
-#### __Installing hydroforecast packages in dev mode__
+### __Installing hydroforecast packages in dev mode__
 
 To install instead in development mode, for some or all of the 4 packages:
 
@@ -180,6 +178,6 @@ start with getting_started.ipynb
 
 TODO: recommend using `nbstripout` and `jupytext`
 
-### Matlab functions
+## Matlab functions
 
 This section is a placeholder

@@ -1,0 +1,89 @@
+project:
+  type: website
+
+website:
+  title: "Streamflow Forecasting Onboarding"
+  site-url: https://nasa-openscapes.github.io/
+  favicon: ./img/favicon.png  
+  image: ./img/favicon.png  
+
+  page-footer: 
+    right: "This page is built with ❤️ and [Quarto](https://quarto.org/)"
+    left: "&copy; CC-By CSIRO"
+
+  navbar:
+    logo: ./img/favicon.png
+    href: https://openscapes.org
+    title: false
+    collapse-below: lg
+    left:
+      - href: index.qmd
+        text: Home
+      # - text: "About"
+      #   href: about.qmd
+      - text: "Installation"
+        href: installation.qmd
+      - text: "Documentation"
+        href: documentation.qmd
+      # - text: "Cookbook"
+      #   href: cookbook-navbar-page.qmd
+      # - text: "Events"
+      #   href: events.qmd
+    right:
+      - icon: github
+        href: https://github.com/csiro-hydroinformatics/
+      # - icon: twitter
+      #   href: https://twitter.com/openscapes
+
+  sidebar:
+    - id: installation
+      title: "Installation"
+      style: "floating"
+      collapse-level: 2
+      align: left
+      contents:
+        - installation.qmd
+        - text: "Installation: Windows"
+          href: doc/installation/install_windows.qmd
+        - text: "Installation: Debian based Linux"
+          href: doc/installation/install_linux.qmd
+        - text: "Installation: MacOSX"
+          href: doc/installation/install_macosx.qmd
+        - text: "Installation: via Docker"
+          href: doc/installation/install_docker.qmd
+    - id: documentation
+      title: "Documentation"
+      style: "floating"
+      collapse-level: 2
+      align: left
+      contents:
+        # - doc/installation/index.qmd
+        - text: ""
+          href: doc/blah.qmd
+        - text: ""
+          href: doc/blah.qmd
+        - text: "Developer documentation"
+          href: doc/blah.qmd
+        - text: "Examples in R"
+          href: doc/sample_workflows.md
+        - section: "R swift package vignettes"
+          contents:
+            - doc/vignettes/getting_started/getting_started.md
+            - doc/vignettes/ensemble_model_runs/ensemble_model_runs.md
+            - doc/vignettes/ensemble_forecast_model_runs/ensemble_forecast_model_runs.md
+            - doc/vignettes/meta_parameters/meta_parameters.md
+            - doc/vignettes/calibrate_multisite/calibrate_multisite.md
+            - doc/vignettes/calibrate_subcatchments/calibrate_subcatchments.md
+            - doc/vignettes/calibration_initial_states/calibration_initial_states.md) 
+            - doc/vignettes/error_correction_four_stages/error_correction_four_stages.md)
+            - doc/vignettes/muskingum_multilink_calibration/muskingum_multilink_calibration.md
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc-title: Contents
+    toc-location: right
+
+

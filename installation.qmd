@@ -1,0 +1,11 @@
+---
+title: "Installation"
+---
+
+Software packages are not all publicly downloadable, but access for evaluation or research purposes can easily be arranged upon request. Contact [jean-michel.perraud@csiro.au](mailto:jean-michel.perraud@csiro.au) and/or [david.robertson@csiro.au](mailto:david.robertson@csiro.au). Once you have received a link to downloadable packages and files, follow the instructions for your platform:
+
+* [Installing on Window](./doc/installation/install_windows.qmd)
+* [Installing on Linux](./doc/installation/install_linux.qmd)
+* [Installing on MacOSX](./doc/installation/install_linux.qmd)
+
+We intend to also provide in the future a [docker container](./doc/installation/install_docker.qmd)
