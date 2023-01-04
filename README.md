@@ -6,7 +6,7 @@ This repository is a public entry point for people interested in a suite of hydr
 
 ## Capabilities
 
-This documentation introduces a set of software tools for ensemble streamflow forecasting techniques. The core is written in C++, but in practice users access the features via packages in R, python, or Matlab. Hands-on hydrologic modellers can browse through some [sample modelling workflows in R package vignettes](./doc/sample_workflows.md) to get an idea of the features.
+This documentation introduces a set of software tools for ensemble streamflow forecasting techniques. The core is written in C++, but in practice users access the features via packages in R, python, or Matlab. Hands-on hydrologic modellers can browse through some [sample modelling workflows in R package vignettes](./doc/samples/sample_workflows_r.md) to get an idea of the features.
 
 An overview of the research and outcomes is available [at this page](https://www.csiro.au/en/Research/LWF/Areas/Water/Assessing-water-resources/WIRADA/Research/Water-forecasting).
 

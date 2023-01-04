@@ -6,6 +6,8 @@ Pointers to further technical documentation for using or developing features.
 
 # Sample workflows for modellers
 
+[R](./doc/samples/sample_workflows_r.md)
+
 # Technical references
 
 [uchronia time series API documentation](https://csiro-hydroinformatics.github.io/uchronia-ts-doc)

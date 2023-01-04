@@ -65,18 +65,18 @@ website:
         - text: "Developer documentation"
           href: doc/blah.qmd
         - text: "Examples in R"
-          href: doc/sample_workflows.md
+          href: doc/samples/sample_workflows_r.md
         - section: "R swift package vignettes"
           contents:
-            - doc/vignettes/getting_started/getting_started.md
-            - doc/vignettes/ensemble_model_runs/ensemble_model_runs.md
-            - doc/vignettes/ensemble_forecast_model_runs/ensemble_forecast_model_runs.md
-            - doc/vignettes/meta_parameters/meta_parameters.md
-            - doc/vignettes/calibrate_multisite/calibrate_multisite.md
-            - doc/vignettes/calibrate_subcatchments/calibrate_subcatchments.md
-            - doc/vignettes/calibration_initial_states/calibration_initial_states.md) 
-            - doc/vignettes/error_correction_four_stages/error_correction_four_stages.md)
-            - doc/vignettes/muskingum_multilink_calibration/muskingum_multilink_calibration.md
+            - doc/samples/R/vignettes/getting_started/getting_started.md
+            - doc/samples/R/vignettes/ensemble_model_runs/ensemble_model_runs.md
+            - doc/samples/R/vignettes/ensemble_forecast_model_runs/ensemble_forecast_model_runs.md
+            - doc/samples/R/vignettes/meta_parameters/meta_parameters.md
+            - doc/samples/R/vignettes/calibrate_multisite/calibrate_multisite.md
+            - doc/samples/R/vignettes/calibrate_subcatchments/calibrate_subcatchments.md
+            - doc/samples/R/vignettes/calibration_initial_states/calibration_initial_states.md) 
+            - doc/samples/R/vignettes/error_correction_four_stages/error_correction_four_stages.md)
+            - doc/samples/R/vignettes/muskingum_multilink_calibration/muskingum_multilink_calibration.md
 
 format:
   html:
