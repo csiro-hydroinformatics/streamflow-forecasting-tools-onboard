@@ -6,7 +6,7 @@ Pointers to further technical documentation for using or developing features.
 
 # Sample workflows for modellers
 
-[R](./doc/samples/sample_workflows_r.md)
+* [R package vignettes for the swift packages](./doc/samples/sample_workflows_r.md)
 
 # Technical references
 

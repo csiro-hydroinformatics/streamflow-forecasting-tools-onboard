@@ -2,7 +2,7 @@
 title: "Streamflow Forecasting"
 ---
 
-This site is a public entry point for people interested in a suite of hydrologic ensemble forecasting modelling tools developped by the [CSIRO](https://www.csiro.au) over the past decade. While featuring unique features for ensemble streamflow forecasting, they can equally be used in non-ensemble simulation mode for other semi-distributed hydrologic modelling.
+This site is a public entry point for a suite of hydrologic ensemble forecasting modelling tools developed by the [CSIRO](https://www.csiro.au) over the past decade. While designed with unique features for ensemble streamflow forecasting, they can equally be used in non-ensemble simulation mode for other semi-distributed hydrologic modelling.
 
 # Applications
 
@@ -10,7 +10,7 @@ A subset of the tools is used by the Australian Bureau of Meteorology to provide
 
 More recent versions of the tools are also used for research and development. The core modelling features are usually native (C++) libraries, accessed seamlessly by user from R, Python and Matlab.
 
-![Ensemble forecasting simulation](./img/ens_streamflow_forecast.png "Ensemble forecasting simulation run from an R script")
+![Ensemble forecasting simulation run from an R script](./img/ens_streamflow_forecast.png "Ensemble forecasting simulation run from an R script")
 
 Hands-on hydrologic modellers can browse through some [sample modelling workflows in R package vignettes](./doc/samples/sample_workflows_r.md) to get an idea of the features.
 

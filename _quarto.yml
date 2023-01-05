@@ -3,28 +3,30 @@ project:
 
 website:
   title: "Streamflow Forecasting Onboarding"
-  site-url: https://nasa-openscapes.github.io/
+  site-url: https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/
   favicon: ./img/favicon.png  
   image: ./img/favicon.png  
 
   page-footer: 
-    right: "This page is built with ❤️ and [Quarto](https://quarto.org/)"
+    right: "This page is built with [Quarto](https://quarto.org/)"
     left: "&copy; CC-By CSIRO"
 
   navbar:
     logo: ./img/favicon.png
-    href: https://openscapes.org
+    href: https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/
     title: false
     collapse-below: lg
     left:
-      - href: index.qmd
-        text: Home
+      - text: Home
+        href: index.qmd
       # - text: "About"
       #   href: about.qmd
       - text: "Installation"
         href: installation.qmd
       - text: "Documentation"
         href: documentation.qmd
+      - text: "FAQ"
+        href: faq.qmd
       # - text: "Cookbook"
       #   href: cookbook-navbar-page.qmd
       # - text: "Events"
@@ -57,16 +59,9 @@ website:
       collapse-level: 2
       align: left
       contents:
-        # - doc/installation/index.qmd
-        - text: ""
-          href: doc/blah.qmd
-        - text: ""
-          href: doc/blah.qmd
-        - text: "Developer documentation"
-          href: doc/blah.qmd
-        - text: "Examples in R"
+        - documentation.qmd
+        - section: "Examples in R"
           href: doc/samples/sample_workflows_r.md
-        - section: "R swift package vignettes"
           contents:
             - doc/samples/R/vignettes/getting_started/getting_started.md
             - doc/samples/R/vignettes/ensemble_model_runs/ensemble_model_runs.md
@@ -74,14 +69,19 @@ website:
             - doc/samples/R/vignettes/meta_parameters/meta_parameters.md
             - doc/samples/R/vignettes/calibrate_multisite/calibrate_multisite.md
             - doc/samples/R/vignettes/calibrate_subcatchments/calibrate_subcatchments.md
-            - doc/samples/R/vignettes/calibration_initial_states/calibration_initial_states.md) 
-            - doc/samples/R/vignettes/error_correction_four_stages/error_correction_four_stages.md)
+            - doc/samples/R/vignettes/calibration_initial_states/calibration_initial_states.md
+            - doc/samples/R/vignettes/error_correction_four_stages/error_correction_four_stages.md
             - doc/samples/R/vignettes/muskingum_multilink_calibration/muskingum_multilink_calibration.md
+        - text: "Developer documentation"
+          href: doc/developer.qmd
 
 format:
   html:
-    theme: cosmo
+    theme:
+      light: cosmo
+      dark: darkly
     css: styles.css
+    highlight-style: breeze
     toc: true
     toc-title: Contents
     toc-location: right
