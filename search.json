@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Streamflow Forecasting",
     "section": "",
-    "text": "This site is a public entry point for people interested in a suite of hydrologic ensemble forecasting modelling tools developped by the CSIRO over the past decade. While featuring unique features for ensemble streamflow forecasting, they can equally be used in non-ensemble simulation mode for other semi-distributed hydrologic modelling.\n\nApplications\nA subset of the tools is used by the Australian Bureau of Meteorology to provide the 7-day Ensemble Streamflow Forecasts service.\nMore recent versions of the tools are also used for research and development. The core modelling features are usually native (C++) libraries, accessed seamlessly by user from R, Python and Matlab.\n\n\n\n\n\nEnsemble forecasting simulation\n\n\nHands-on hydrologic modellers can browse through some sample modelling workflows in R package vignettes to get an idea of the features.\n\n\nInstallation\nPackages are available for installation on Windows, Debian/Ubuntu Linux, and MacOSX. They currently cannot all be made publicly downloadable, but access for evaluation or research purposes can usually easily be arranged upon request. Contact David Robertson at david.robertson@csiro.au and/or jean-michel.perraud@csiro.au. Then follow the instructions at the Installation page.\n\n\nArchitecture\n\n\n\n\n\nSoftware stack\n\n\nThis documentation introduces a set of software tools for ensemble streamflow forecasting techniques. The core is written in C++, but in practice users access the features via packages in R, python, or Matlab.\nAn overview of the research and outcomes is available at this page.\nA high level description of the software stack with the main components follows. This stack is built mostly on open source software; see csiro-hydroinformatics, notably uchronia-time-series. We also intend to open source the semi-distributed modelling engine.\n\n\nGetting started\nIn R you can access samples via vignettes in the packages:\nlibrary(swift)\nlibrary(uchronia)\nbrowseVignettes('swift')\nYou can access the wider package documentation using the command ?swift, and navigate down the page to the footer [Package swift version 0.7.7 Index] (yes, admitedly there should be an easier way…). Click on the Index hyperlink of that footer. Note that you will find a very long list of functions but functions postfixed _R should not be used as primary building blocks in your scripts.\n\n\nTroubleshooting\n\n\nFAQ\n\n\nAcknowledgements\nMost of the tools covered by this documentation is the output of research supported by the Water Information Research and Development Alliance between CSIRO and the Australian Bureau of Meteorology.\n\n\nPublications\nSWIFT2: High performance software for short-medium term ensemble streamflow forecasting research and operations\nSWIFT2: Advanced software for continuous ensemble short-term streamflow forecasting"
+    "text": "This site is a public entry point for a suite of hydrologic ensemble forecasting modelling tools developed by the CSIRO over the past decade. While designed with unique features for ensemble streamflow forecasting, they can equally be used in non-ensemble simulation mode for other semi-distributed hydrologic modelling.\n\nApplications\nA subset of the tools is used by the Australian Bureau of Meteorology to provide the 7-day Ensemble Streamflow Forecasts service.\nMore recent versions of the tools are also used for research and development. The core modelling features are usually native (C++) libraries, accessed seamlessly by user from R, Python and Matlab.\n\n\n\n\n\nEnsemble forecasting simulation run from an R script\n\n\nHands-on hydrologic modellers can browse through some sample modelling workflows in R package vignettes to get an idea of the features.\n\n\nInstallation\nPackages are available for installation on Windows, Debian/Ubuntu Linux, and MacOSX. They currently cannot all be made publicly downloadable, but access for evaluation or research purposes can usually easily be arranged upon request. Contact David Robertson at david.robertson@csiro.au and/or jean-michel.perraud@csiro.au. Then follow the instructions at the Installation page.\n\n\nArchitecture\n\n\n\n\n\nSoftware stack\n\n\nThis documentation introduces a set of software tools for ensemble streamflow forecasting techniques. The core is written in C++, but in practice users access the features via packages in R, python, or Matlab.\nAn overview of the research and outcomes is available at this page.\nA high level description of the software stack with the main components follows. This stack is built mostly on open source software; see csiro-hydroinformatics, notably uchronia-time-series. We also intend to open source the semi-distributed modelling engine.\n\n\nGetting started\nIn R you can access samples via vignettes in the packages:\nlibrary(swift)\nlibrary(uchronia)\nbrowseVignettes('swift')\nYou can access the wider package documentation using the command ?swift, and navigate down the page to the footer [Package swift version 0.7.7 Index] (yes, admitedly there should be an easier way…). Click on the Index hyperlink of that footer. Note that you will find a very long list of functions but functions postfixed _R should not be used as primary building blocks in your scripts.\n\n\nTroubleshooting\n\n\nFAQ\n\n\nAcknowledgements\nMost of the tools covered by this documentation is the output of research supported by the Water Information Research and Development Alliance between CSIRO and the Australian Bureau of Meteorology.\n\n\nPublications\nSWIFT2: High performance software for short-medium term ensemble streamflow forecasting research and operations\nSWIFT2: Advanced software for continuous ensemble short-term streamflow forecasting"
   },
   {
     "objectID": "installation.html",
@@ -26,13 +26,6 @@
     "title": "Documentation",
     "section": "Build pipelines",
     "text": "Build pipelines\nThe source code for Azure Devops pipelines are also available as of 2023-01 from github. Their public availability may change in the future though.\n\nhydro-forecast-windows-pipeline\nhydro-forecast-linux-pipeline"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site"
   },
   {
     "objectID": "doc/notes.html",
@@ -161,6 +154,13 @@
     "text": "Sample modelling workflows\nThe following documents are extracted from the vignettes in the R package swift\n\nGetting started with the swift R package\nEnsemble SWIFT model runs\nEnsemble forecast model runs\nCalibrating tied meta parameters\nMultisite multiobjective calibration\nCalibration of subcatchments defined by multiple gauges in a catchment\nCalibration with initial model memory states as parameters\n\nError correction models - Elaboration\nLinear Muskingum channel routing model - constrained subcatchment calibration"
   },
   {
+    "objectID": "doc/developer.html",
+    "href": "doc/developer.html",
+    "title": "Developer documentation",
+    "section": "",
+    "text": "“cruise-control” (restricted link) contains detailed instructions for building and maintaining the software stack, and deploying it on CSIRO organisational infrastructure. Most of its content is also available in previous public links.\n\nTechnical blog posts\nA few posts that are related to this hydrologic simulation software stack:\n\nPresenting doxygen C++ API documentation via MkDocs with doxybook2\nGenerate programming language bindings to a C API\nAzure devops CI pipeline for hydrologic forecasting software\nCompiling C++ libraries to WebAssembly - Part 1\n\n\n\nRelease and versioning\nThe streamflow forecasting software stack comprise a dozen or so public or private git repositories. Co-evloving these repositories is not trivial. Each component may have a versioning rationale that is orthogonal to others. However for reproducibility we need to have “meta-releases” that are aggregates of components with a clear, traceable lineage.\nAs of 2023-01:\n\nDiagram that explains the overarching system to release/tag."
+  },
+  {
     "objectID": "doc/roadmap.html",
     "href": "doc/roadmap.html",
     "title": "Streamflow Forecasting Onboarding",
@@ -222,5 +222,12 @@
     "title": "Streamflow Forecasting Onboarding",
     "section": "Matlab functions",
     "text": "Matlab functions\nThis section is a placeholder"
+  },
+  {
+    "objectID": "faq.html",
+    "href": "faq.html",
+    "title": "Frequently Asked Questions",
+    "section": "",
+    "text": "Can I use these hydrologic simulation tool for my project?\nIt depends…"
   }
 ]
