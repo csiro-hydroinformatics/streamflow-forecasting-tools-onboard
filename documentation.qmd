@@ -7,10 +7,12 @@ Pointers to further technical documentation for using or developing features.
 # Sample workflows for modellers
 
 * [R package vignettes for the swift packages](./doc/samples/sample_workflows_r.md)
+* [jupyter notebooks for the python packages swift2](https://csiro-hydroinformatics.github.io/swift-py-doc/notebooks/getting_started/)
 
 # Technical references
 
-[uchronia time series API documentation](https://csiro-hydroinformatics.github.io/uchronia-ts-doc)
+* [python packages swift2](https://csiro-hydroinformatics.github.io/swift-py-doc)
+* [uchronia time series API documentation](https://csiro-hydroinformatics.github.io/uchronia-ts-doc)
 
 ## Build pipelines
 
