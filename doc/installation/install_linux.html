@@ -216,6 +216,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../doc/installation/install_docker.html" class="sidebar-item-text sidebar-link">Installation: via Docker</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/installation/install_source.html" class="sidebar-item-text sidebar-link">Installation: From source code</a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -243,26 +248,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>As of Jan 2020, Debian binary packages can be built and installed.</p>
+<p>As of Jan 2020, Debian <code>.deb</code> binary packages can be built and installed, instead of installing from source code. Ubuntu-flavoured linux distributions use debian packages to manage software installation. This has been done practically a few times to set up servers, but this remains a novel installation medium as of 2023 and you should feel free to seek advice and help as need be.</p>
+<p>You should have received an archive (“zip file” or similar) that contains the following folders:</p>
+<ul>
+<li>deb_pkgs: installable Debian packages</li>
+<li>py_pkgs: installable Python packages (wheels)</li>
+<li>r_pkgs: installable R packages (R source packages tarballs)</li>
+</ul>
+<p><code>cd deb_pkgs</code></p>
+<p>There are various user arrangements to install packages; one command line application is <code>dpkg</code>. You may (probably) need administrative rights to install software though. Adapt the following, or a subset, to the package version you have:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libmoirai_1.0-1_amd64.deb</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libuchronia_2.3-7_amd64.deb</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libswift_2.3-7_amd64.deb</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libqppcore_2.3-7_amd64.deb</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libqpp_2.3-7_amd64.deb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">libboost-threadpool-dev_0.2-6_amd64.deb</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">libcinterop-dev_1.1-1_amd64.deb</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">libwila-dev_0.7-2_amd64.deb</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">libmoirai-dev_1.0-1_amd64.deb</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">libqppcore-dev_2.3-7_amd64.deb</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">libqpp-dev_2.3-7_amd64.deb</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">libsfsl-dev_2.3-1_amd64.deb</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">libswift-dev_2.3-7_amd64.deb</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">libuchronia-dev_2.3-7_amd64.deb</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">libmoirai-dbgsym_1.0-1_amd64.deb</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">libqppcore-dbgsym_2.3-7_amd64.deb</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">libqpp-dbgsym_2.3-7_amd64.deb</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">libuchronia-dbgsym_2.3-7_amd64.deb</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">libswift-dbgsym_2.3-7_amd64.deb</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you are planning to develop applications in C++, you will need to install header files:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libboost-threadpool-dev_0.2-6_amd64.deb</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libcinterop-dev_1.1-1_amd64.deb</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libwila-dev_0.7-2_amd64.deb</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libmoirai-dev_1.0-1_amd64.deb</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libqppcore-dev_2.3-7_amd64.deb</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libqpp-dev_2.3-7_amd64.deb</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libsfsl-dev_2.3-1_amd64.deb</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libswift-dev_2.3-7_amd64.deb</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libuchronia-dev_2.3-7_amd64.deb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>An advanced use case is to install debug symbols, but this is hypothetical as most core developpers so far have access to the source code of the software stack and work from this.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libmoirai-dbgsym_1.0-1_amd64.deb</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libqppcore-dbgsym_2.3-7_amd64.deb</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libqpp-dbgsym_2.3-7_amd64.deb</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libuchronia-dbgsym_2.3-7_amd64.deb</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dpkg <span class="at">-i</span> libswift-dbgsym_2.3-7_amd64.deb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 

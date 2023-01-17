@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Streamflow Forecasting",
     "section": "",
-    "text": "This site is a public entry point for a suite of hydrologic ensemble forecasting modelling tools developed by the CSIRO over the past decade. While designed with unique features for ensemble streamflow forecasting, they can equally be used in non-ensemble simulation mode for other semi-distributed hydrologic modelling.\n\nApplications\nA subset of the tools is used by the Australian Bureau of Meteorology to provide the 7-day Ensemble Streamflow Forecasts service.\nMore recent versions of the tools are also used for research and development. The core modelling features are usually native (C++) libraries, accessed seamlessly by user from R, Python and Matlab.\n\n\n\n\n\nEnsemble forecasting simulation run from an R script\n\n\nHands-on hydrologic modellers can browse through some sample modelling workflows in R package vignettes to get an idea of the features.\n\n\nInstallation\nPackages are available for installation on Windows, Debian/Ubuntu Linux, and MacOSX. They currently cannot all be made publicly downloadable, but access for evaluation or research purposes can usually easily be arranged upon request. Contact David Robertson at david.robertson@csiro.au and/or jean-michel.perraud@csiro.au. Then follow the instructions at the Installation page.\n\n\nArchitecture\n\n\n\n\n\nSoftware stack\n\n\nThis documentation introduces a set of software tools for ensemble streamflow forecasting techniques. The core is written in C++, but in practice users access the features via packages in R, python, or Matlab.\nAn overview of the research and outcomes is available at this page.\nA high level description of the software stack with the main components follows. This stack is built mostly on open source software; see csiro-hydroinformatics, notably uchronia-time-series. We also intend to open source the semi-distributed modelling engine.\n\n\nGetting started\nIn R you can access samples via vignettes in the packages:\nlibrary(swift)\nlibrary(uchronia)\nbrowseVignettes('swift')\nYou can access the wider package documentation using the command ?swift, and navigate down the page to the footer [Package swift version 0.7.7 Index] (yes, admitedly there should be an easier way…). Click on the Index hyperlink of that footer. Note that you will find a very long list of functions but functions postfixed _R should not be used as primary building blocks in your scripts.\n\n\nTroubleshooting\n\n\nFAQ\n\n\nAcknowledgements\nMost of the tools covered by this documentation is the output of research supported by the Water Information Research and Development Alliance between CSIRO and the Australian Bureau of Meteorology.\n\n\nPublications\nSWIFT2: High performance software for short-medium term ensemble streamflow forecasting research and operations\nSWIFT2: Advanced software for continuous ensemble short-term streamflow forecasting"
+    "text": "This is a public entry point for a suite of hydrologic ensemble forecasting modelling tools developed in Australia over the past decade. Most scientific modelling features were authored by the CSIRO. While designed with unique features for ensemble streamflow forecasting, these tools can equally be used in non-ensemble simulation mode for other, “traditional” semi-distributed hydrologic modelling.\n\nApplications\nSome of the modelling tools are used by the Australian Bureau of Meteorology (the Bureau) to provide the 7-day Ensemble Streamflow Forecasts service. An overview of the research and outcomes in streamflow forecasting of the research alliance between the Bureau and CSIRO is available at this page.\nMore recent versions of the tools are also used for further research, development and applications. The core modelling features are usually native (C++) libraries, accessed seamlessly by user from R, Python and Matlab.\n\n\n\n\n\nEnsemble forecasting simulation run from an R script\n\n\nThe documentation page has links to sample modelling workflows in R and Python that hydrologic modellers can browse through to get an idea of the features.\n\n\nInstallation\nInstallation packages are available for Windows, Debian/Ubuntu Linux, and MacOSX. They currently cannot all be made publicly downloadable, but access for evaluation or research purposes can be arranged. Contact David Robertson at david.robertson@csiro.au and/or jean-michel.perraud@csiro.au. Then follow the instructions at the Installation page.\n\n\nArchitecture\nThe core of the toolset is written in C++ for execution speed, but in practice users mostly access the features via packages in R, python, or Matlab.\n\n\n\n\n\nHigh-level software stack\n\n\nBesides building upon established third party open source software, some components of our stack are also open source. See csiro-hydroinformatics on GitHub, for instance the uchronia time series handling module.\nThe developer page also contains more detailed technical information on the software stack.\n\n\nAcknowledgements\nMost of the tools covered by this documentation is the output of research supported by the Water Information Research and Development Alliance between CSIRO and the Australian Bureau of Meteorology.\n\n\nPublications\nSWIFT2: High performance software for short-medium term ensemble streamflow forecasting research and operations\nSWIFT2: Advanced software for continuous ensemble short-term streamflow forecasting"
   },
   {
     "objectID": "installation.html",
@@ -21,11 +21,18 @@
     "text": "Pointers to further technical documentation for using or developing features."
   },
   {
+    "objectID": "documentation.html#packages-documentations",
+    "href": "documentation.html#packages-documentations",
+    "title": "Documentation",
+    "section": "Packages documentations",
+    "text": "Packages documentations\n\npython package swift2\nThe uchronia time series API documentation combines the documentation of the python package uchronia with its C++ core.\n\nThe R packages contain function documentation, example snippets and so-called “vignettes”. you can access vignettes in the packages for instance with:\nlibrary(swift)\nlibrary(uchronia)\nbrowseVignettes('swift')\nYou can access the wider package documentation using the command ?swift, and see an index of the features by navigating down the page to the footer [Package swift version 2.4.x Index]. Click on the Index hyperlink of that footer. Note that you will find a very long list of functions, but note that functions postfixed _R should not be used as primary building blocks in your scripts."
+  },
+  {
     "objectID": "documentation.html#build-pipelines",
     "href": "documentation.html#build-pipelines",
     "title": "Documentation",
     "section": "Build pipelines",
-    "text": "Build pipelines\nThe source code for Azure Devops pipelines are also available as of 2023-01 from github. Their public availability may change in the future though.\n\nhydro-forecast-windows-pipeline\nhydro-forecast-linux-pipeline"
+    "text": "Build pipelines\nThe source code for Azure Devops pipelines are also available as of 2023-01 from github, for information purposes only. Their public availability may change in the future though.\n\nhydro-forecast-windows-pipeline\nhydro-forecast-linux-pipeline"
   },
   {
     "objectID": "doc/notes.html",
@@ -33,6 +40,13 @@
     "title": "Streamflow Forecasting Onboarding",
     "section": "",
     "text": "# cd ~/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes\n# R\n\nsetwd('C:/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes')\n\nlibrary(rmarkdown)\n\ninfn <- c(\n\"calibrate_multisite\"         ,    \"calibrate_subcatchments\"        ,\n\"calibration_initial_states\"  ,    \"ensemble_forecast_model_runs\"   ,\n\"ensemble_model_runs\"         ,    \"error_correction_four_stages\"   ,\n\"getting_started\"             ,    \"log_likelihood\"                 ,\n\"meta_parameters\"             ,    \"muskingum_multilink_calibration\"\n)\n\n\nf <- function(fn)\n{\n    input <- paste(fn, 'Rmd', sep='.')\n    output_format <- 'github_document'\n\n    output_dir <- fn\n\n    rmarkdown::render(input, output_format, output_file = NULL, output_dir,\n                output_options = NULL, intermediates_dir = NULL,\n                knit_root_dir = NULL,\n                runtime = c(\"auto\", \"static\", \"shiny\", \"shiny_prerendered\"),\n                clean = TRUE, params = NULL, knit_meta = NULL,\n                run_pandoc = TRUE, quiet = FALSE)\n}\n\nlapply(infn, FUN=f)\n\n\nfile.remove(list.files('.', pattern=\"*.html\", full.names=TRUE, recursive=TRUE))\nfile.copy(infn, '~/src/github_jm/streamflow-forecasting-tools-onboard/doc/vignettes/', recursive=TRUE)\n\nfile.copy(infn, 'c:/src/github_jm/streamflow-forecasting-tools-onboard/doc/vignettes/', recursive=TRUE)\ngiven what I get from this issue I am not sure it is possible to get relative paths to figures in the markdown documents. Have to use full text search/replace to correct.\nNote the regex pattern to use:\n/home/xxxxxx/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/[a-z_]*/\nC:/src/csiro/stash/swift/bindings/R/pkgs/swift/vignettes/[a-z_]*/\nand needs to be replaced with ./"
+  },
+  {
+    "objectID": "doc/samples/sample_workflows_python.html",
+    "href": "doc/samples/sample_workflows_python.html",
+    "title": "Streamflow Forecasting Onboarding",
+    "section": "",
+    "text": "Sample modelling workflows - Python\nThe documentation for the Python package swift2 includes jupyter notebooks (external site)."
   },
   {
     "objectID": "doc/samples/R/vignettes/error_correction_four_stages/error_correction_four_stages.html",
@@ -151,7 +165,35 @@
     "href": "doc/samples/sample_workflows_r.html",
     "title": "Streamflow Forecasting Onboarding",
     "section": "",
-    "text": "Sample modelling workflows\nThe following documents are extracted from the vignettes in the R package swift\n\nGetting started with the swift R package\nEnsemble SWIFT model runs\nEnsemble forecast model runs\nCalibrating tied meta parameters\nMultisite multiobjective calibration\nCalibration of subcatchments defined by multiple gauges in a catchment\nCalibration with initial model memory states as parameters\n\nError correction models - Elaboration\nLinear Muskingum channel routing model - constrained subcatchment calibration"
+    "text": "Sample modelling workflows - R\nThe following documents are extracted from the vignettes in the R package swift\n\nGetting started with the swift R package\nEnsemble SWIFT model runs\nEnsemble forecast model runs\nCalibrating tied meta parameters\nMultisite multiobjective calibration\nCalibration of subcatchments defined by multiple gauges in a catchment\nCalibration with initial model memory states as parameters\n\nError correction models - Elaboration\nLinear Muskingum channel routing model - constrained subcatchment calibration"
+  },
+  {
+    "objectID": "doc/build.html",
+    "href": "doc/build.html",
+    "title": "Build workflows",
+    "section": "",
+    "text": "This page is an overview of the workflows devised to build the software stack (compile, package, version, document, etc.)."
+  },
+  {
+    "objectID": "doc/build.html#building-installers",
+    "href": "doc/build.html#building-installers",
+    "title": "Build workflows",
+    "section": "Building installers",
+    "text": "Building installers\nNot counting third party established libraries such as Boost, a dozen git repositories under our control are used as inputs to the pipelines that package the software stack. Maintaining versions within each of these repositories may be influenced by various factors including unrelated projects, not necessarily solely by these installers. We are using the commit hashsums of this dozen of repositories to record and specify which version of each repositories is used as input to the build pipelines (see Fig. 1)\n\n\n\n\n\nflowchart TD\n  A[code freeze] --> B{unit testing}\n  B -->|Yes| C[git tag]\n  B -->|No| A\n  C -->D[/commit hashsums in git repositories/] \n  D --> E[Linux build]\n  D --> F[MacOSX build]\n  E --> G[Win build]\n\n  E -->H[/.deb, python wheels \\nand R tarballs/] \n  G -->I[/.dll, R binary \\ninstallers for windows/] \n  F -->J[/.dylib, homebrew packages/] \n\n\n\n\n\n\nFigure 1: Package build workflow."
+  },
+  {
+    "objectID": "doc/build.html#versioning",
+    "href": "doc/build.html#versioning",
+    "title": "Build workflows",
+    "section": "Versioning",
+    "text": "Versioning\nThis is a (partly populated) placeholder section to document the rationale for versioning installer bundles, and components at a final granularity.\nThere may be a versioning, semantic or otherwise, used for the bundles of installers produced for various platforms (Fig. 1). The major product is still what used to be refered to as SWIFT2, but there are also other important, related but distinct, products (FoGSS, CHyPP) also."
+  },
+  {
+    "objectID": "doc/build.html#channels-for-software-distribution",
+    "href": "doc/build.html#channels-for-software-distribution",
+    "title": "Build workflows",
+    "section": "Channels for software distribution",
+    "text": "Channels for software distribution\nSome software such as the refcount python package are available via conda-forge and pypi. We cannot use these mechanism for closed source packages, but we may consider in the future distribution via:\n\n“private” conda channel\n“private” pypi repository\n“private” debian package repository\n“private” homebrew package repository (MacOSX)"
   },
   {
     "objectID": "doc/developer.html",
@@ -170,16 +212,23 @@
   {
     "objectID": "doc/installation/install_macosx.html",
     "href": "doc/installation/install_macosx.html",
-    "title": "Streamflow Forecasting Onboarding",
+    "title": "Installation: MacOSX",
     "section": "",
-    "text": "Installing ensemble streamflow forecasting tools on Linux\nPlaceholder - As of Jan 2023, Homebrew binary packages can be built and installed, but this remains experimental."
+    "text": "Placeholder - As of Jan 2023, Homebrew binary packages can be built and installed, but this remains experimental."
+  },
+  {
+    "objectID": "doc/installation/install_source.html",
+    "href": "doc/installation/install_source.html",
+    "title": "Installation: From source code",
+    "section": "",
+    "text": "“cruise-control” (restricted link) contains detailed instructions for building and maintaining the software stack from source.\nFew people have this need in practice, and within this pool of people, most will have a particular platform and preference in development tools, so it is moot to document prescriptive steps here for now. That said, the build pipelines that exist for various operating systems may be a basis for documenting this in the future. Pending user needs."
   },
   {
     "objectID": "doc/installation/install_linux.html",
     "href": "doc/installation/install_linux.html",
     "title": "Installation: Debian-based Linux",
     "section": "",
-    "text": "As of Jan 2020, Debian binary packages can be built and installed.\nsudo dpkg -i libmoirai_1.0-1_amd64.deb\nsudo dpkg -i libuchronia_2.3-7_amd64.deb\nsudo dpkg -i libswift_2.3-7_amd64.deb\nsudo dpkg -i libqppcore_2.3-7_amd64.deb\nsudo dpkg -i libqpp_2.3-7_amd64.deb\nlibboost-threadpool-dev_0.2-6_amd64.deb\nlibcinterop-dev_1.1-1_amd64.deb\nlibwila-dev_0.7-2_amd64.deb\nlibmoirai-dev_1.0-1_amd64.deb\nlibqppcore-dev_2.3-7_amd64.deb\nlibqpp-dev_2.3-7_amd64.deb\nlibsfsl-dev_2.3-1_amd64.deb\nlibswift-dev_2.3-7_amd64.deb\nlibuchronia-dev_2.3-7_amd64.deb\nlibmoirai-dbgsym_1.0-1_amd64.deb\nlibqppcore-dbgsym_2.3-7_amd64.deb\nlibqpp-dbgsym_2.3-7_amd64.deb\nlibuchronia-dbgsym_2.3-7_amd64.deb\nlibswift-dbgsym_2.3-7_amd64.deb"
+    "text": "As of Jan 2020, Debian .deb binary packages can be built and installed, instead of installing from source code. Ubuntu-flavoured linux distributions use debian packages to manage software installation. This has been done practically a few times to set up servers, but this remains a novel installation medium as of 2023 and you should feel free to seek advice and help as need be.\nYou should have received an archive (“zip file” or similar) that contains the following folders:\n\ndeb_pkgs: installable Debian packages\npy_pkgs: installable Python packages (wheels)\nr_pkgs: installable R packages (R source packages tarballs)\n\ncd deb_pkgs\nThere are various user arrangements to install packages; one command line application is dpkg. You may (probably) need administrative rights to install software though. Adapt the following, or a subset, to the package version you have:\nsudo dpkg -i libmoirai_1.0-1_amd64.deb\nsudo dpkg -i libuchronia_2.3-7_amd64.deb\nsudo dpkg -i libswift_2.3-7_amd64.deb\nsudo dpkg -i libqppcore_2.3-7_amd64.deb\nsudo dpkg -i libqpp_2.3-7_amd64.deb\nIf you are planning to develop applications in C++, you will need to install header files:\nsudo dpkg -i libboost-threadpool-dev_0.2-6_amd64.deb\nsudo dpkg -i libcinterop-dev_1.1-1_amd64.deb\nsudo dpkg -i libwila-dev_0.7-2_amd64.deb\nsudo dpkg -i libmoirai-dev_1.0-1_amd64.deb\nsudo dpkg -i libqppcore-dev_2.3-7_amd64.deb\nsudo dpkg -i libqpp-dev_2.3-7_amd64.deb\nsudo dpkg -i libsfsl-dev_2.3-1_amd64.deb\nsudo dpkg -i libswift-dev_2.3-7_amd64.deb\nsudo dpkg -i libuchronia-dev_2.3-7_amd64.deb\nAn advanced use case is to install debug symbols, but this is hypothetical as most core developpers so far have access to the source code of the software stack and work from this.\nsudo dpkg -i libmoirai-dbgsym_1.0-1_amd64.deb\nsudo dpkg -i libqppcore-dbgsym_2.3-7_amd64.deb\nsudo dpkg -i libqpp-dbgsym_2.3-7_amd64.deb\nsudo dpkg -i libuchronia-dbgsym_2.3-7_amd64.deb\nsudo dpkg -i libswift-dbgsym_2.3-7_amd64.deb"
   },
   {
     "objectID": "doc/installation/install_docker.html",
@@ -228,6 +277,13 @@
     "href": "faq.html",
     "title": "Frequently Asked Questions",
     "section": "",
-    "text": "Can I use these hydrologic simulation tool for my project?\nIt depends…"
+    "text": "Some of the software is open source and covered by licenses of type BSD-3 and reusable by anyone, provided copyright and authorship is respected.\nAt the time of writing (Jan 2023) much of the C++ code core to the stack is not yet open source, and cannot be used by third parties without prior discussions and agreement. In principle, access for non-commercial and in particular educational and research purposes are encouraged and you should contact the person(s) listed in the home page to request access.\nSoftware components that are agnostic to the scientific domain itself are all open sourced: build scripts, python and R packaging, software interoperability between R, Python, C++, etc."
+  },
+  {
+    "objectID": "faq.html#does-it-run-fast",
+    "href": "faq.html#does-it-run-fast",
+    "title": "Frequently Asked Questions",
+    "section": "Does it run fast?",
+    "text": "Does it run fast?\nPlaceholder for facts and figures…"
   }
 ]

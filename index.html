@@ -20,69 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -189,9 +126,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#applications" id="toc-applications" class="nav-link active" data-scroll-target="#applications">Applications</a></li>
   <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
   <li><a href="#architecture" id="toc-architecture" class="nav-link" data-scroll-target="#architecture">Architecture</a></li>
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting started</a></li>
-  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
-  <li><a href="#faq" id="toc-faq" class="nav-link" data-scroll-target="#faq">FAQ</a></li>
   <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
   <li><a href="#publications" id="toc-publications" class="nav-link" data-scroll-target="#publications">Publications</a></li>
   </ul>
@@ -217,11 +151,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>This site is a public entry point for a suite of hydrologic ensemble forecasting modelling tools developed by the <a href="https://www.csiro.au">CSIRO</a> over the past decade. While designed with unique features for ensemble streamflow forecasting, they can equally be used in non-ensemble simulation mode for other semi-distributed hydrologic modelling.</p>
+<p>This is a public entry point for a suite of hydrologic ensemble forecasting modelling tools developed in Australia over the past decade. Most scientific modelling features were authored by the <a href="https://www.csiro.au">CSIRO</a>. While designed with unique features for <em>ensemble</em> streamflow forecasting, these tools can equally be used in <em>non-ensemble</em> simulation mode for other, “traditional” semi-distributed hydrologic modelling.</p>
 <section id="applications" class="level1">
 <h1>Applications</h1>
-<p>A subset of the tools is used by the Australian Bureau of Meteorology to provide the <a href="http://www.bom.gov.au/water/7daystreamflow">7-day Ensemble Streamflow Forecasts</a> service.</p>
-<p>More recent versions of the tools are also used for research and development. The core modelling features are usually native (C++) libraries, accessed seamlessly by user from R, Python and Matlab.</p>
+<p>Some of the modelling tools are used by the Australian Bureau of Meteorology (the Bureau) to provide the <a href="http://www.bom.gov.au/water/7daystreamflow">7-day Ensemble Streamflow Forecasts</a> service. An overview of the research and outcomes in streamflow forecasting of the research alliance between the Bureau and CSIRO is available <a href="https://www.csiro.au/en/Research/LWF/Areas/Water/Assessing-water-resources/WIRADA/Research/Water-forecasting">at this page</a>.</p>
+<p>More recent versions of the tools are also used for further research, development and applications. The core modelling features are usually native (C++) libraries, accessed seamlessly by user from R, Python and Matlab.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <figure class="figure">
@@ -230,39 +164,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p></p><figcaption class="figure-caption">Ensemble forecasting simulation run from an R script</figcaption><p></p>
 </figure>
 </div>
-<p>Hands-on hydrologic modellers can browse through some <a href="./doc/samples/sample_workflows_r.html">sample modelling workflows in R package vignettes</a> to get an idea of the features.</p>
+<p>The <a href="./documentation.html">documentation</a> page has links to sample modelling workflows in <code>R</code> and <code>Python</code> that hydrologic modellers can browse through to get an idea of the features.</p>
 </section>
 <section id="installation" class="level1">
 <h1>Installation</h1>
-<p>Packages are available for installation on Windows, Debian/Ubuntu Linux, and MacOSX. They currently cannot all be made publicly downloadable, but access for evaluation or research purposes can usually easily be arranged upon request. Contact <a href="https://people-my.csiro.au/r/d/david-robertson">David Robertson</a> at <a href="mailto:david.robertson@csiro.au">david.robertson@csiro.au</a> and/or <a href="mailto:jean-michel.perraud@csiro.au">jean-michel.perraud@csiro.au</a>. Then follow the instructions at the <a href="./installation.html">Installation</a> page.</p>
+<p>Installation packages are available for Windows, Debian/Ubuntu Linux, and MacOSX. They currently cannot <em>all</em> be made publicly downloadable, but access for evaluation or research purposes can be arranged. Contact <a href="https://people-my.csiro.au/r/d/david-robertson">David Robertson</a> at <a href="mailto:david.robertson@csiro.au">david.robertson@csiro.au</a> and/or <a href="mailto:jean-michel.perraud@csiro.au">jean-michel.perraud@csiro.au</a>. Then follow the instructions at the <a href="./installation.html">Installation</a> page.</p>
 </section>
 <section id="architecture" class="level1">
 <h1>Architecture</h1>
+<p>The core of the toolset is written in C++ for execution speed, but in practice users mostly access the features via packages in R, python, or Matlab.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <figure class="figure">
 <img src="./img/architecture_poster.png" title="Software stack overview" class="img-fluid figure-img">
 </figure>
-<p></p><figcaption class="figure-caption">Software stack</figcaption><p></p>
+<p></p><figcaption class="figure-caption">High-level software stack</figcaption><p></p>
 </figure>
 </div>
-<p>This documentation introduces a set of software tools for ensemble streamflow forecasting techniques. The core is written in C++, but in practice users access the features via packages in R, python, or Matlab.</p>
-<p>An overview of the research and outcomes is available <a href="https://www.csiro.au/en/Research/LWF/Areas/Water/Assessing-water-resources/WIRADA/Research/Water-forecasting">at this page</a>.</p>
-<p>A high level description of the software stack with the main components follows. This stack is built mostly on open source software; see <a href="https://github.com/csiro-hydroinformatics">csiro-hydroinformatics</a>, notably <a href="https://github.com/csiro-hydroinformatics/uchronia-time-series">uchronia-time-series</a>. We also intend to open source the semi-distributed modelling engine.</p>
-</section>
-<section id="getting-started" class="level1">
-<h1>Getting started</h1>
-<p>In R you can access samples via vignettes in the packages:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(swift)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(uchronia)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">browseVignettes</span>(<span class="st">'swift'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You can access the wider package documentation using the command <code>?swift</code>, and navigate down the page to the footer <code>[Package swift version 0.7.7 Index]</code> (yes, admitedly there should be an easier way…). Click on the <code>Index</code> hyperlink of that footer. Note that you will find a very long list of functions but functions postfixed <code>_R</code> should not be used as primary building blocks in your scripts.</p>
-</section>
-<section id="troubleshooting" class="level1">
-<h1>Troubleshooting</h1>
-</section>
-<section id="faq" class="level1">
-<h1>FAQ</h1>
+<p>Besides building upon established third party open source software, some components of our stack are also open source. See <a href="https://github.com/csiro-hydroinformatics">csiro-hydroinformatics</a> on GitHub, for instance the <a href="https://github.com/csiro-hydroinformatics/uchronia-time-series">uchronia time series handling module</a>.</p>
+<p>The <a href="./doc/developer.html">developer page</a> also contains more detailed technical information on the software stack.</p>
 </section>
 <section id="acknowledgements" class="level1">
 <h1>Acknowledgements</h1>
