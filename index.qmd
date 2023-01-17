@@ -2,47 +2,31 @@
 title: "Streamflow Forecasting"
 ---
 
-This site is a public entry point for a suite of hydrologic ensemble forecasting modelling tools developed by the [CSIRO](https://www.csiro.au) over the past decade. While designed with unique features for ensemble streamflow forecasting, they can equally be used in non-ensemble simulation mode for other semi-distributed hydrologic modelling.
+This is a public entry point for a suite of hydrologic ensemble forecasting modelling tools developed in Australia over the past decade. Most scientific modelling features were authored by the [CSIRO](https://www.csiro.au). While designed with unique features for _ensemble_ streamflow forecasting, these tools can equally be used in _non-ensemble_ simulation mode for other, "traditional" semi-distributed hydrologic modelling.
 
 # Applications
 
-A subset of the tools is used by the Australian Bureau of Meteorology to provide the [7-day Ensemble Streamflow Forecasts](http://www.bom.gov.au/water/7daystreamflow) service. 
+Some of the modelling tools are used by the Australian Bureau of Meteorology (the Bureau) to provide the [7-day Ensemble Streamflow Forecasts](http://www.bom.gov.au/water/7daystreamflow) service. An overview of the research and outcomes in streamflow forecasting of the research alliance between the Bureau and CSIRO is available [at this page](https://www.csiro.au/en/Research/LWF/Areas/Water/Assessing-water-resources/WIRADA/Research/Water-forecasting).
 
-More recent versions of the tools are also used for research and development. The core modelling features are usually native (C++) libraries, accessed seamlessly by user from R, Python and Matlab.
+More recent versions of the tools are also used for further research, development and applications. The core modelling features are usually native (C++) libraries, accessed seamlessly by user from R, Python and Matlab.
 
 ![Ensemble forecasting simulation run from an R script](./img/ens_streamflow_forecast.png "Ensemble forecasting simulation run from an R script")
 
-Hands-on hydrologic modellers can browse through some [sample modelling workflows in R package vignettes](./doc/samples/sample_workflows_r.md) to get an idea of the features.
+The [documentation](./documentation.qmd) page has links to sample modelling workflows in `R` and `Python` that hydrologic modellers can browse through to get an idea of the features.
 
 # Installation
 
-Packages are available for installation on Windows, Debian/Ubuntu Linux, and MacOSX. They currently cannot all be made publicly downloadable, but access for evaluation or research purposes can usually easily be arranged upon request. Contact [David Robertson](https://people-my.csiro.au/r/d/david-robertson) at [david.robertson@csiro.au](mailto:david.robertson@csiro.au) and/or [jean-michel.perraud@csiro.au](mailto:jean-michel.perraud@csiro.au). Then follow the instructions at the [Installation](./installation.qmd) page.
+Installation packages are available for Windows, Debian/Ubuntu Linux, and MacOSX. They currently cannot _all_ be made publicly downloadable, but access for evaluation or research purposes can be arranged. Contact [David Robertson](https://people-my.csiro.au/r/d/david-robertson) at [david.robertson@csiro.au](mailto:david.robertson@csiro.au) and/or [jean-michel.perraud@csiro.au](mailto:jean-michel.perraud@csiro.au). Then follow the instructions at the [Installation](./installation.qmd) page.
 
 # Architecture
 
-![Software stack](./img/architecture_poster.png "Software stack overview")
+The core of the toolset is written in C++ for execution speed, but in practice users mostly access the features via packages in R, python, or Matlab.
 
-This documentation introduces a set of software tools for ensemble streamflow forecasting techniques. The core is written in C++, but in practice users access the features via packages in R, python, or Matlab. 
+![High-level software stack](./img/architecture_poster.png "Software stack overview")
 
-An overview of the research and outcomes is available [at this page](https://www.csiro.au/en/Research/LWF/Areas/Water/Assessing-water-resources/WIRADA/Research/Water-forecasting).
+Besides building upon established third party open source software, some components of our stack are also open source. See [csiro-hydroinformatics](https://github.com/csiro-hydroinformatics) on GitHub, for instance the [uchronia time series handling module](https://github.com/csiro-hydroinformatics/uchronia-time-series).
 
-A high level description of the software stack with the main components follows. This stack is built mostly on open source software; see [csiro-hydroinformatics](https://github.com/csiro-hydroinformatics), notably [uchronia-time-series](https://github.com/csiro-hydroinformatics/uchronia-time-series). We also intend to open source the semi-distributed modelling engine.
-
-# Getting started
-
-In R you can access samples via vignettes in the packages:
-
-```R
-library(swift)
-library(uchronia)
-browseVignettes('swift')
-```
-
-You can access the wider package documentation using the command `?swift`, and navigate down the page to the footer `[Package swift version 0.7.7 Index]` (yes, admitedly there should be an easier way...). Click on the `Index` hyperlink of that footer. Note that you will find a very long list of functions but functions postfixed `_R` should not be used as primary building blocks in your scripts.
-
-# Troubleshooting
-
-# FAQ
+The [developer page](./doc/developer.qmd) also contains more detailed technical information on the software stack.
 
 # Acknowledgements
 

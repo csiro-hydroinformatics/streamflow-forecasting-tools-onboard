@@ -2,7 +2,17 @@
 title: "Installation: Debian-based Linux"
 ---
 
-As of Jan 2020, Debian binary packages can be built and installed.
+As of Jan 2020, Debian `.deb` binary packages can be built and installed, instead of installing from source code. Ubuntu-flavoured linux distributions use debian packages to manage software installation. This has been done practically a few times to set up servers, but this remains a novel installation medium as of 2023 and you should feel free to seek advice and help as need be.
+
+You should have received an archive ("zip file" or similar) that contains the following folders:
+
+* deb_pkgs: installable Debian packages
+* py_pkgs: installable Python packages (wheels)
+* r_pkgs: installable R packages (R source packages tarballs)
+
+`cd deb_pkgs`
+
+There are various user arrangements to install packages; one command line application is `dpkg`. You may (probably) need administrative rights to install software though. Adapt the following, or a subset, to the package version you have:
 
 ```sh
 sudo dpkg -i libmoirai_1.0-1_amd64.deb
@@ -12,23 +22,27 @@ sudo dpkg -i libqppcore_2.3-7_amd64.deb
 sudo dpkg -i libqpp_2.3-7_amd64.deb
 ```
 
-```sh
-libboost-threadpool-dev_0.2-6_amd64.deb
-libcinterop-dev_1.1-1_amd64.deb
-libwila-dev_0.7-2_amd64.deb
-libmoirai-dev_1.0-1_amd64.deb
-libqppcore-dev_2.3-7_amd64.deb
-libqpp-dev_2.3-7_amd64.deb
-libsfsl-dev_2.3-1_amd64.deb
-libswift-dev_2.3-7_amd64.deb
-libuchronia-dev_2.3-7_amd64.deb
-```
+If you are planning to develop applications in C++, you will need to install header files:
 
 ```sh
-libmoirai-dbgsym_1.0-1_amd64.deb
-libqppcore-dbgsym_2.3-7_amd64.deb
-libqpp-dbgsym_2.3-7_amd64.deb
-libuchronia-dbgsym_2.3-7_amd64.deb
-libswift-dbgsym_2.3-7_amd64.deb
+sudo dpkg -i libboost-threadpool-dev_0.2-6_amd64.deb
+sudo dpkg -i libcinterop-dev_1.1-1_amd64.deb
+sudo dpkg -i libwila-dev_0.7-2_amd64.deb
+sudo dpkg -i libmoirai-dev_1.0-1_amd64.deb
+sudo dpkg -i libqppcore-dev_2.3-7_amd64.deb
+sudo dpkg -i libqpp-dev_2.3-7_amd64.deb
+sudo dpkg -i libsfsl-dev_2.3-1_amd64.deb
+sudo dpkg -i libswift-dev_2.3-7_amd64.deb
+sudo dpkg -i libuchronia-dev_2.3-7_amd64.deb
+```
+
+An advanced use case is to install debug symbols, but this is hypothetical as most core developpers so far have access to the source code of the software stack and work from this.
+
+```sh
+sudo dpkg -i libmoirai-dbgsym_1.0-1_amd64.deb
+sudo dpkg -i libqppcore-dbgsym_2.3-7_amd64.deb
+sudo dpkg -i libqpp-dbgsym_2.3-7_amd64.deb
+sudo dpkg -i libuchronia-dbgsym_2.3-7_amd64.deb
+sudo dpkg -i libswift-dbgsym_2.3-7_amd64.deb
 ```
 

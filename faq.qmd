@@ -2,11 +2,14 @@
 title: "Frequently Asked Questions"
 ---
 
-# 
+## Can I use these hydrologic simulation tool for my project?
 
-# Can I use these hydrologic simulation tool for my project?
+Some of the software is open source and covered by licenses of type BSD-3 and reusable by anyone, provided copyright and authorship is respected. 
 
-It depends...
+At the time of writing (Jan 2023) much of the C++ code core to the stack is not yet open source, and cannot be used by third parties without prior discussions and agreement. In principle, access for non-commercial and in particular educational and research purposes are encouraged and you should contact the person(s) listed in the [home page](index.qmd) to request access.
 
+Software components that are agnostic to the scientific domain itself are all open sourced: build scripts, python and R packaging, software interoperability between R, Python, C++, etc.
 
+## Does it run fast?
 
+Placeholder for facts and figures...

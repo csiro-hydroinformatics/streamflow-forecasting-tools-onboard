@@ -1,3 +1,5 @@
-# Installing ensemble streamflow forecasting tools on Linux
+---
+title: "Installation: MacOSX"
+---
 
 Placeholder - As of Jan 2023, Homebrew binary packages can be built and installed, but this remains experimental.

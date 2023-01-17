@@ -6,6 +6,6 @@ Software packages are not all publicly downloadable, but access for evaluation o
 
 * [Installing on Window](./doc/installation/install_windows.qmd)
 * [Installing on Linux](./doc/installation/install_linux.qmd)
-* [Installing on MacOSX](./doc/installation/install_linux.qmd)
+* [Installing on MacOSX](./doc/installation/install_macosx.qmd)
 
 We intend to also provide in the future a [docker container](./doc/installation/install_docker.qmd)

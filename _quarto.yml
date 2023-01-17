@@ -53,6 +53,8 @@ website:
           href: doc/installation/install_macosx.qmd
         - text: "Installation: via Docker"
           href: doc/installation/install_docker.qmd
+        - text: "Installation: From source code"
+          href: doc/installation/install_source.qmd
     - id: documentation
       title: "Documentation"
       style: "floating"
@@ -72,8 +74,12 @@ website:
             - doc/samples/R/vignettes/calibration_initial_states/calibration_initial_states.md
             - doc/samples/R/vignettes/error_correction_four_stages/error_correction_four_stages.md
             - doc/samples/R/vignettes/muskingum_multilink_calibration/muskingum_multilink_calibration.md
+        - text: "Examples in Python"
+          href: doc/samples/sample_workflows_python.md
         - text: "Developer documentation"
           href: doc/developer.qmd
+        - text: "Build workflow"
+          href: doc/build.qmd
 
 format:
   html:

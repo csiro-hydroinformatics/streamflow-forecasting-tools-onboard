@@ -6,17 +6,29 @@ Pointers to further technical documentation for using or developing features.
 
 # Sample workflows for modellers
 
-* [R package vignettes for the swift packages](./doc/samples/sample_workflows_r.md)
-* [jupyter notebooks for the python packages swift2](https://csiro-hydroinformatics.github.io/swift-py-doc/notebooks/getting_started/)
+* [vignettes for the `swift` package](./doc/samples/sample_workflows_r.md)
+* [jupyter notebooks for the python package `swift2`](https://csiro-hydroinformatics.github.io/swift-py-doc/notebooks/getting_started/)
 
 # Technical references
 
-* [python packages swift2](https://csiro-hydroinformatics.github.io/swift-py-doc)
-* [uchronia time series API documentation](https://csiro-hydroinformatics.github.io/uchronia-ts-doc)
+## Packages documentations
+
+* [python package swift2](https://csiro-hydroinformatics.github.io/swift-py-doc)
+* The [uchronia time series API documentation](https://csiro-hydroinformatics.github.io/uchronia-ts-doc) combines the documentation of the python package `uchronia` with its C++ core.
+
+The R packages contain function documentation, example snippets and so-called "vignettes". you can access vignettes in the packages for instance with:
+
+```R
+library(swift)
+library(uchronia)
+browseVignettes('swift')
+```
+
+You can access the wider package documentation using the command `?swift`, and see an index of the features by navigating down the page to the footer `[Package swift version 2.4.x Index]`. Click on the `Index` hyperlink of that footer. Note that you will find a very long list of functions, but note that functions postfixed `_R` should not be used as primary building blocks in your scripts.
 
 ## Build pipelines
 
-The source code for Azure Devops pipelines are also available as of 2023-01 from github. Their public availability may change in the future though.
+The source code for Azure Devops pipelines are also available as of 2023-01 from github, for information purposes only. Their public availability may change in the future though.
 
 * [hydro-forecast-windows-pipeline](https://github.com/csiro-hydroinformatics/hydro-forecast-windows-pipeline)
 * [hydro-forecast-linux-pipeline](https://github.com/csiro-hydroinformatics/hydro-forecast-linux-pipeline)
