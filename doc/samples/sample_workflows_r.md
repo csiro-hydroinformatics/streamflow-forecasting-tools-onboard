@@ -1,4 +1,4 @@
-# Sample modelling workflows
+# Sample modelling workflows - R
 
 The following documents are extracted from the vignettes in the R package swift
 
@@ -11,4 +11,3 @@ The following documents are extracted from the vignettes in the R package swift
 * [Calibration with initial model memory states as parameters](./R/vignettes/calibration_initial_states/calibration_initial_states.md)  
 * [Error correction models - Elaboration](./R/vignettes/error_correction_four_stages/error_correction_four_stages.md) 
 * [Linear Muskingum channel routing model - constrained subcatchment calibration](./R/vignettes/muskingum_multilink_calibration/muskingum_multilink_calibration.md)
-
