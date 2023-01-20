@@ -4,6 +4,8 @@ title: "Build workflows"
 
 This page is an overview of the workflows devised to build the software stack (compile, package, version, document, etc.).
 
+![Azure pipelines for streamflow forecasting](./az-pipelines.png "Azure pipelines"){fig-cap="Azure pipelines for streamflow forecasting."}
+
 ## Building installers
 
 Not counting third party established libraries such as Boost, a dozen git repositories under our control are used as inputs to the pipelines that package the software stack. Maintaining versions within each of these repositories may be influenced by various factors including unrelated projects, not necessarily solely by these installers. We are using the commit hashsums of this dozen of repositories to record and specify which version of each repositories is used as input to the build pipelines (see Fig. 1)
@@ -13,17 +15,22 @@ Not counting third party established libraries such as Boost, a dozen git reposi
 %%| fig-cap: Package build workflow.
 
 flowchart TD
-  A[code freeze] --> B{unit testing}
-  B -->|Yes| C[git tag]
-  B -->|No| A
-  C -->D[/commit hashsums in git repositories/] 
+  A[code freeze each components see Fig. 2] --> D[/git hashsums in sf-stack repo/] 
   D --> E[Linux build]
+  E --> H[/.deb, python wheels \nand R tarballs/] 
   D --> F[MacOSX build]
-  E --> G[Win build]
+  H-- R tarballs --> G[Win build]
 
-  E -->H[/.deb, python wheels \nand R tarballs/] 
   G -->I[/.dll, R binary \ninstallers for windows/] 
   F -->J[/.dylib, homebrew packages/] 
+
+  H --> K[Fetch artifacts]
+  I --> K
+  J --> K
+  K --> L[copy to shared drive]
+
+  click D "https://bitbucket.csiro.au/projects/SF/repos/sf-stack/browse" _blank
+  click K "https://bitbucket.csiro.au/projects/SF/repos/cruise-control/browse/doc/build_pipelines.md" _blank
 
 ```
 
@@ -33,7 +40,26 @@ This is a (partly populated) placeholder section to document the rationale for v
 
 There may be a versioning, semantic or otherwise, used for the bundles of installers produced for various platforms (Fig. 1). The major product is still what used to be refered to as SWIFT2, but there are also other important, related but distinct, products (FoGSS, CHyPP) also. 
 
-### 
+```{mermaid}
+%%| label: fig-versioning
+%%| fig-cap: Versioning components.
+
+flowchart TD
+  A[Testing branch] --> B{testing}
+  B -->|Yes| C[git tag]
+  B -->|No| A
+  C -->D[update CMakeLists.txt versions] 
+  D --> E[update debian changelog version]
+  E --> F[update R package versions in\nDESCRIPTION and R doxygen]
+  E --> G[Update python _version.py file]
+  F --> H[roxygenise R packages]
+  H --> I[commit new or updated .Rd files]
+  I --> J[commit all repo changes]
+  G --> J
+  J --> K[tag repo]
+  K --> L[git push]
+```
+
 
 ## Channels for software distribution
 

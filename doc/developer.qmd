@@ -15,7 +15,7 @@ A few posts that are related to this hydrologic simulation software stack:
 
 # Release and versioning
 
-The streamflow forecasting software stack comprise a dozen or so public or private `git` repositories. Co-evloving these repositories is not trivial. Each component may have a versioning rationale that is orthogonal to others. However for reproducibility we need to have "meta-releases" that are aggregates of components with a clear, traceable lineage.
+The streamflow forecasting software stack comprise a dozen or so public or private `git` repositories. Co-evolving these repositories is not trivial. Each component may have a versioning rationale that is orthogonal to others. However for reproducibility we need to have "meta-releases" that are aggregates of components with a clear, traceable lineage.
 
 As of 2023-01:
 
