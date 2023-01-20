@@ -216,10 +216,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#building-installers" id="toc-building-installers" class="nav-link active" data-scroll-target="#building-installers">Building installers</a></li>
-  <li><a href="#versioning" id="toc-versioning" class="nav-link" data-scroll-target="#versioning">Versioning</a>
-  <ul class="collapse">
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
-  </ul></li>
+  <li><a href="#versioning" id="toc-versioning" class="nav-link" data-scroll-target="#versioning">Versioning</a></li>
   <li><a href="#channels-for-software-distribution" id="toc-channels-for-software-distribution" class="nav-link" data-scroll-target="#channels-for-software-distribution">Channels for software distribution</a></li>
   </ul>
 </nav>
@@ -245,6 +242,14 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <p>This page is an overview of the workflows devised to build the software stack (compile, package, version, document, etc.).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figure class="figure">
+<img src="./az-pipelines.png" title="Azure pipelines" class="img-fluid figure-img">
+</figure>
+<p></p><figcaption class="figure-caption">Azure pipelines for streamflow forecasting</figcaption><p></p>
+</figure>
+</div>
 <section id="building-installers" class="level2">
 <h2 class="anchored" data-anchor-id="building-installers">Building installers</h2>
 <p>Not counting third party established libraries such as Boost, a dozen git repositories under our control are used as inputs to the pipelines that package the software stack. Maintaining versions within each of these repositories may be influenced by various factors including unrelated projects, not necessarily solely by these installers. We are using the commit hashsums of this dozen of repositories to record and specify which version of each repositories is used as input to the build pipelines (see Fig. 1)</p>
@@ -254,17 +259,22 @@ ul.task-list li input[type="checkbox"] {
 <figure class="figure">
 <p>
 </p><pre class="mermaid mermaid-js" data-tooltip-selector="#mermaid-tooltip-1">flowchart TD
-  A[code freeze] --&gt; B{unit testing}
-  B --&gt;|Yes| C[git tag]
-  B --&gt;|No| A
-  C --&gt;D[/commit hashsums in git repositories/] 
+  A[code freeze each components see Fig. 2] --&gt; D[/git hashsums in sf-stack repo/] 
   D --&gt; E[Linux build]
+  E --&gt; H[/.deb, python wheels \nand R tarballs/] 
   D --&gt; F[MacOSX build]
-  E --&gt; G[Win build]
+  H-- R tarballs --&gt; G[Win build]
 
-  E --&gt;H[/.deb, python wheels \nand R tarballs/] 
   G --&gt;I[/.dll, R binary \ninstallers for windows/] 
   F --&gt;J[/.dylib, homebrew packages/] 
+
+  H --&gt; K[Fetch artifacts]
+  I --&gt; K
+  J --&gt; K
+  K --&gt; L[copy to shared drive]
+
+  click D "https://bitbucket.csiro.au/projects/SF/repos/sf-stack/browse" _blank
+  click K "https://bitbucket.csiro.au/projects/SF/repos/cruise-control/browse/doc/build_pipelines.md" _blank
 
 </pre>
 <div id="mermaid-tooltip-1" class="mermaidTooltip">
@@ -281,9 +291,35 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="versioning">Versioning</h2>
 <p>This is a (partly populated) placeholder section to document the rationale for versioning installer bundles, and components at a final granularity.</p>
 <p>There may be a versioning, semantic or otherwise, used for the bundles of installers produced for various platforms (Fig. 1). The major product is still what used to be refered to as SWIFT2, but there are also other important, related but distinct, products (FoGSS, CHyPP) also.</p>
-<section id="section" class="level3">
-<h3 class="anchored" data-anchor-id="section"></h3>
-</section>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-versioning" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p>
+</p><pre class="mermaid mermaid-js" data-tooltip-selector="#mermaid-tooltip-2">flowchart TD
+  A[Testing branch] --&gt; B{testing}
+  B --&gt;|Yes| C[git tag]
+  B --&gt;|No| A
+  C --&gt;D[update CMakeLists.txt versions] 
+  D --&gt; E[update debian changelog version]
+  E --&gt; F[update R package versions in\nDESCRIPTION and R doxygen]
+  E --&gt; G[Update python _version.py file]
+  F --&gt; H[roxygenise R packages]
+  H --&gt; I[commit new or updated .Rd files]
+  I --&gt; J[commit all repo changes]
+  G --&gt; J
+  J --&gt; K[tag repo]
+  K --&gt; L[git push]
+</pre>
+<div id="mermaid-tooltip-2" class="mermaidTooltip">
+
+</div>
+<p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: Versioning components.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="channels-for-software-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="channels-for-software-distribution">Channels for software distribution</h2>
