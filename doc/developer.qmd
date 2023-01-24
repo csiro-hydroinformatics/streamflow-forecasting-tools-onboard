@@ -8,10 +8,10 @@ title: "Developer documentation"
 
 A few posts that are related to this hydrologic simulation software stack:
 
-* [Presenting doxygen C++ API documentation via MkDocs with doxybook2](https://jmp75.github.io/work-blog/posts/2022-08-22-doxygen-doxybook-mkdocs.html)
-* [Generate programming language bindings to a C API](https://jmp75.github.io/work-blog/posts/2022-09-03-c-api-wrapper-generation.html)
-* [Azure devops CI pipeline for hydrologic forecasting software](https://jmp75.github.io/work-blog/posts/2022-07-31-azure-pipeline-vcpp-stack.html)
-* [Compiling C++ libraries to WebAssembly - Part 1](https://jmp75.github.io/work-blog/posts/2022-09-11-cpp-code-wasm.html)
+* [Presenting doxygen C++ API documentation via MkDocs with doxybook2](https://jmp75.github.io/work-blog/posts/2022-08-22-doxygen-doxybook-mkdocs.html){.external target="_blank"}
+* [Generate programming language bindings to a C API](https://jmp75.github.io/work-blog/posts/2022-09-03-c-api-wrapper-generation.html){.external target="_blank"}
+* [Azure devops CI pipeline for hydrologic forecasting software](https://jmp75.github.io/work-blog/posts/2022-07-31-azure-pipeline-vcpp-stack.html){.external target="_blank"}
+* [Compiling C++ libraries to WebAssembly - Part 1](https://jmp75.github.io/work-blog/posts/2022-09-11-cpp-code-wasm.html){.external target="_blank"}
 
 # Release and versioning
 

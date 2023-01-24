@@ -5,7 +5,7 @@ title: "Sample modelling workflows - MATLAB"
 
 ::: {.callout-note}
 
-This is only a basic workflow for illustrative purposes, not an extensive reference document. Much work was done by the Matlab user base, but not (yet) published for an external audience.
+This is only a basic workflow for illustrative purposes, not an extensive reference document, nor even a polished "teaser". Much work was done by the Matlab user base, but not (yet) published for an external audience.
 
 :::
 

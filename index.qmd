@@ -2,11 +2,11 @@
 title: "Streamflow Forecasting"
 ---
 
-This is a public entry point for a suite of hydrologic ensemble forecasting modelling tools developed in Australia over the past decade. Most scientific modelling features were authored by the [CSIRO](https://www.csiro.au). While designed with unique features for _ensemble_ streamflow forecasting, these tools can equally be used in _non-ensemble_ simulation mode for other, "traditional" semi-distributed hydrologic modelling.
+This is a public entry point for a suite of hydrologic ensemble forecasting modelling tools developed in Australia over the past decade. Most scientific modelling features were authored by the [CSIRO](https://www.csiro.au){.external target="_blank"}. While designed with unique features for _ensemble_ streamflow forecasting, these tools can equally be used in _non-ensemble_ simulation mode for other, "traditional" semi-distributed hydrologic modelling.
 
 # Applications
 
-Some of the modelling tools are used by the Australian Bureau of Meteorology (the Bureau) to provide the [7-day Ensemble Streamflow Forecasts](http://www.bom.gov.au/water/7daystreamflow) service. An overview of the research and outcomes in streamflow forecasting of the research alliance between the Bureau and CSIRO is available [at this page](https://www.csiro.au/en/Research/LWF/Areas/Water/Assessing-water-resources/WIRADA/Research/Water-forecasting).
+Some of the modelling tools are used by the Australian Bureau of Meteorology (the Bureau) to provide the [7-day Ensemble Streamflow Forecasts](http://www.bom.gov.au/water/7daystreamflow){.external target="_blank"} service. An overview of the research and outcomes in streamflow forecasting of the research alliance between the Bureau and CSIRO is available [at this page](https://www.csiro.au/en/Research/LWF/Areas/Water/Assessing-water-resources/WIRADA/Research/Water-forecasting){.external target="_blank"}.
 
 More recent versions of the tools are also used for further research, development and applications. The core modelling features are usually native (C++) libraries, accessed seamlessly by user from R, Python and Matlab.
 
@@ -24,7 +24,7 @@ The core of the toolset is written in C++ for execution speed, but in practice u
 
 ![High-level software stack](./img/architecture_poster.png "Software stack overview")
 
-Besides building upon established third party open source software, some components of our stack are also open source. See [csiro-hydroinformatics](https://github.com/csiro-hydroinformatics) on GitHub, for instance the [uchronia time series handling module](https://github.com/csiro-hydroinformatics/uchronia-time-series).
+Besides building upon established third party open source software, some components of our stack are also open source. See [csiro-hydroinformatics](https://github.com/csiro-hydroinformatics){.external target="_blank"} on GitHub, for instance the [uchronia time series handling module](https://github.com/csiro-hydroinformatics/uchronia-time-series){.external target="_blank"}.
 
 The [developer page](./doc/developer.qmd) also contains more detailed technical information on the software stack.
 
@@ -34,7 +34,7 @@ Most of the tools covered by this documentation is the output of research suppor
 
 # Publications
 
-[SWIFT2: High performance software for short-medium term ensemble streamflow forecasting research and operations](https://www.mssanz.org.au/modsim2015/L15/perraud.pdf)
+[SWIFT2: High performance software for short-medium term ensemble streamflow forecasting research and operations](https://www.mssanz.org.au/modsim2015/L15/perraud.pdf){.external target="_blank"}
 
-[SWIFT2: Advanced software for continuous ensemble short-term streamflow forecasting ](https://search.informit.com.au/documentSummary;dn=823693257390059;res=IELENG)
+[SWIFT2: Advanced software for continuous ensemble short-term streamflow forecasting ](https://search.informit.com.au/documentSummary;dn=823693257390059;res=IELENG){.external target="_blank"}
 

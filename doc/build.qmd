@@ -34,6 +34,11 @@ flowchart TD
 
 ```
 
+The source code for Azure Devops pipelines are also as of 2023-01 from github, for information purposes only. Their public availability may change in the future though.
+
+* [hydro-forecast-windows-pipeline](https://github.com/csiro-hydroinformatics/hydro-forecast-windows-pipeline){.external target="_blank"}
+* [hydro-forecast-linux-pipeline](https://github.com/csiro-hydroinformatics/hydro-forecast-linux-pipeline){.external target="_blank"}
+
 ## Versioning
 
 This is a (partly populated) placeholder section to document the rationale for versioning installer bundles, and components at a final granularity.
@@ -63,7 +68,7 @@ flowchart TD
 
 ## Channels for software distribution
 
-Some software such as the [refcount](https://pyrefcount.readthedocs.io) python package are available via [conda-forge](https://github.com/conda-forge/refcount-feedstock/) and [pypi](https://pypi.org/project/refcount/). We cannot use these mechanism for closed source packages, but we may consider in the future distribution via:
+Some software such as the [refcount](https://pyrefcount.readthedocs.io) python package are available via [conda-forge](https://github.com/conda-forge/refcount-feedstock){.external target="_blank"} and [pypi](https://pypi.org/project/refcount){.external target="_blank"}. We cannot use these mechanism for closed source packages, but we may consider in the future distribution via:
 
 * "private" conda channel
 * "private" pypi repository

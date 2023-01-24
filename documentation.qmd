@@ -7,16 +7,16 @@ Pointers to further technical documentation for using or developing features.
 # Sample workflows for modellers
 
 * [vignettes for the `swift` package](./doc/samples/sample_workflows_r.md)
-* [jupyter notebooks for the python package `swift2`](https://csiro-hydroinformatics.github.io/swift-py-doc/notebooks/getting_started/)
+* [jupyter notebooks for the python package `swift2`](https://csiro-hydroinformatics.github.io/swift-py-doc/notebooks/getting_started/){.external target="_blank"}
+* [basic matlab example](./doc/samples/sample_workflows_matlab.qmd)
 
 # Technical references
 
 ## Packages documentations
 
-* [python package swift2](https://csiro-hydroinformatics.github.io/swift-py-doc)
-* The [uchronia time series API documentation](https://csiro-hydroinformatics.github.io/uchronia-ts-doc) combines the documentation of the python package `uchronia` with its C++ core.
+The [python package swift2](https://csiro-hydroinformatics.github.io/swift-py-doc){.external target="_blank"} is the latest (from ~2020) implementation of python access arrangements to the "swift2" engine for semi-distributed streamflow modelling and forecasting. The [uchronia time series API documentation](https://csiro-hydroinformatics.github.io/uchronia-ts-doc){.external target="_blank"} combines the documentation of the python package `uchronia` with its C++ core. Other packages include "docstrings" available to users for reference, but are not yet published on the Web.
 
-The R packages contain function documentation, example snippets and so-called "vignettes". you can access vignettes in the packages for instance with:
+The R packages in the software distribution contain function documentation, example code snippets and so-called "vignettes". These are not yet published via web sites. You can access vignettes in the packages for instance with the following statements in an `R` terminal:
 
 ```R
 library(swift)
@@ -28,13 +28,10 @@ You can access the wider package documentation using the command `?swift`, and s
 
 ## Build pipelines
 
-The source code for Azure Devops pipelines are also available as of 2023-01 from github, for information purposes only. Their public availability may change in the future though.
-
-* [hydro-forecast-windows-pipeline](https://github.com/csiro-hydroinformatics/hydro-forecast-windows-pipeline)
-* [hydro-forecast-linux-pipeline](https://github.com/csiro-hydroinformatics/hydro-forecast-linux-pipeline)
+Software build pipelines have been devised to streamline the compilation, testing and packaging of software artifacts. See [build workflows](./doc/build.qmd) for details. 
 
 # Publications
 
-[SWIFT2: High performance software for short-medium term ensemble streamflow forecasting research and operations](https://www.mssanz.org.au/modsim2015/L15/perraud.pdf)
+[SWIFT2: High performance software for short-medium term ensemble streamflow forecasting research and operations](https://www.mssanz.org.au/modsim2015/L15/perraud.pdf){.external target="_blank"}
 
-[SWIFT2: Advanced software for continuous ensemble short-term streamflow forecasting ](https://search.informit.com.au/documentSummary;dn=823693257390059;res=IELENG)
+[SWIFT2: Advanced software for continuous ensemble short-term streamflow forecasting ](https://search.informit.com.au/documentSummary;dn=823693257390059;res=IELENG){.external target="_blank"}
