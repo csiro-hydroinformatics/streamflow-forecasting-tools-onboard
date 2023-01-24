@@ -196,14 +196,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./documentation.html" class="sidebar-item-text sidebar-link active">Documentation</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./doc/samples/sample_workflows_python.html" class="sidebar-item-text sidebar-link">Examples in Python</a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./doc/samples/sample_workflows_r.html" class="sidebar-item-text sidebar-link">Examples in R</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./doc/samples/R/vignettes/getting_started/getting_started.html" class="sidebar-item-text sidebar-link">Getting started with the swift R package</a>
@@ -253,7 +258,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./doc/samples/sample_workflows_python.html" class="sidebar-item-text sidebar-link">Examples in Python</a>
+  <a href="./doc/samples/sample_workflows_matlab.html" class="sidebar-item-text sidebar-link">Examples in Matlab</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -310,18 +315,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>Sample workflows for modellers</h1>
 <ul>
 <li><a href="./doc/samples/sample_workflows_r.html">vignettes for the <code>swift</code> package</a></li>
-<li><a href="https://csiro-hydroinformatics.github.io/swift-py-doc/notebooks/getting_started/">jupyter notebooks for the python package <code>swift2</code></a></li>
+<li><a href="https://csiro-hydroinformatics.github.io/swift-py-doc/notebooks/getting_started/" class="external" target="_blank">jupyter notebooks for the python package <code>swift2</code></a></li>
+<li><a href="./doc/samples/sample_workflows_matlab.html">basic matlab example</a></li>
 </ul>
 </section>
 <section id="technical-references" class="level1">
 <h1>Technical references</h1>
 <section id="packages-documentations" class="level2">
 <h2 class="anchored" data-anchor-id="packages-documentations">Packages documentations</h2>
-<ul>
-<li><a href="https://csiro-hydroinformatics.github.io/swift-py-doc">python package swift2</a></li>
-<li>The <a href="https://csiro-hydroinformatics.github.io/uchronia-ts-doc">uchronia time series API documentation</a> combines the documentation of the python package <code>uchronia</code> with its C++ core.</li>
-</ul>
-<p>The R packages contain function documentation, example snippets and so-called “vignettes”. you can access vignettes in the packages for instance with:</p>
+<p>The <a href="https://csiro-hydroinformatics.github.io/swift-py-doc" class="external" target="_blank">python package swift2</a> is the latest (from ~2020) implementation of python access arrangements to the “swift2” engine for semi-distributed streamflow modelling and forecasting. The <a href="https://csiro-hydroinformatics.github.io/uchronia-ts-doc" class="external" target="_blank">uchronia time series API documentation</a> combines the documentation of the python package <code>uchronia</code> with its C++ core. Other packages include “docstrings” available to users for reference, but are not yet published on the Web.</p>
+<p>The R packages in the software distribution contain function documentation, example code snippets and so-called “vignettes”. These are not yet published via web sites. You can access vignettes in the packages for instance with the following statements in an <code>R</code> terminal:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(swift)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(uchronia)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">browseVignettes</span>(<span class="st">'swift'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -329,17 +332,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="build-pipelines" class="level2">
 <h2 class="anchored" data-anchor-id="build-pipelines">Build pipelines</h2>
-<p>The source code for Azure Devops pipelines are also available as of 2023-01 from github, for information purposes only. Their public availability may change in the future though.</p>
-<ul>
-<li><a href="https://github.com/csiro-hydroinformatics/hydro-forecast-windows-pipeline">hydro-forecast-windows-pipeline</a></li>
-<li><a href="https://github.com/csiro-hydroinformatics/hydro-forecast-linux-pipeline">hydro-forecast-linux-pipeline</a></li>
-</ul>
+<p>Software build pipelines have been devised to streamline the compilation, testing and packaging of software artifacts. See <a href="./doc/build.html">build workflows</a> for details.</p>
 </section>
 </section>
 <section id="publications" class="level1">
 <h1>Publications</h1>
-<p><a href="https://www.mssanz.org.au/modsim2015/L15/perraud.pdf">SWIFT2: High performance software for short-medium term ensemble streamflow forecasting research and operations</a></p>
-<p><a href="https://search.informit.com.au/documentSummary;dn=823693257390059;res=IELENG">SWIFT2: Advanced software for continuous ensemble short-term streamflow forecasting</a></p>
+<p><a href="https://www.mssanz.org.au/modsim2015/L15/perraud.pdf" class="external" target="_blank">SWIFT2: High performance software for short-medium term ensemble streamflow forecasting research and operations</a></p>
+<p><a href="https://search.informit.com.au/documentSummary;dn=823693257390059;res=IELENG" class="external" target="_blank">SWIFT2: Advanced software for continuous ensemble short-term streamflow forecasting</a></p>
 
 
 </section>

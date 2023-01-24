@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Streamflow Forecasting Onboarding - Sample modelling workflows - MATLAB</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../.././img/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../.././img/favicon.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../installation.html">
+ <span class="menu-text">Installation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../documentation.html" aria-current="page">
+ <span class="menu-text">Documentation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../faq.html">
+ <span class="menu-text">FAQ</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/csiro-hydroinformatics/"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Sample modelling workflows - MATLAB</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../documentation.html" class="sidebar-item-text sidebar-link">Documentation</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/samples/sample_workflows_python.html" class="sidebar-item-text sidebar-link">Examples in Python</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../doc/samples/sample_workflows_r.html" class="sidebar-item-text sidebar-link">Examples in R</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/samples/R/vignettes/getting_started/getting_started.html" class="sidebar-item-text sidebar-link">Getting started with the swift R package</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/samples/R/vignettes/ensemble_model_runs/ensemble_model_runs.html" class="sidebar-item-text sidebar-link">Ensemble SWIFT model runs</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/samples/R/vignettes/ensemble_forecast_model_runs/ensemble_forecast_model_runs.html" class="sidebar-item-text sidebar-link">Ensemble Forecasting SWIFT model runs</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/samples/R/vignettes/meta_parameters/meta_parameters.html" class="sidebar-item-text sidebar-link">Calibrating tied meta parameters</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/samples/R/vignettes/calibrate_multisite/calibrate_multisite.html" class="sidebar-item-text sidebar-link">Calibration of a catchment using multisite multiobjective composition</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/samples/R/vignettes/calibrate_subcatchments/calibrate_subcatchments.html" class="sidebar-item-text sidebar-link">Calibration of subcatchments defined by multiple gauges in a catchment</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/samples/R/vignettes/calibration_initial_states/calibration_initial_states.html" class="sidebar-item-text sidebar-link">Calibration with initial model memory states as parameters</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/samples/R/vignettes/error_correction_four_stages/error_correction_four_stages.html" class="sidebar-item-text sidebar-link">Error correction - ERRIS</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/samples/R/vignettes/muskingum_multilink_calibration/muskingum_multilink_calibration.html" class="sidebar-item-text sidebar-link">calibration</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/samples/sample_workflows_matlab.html" class="sidebar-item-text sidebar-link active">Examples in Matlab</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/developer.html" class="sidebar-item-text sidebar-link">Developer documentation</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/build.html" class="sidebar-item-text sidebar-link">Build workflow</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#path-setup" id="toc-path-setup" class="nav-link active" data-scroll-target="#path-setup">Path setup</a></li>
+  <li><a href="#modelling-workflow" id="toc-modelling-workflow" class="nav-link" data-scroll-target="#modelling-workflow">Modelling workflow</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Sample modelling workflows - MATLAB</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is only a basic workflow for illustrative purposes, not an extensive reference document, nor even a polished “teaser”. Much work was done by the Matlab user base, but not (yet) published for an external audience.</p>
+</div>
+</div>
+<section id="path-setup" class="level2">
+<h2 class="anchored" data-anchor-id="path-setup">Path setup</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Matlab SWIFT getting started vignette (last updated March 2018)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">% Define the paths to the directories containing the SWIFT-Matlab functions</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">% We need to define a few locations </span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">% In order to load the swift native library, matlab needs a C/C++ compiler. </span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">% Matlab probably locates Visual Studio C/C++ compilers if you have installed them. </span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">% if using mingw on windows you may need to set up an environment variable such as:</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">% On a Windows machine:</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">% Mapping drive from my laptop to bragg-w for convenience:</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="va">setenv</span>(<span class="ss">'MW_MINGW64_LOC'</span><span class="op">,</span> <span class="ss">'C:/Users/username/prog/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64'</span>)<span class="op">;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="va">bindingsLocation</span>  <span class="op">=</span> <span class="ss">'C:/Users/username/local/matlab'</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="va">localDir</span> <span class="op">=</span> <span class="ss">'C:/Users/username/local'</span><span class="op">;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="va">libs_dir</span> <span class="op">=</span> <span class="va">fullfile</span>(<span class="va">localDir</span><span class="op">,</span> <span class="ss">'libs/64'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For illustration, there are a few steps that would be expected on compute clusters, for instance Linux based:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">%%%%%%%%%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">% % Linux cluster additional steps</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">%%%%%%%%%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">% % on a linux machine such as a Linux cluster:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">% bindingsLocation = '/data/username/src/stash/swift/bindings/matlab';</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">% libs_dir = '/data/projects/hydroforecast/usr/local/lib';</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">% % on a Linux cluster due to Matlab coming coming with its own netcdf.so, which is problematic:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">% prevenv = getenv('LD_LIBRARY_PATH')</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">% newenv = strcat('/apps/netcdf/4.3.3.1/lib', ':', prevenv);</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">% setenv('LD_LIBRARY_PATH', newenv);</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">% % And we also need the following to really get rid of matlabs' own:</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">% loadlibrary('libnetcdf', '/apps/netcdf/4.3.3.1/include/netcdf.h')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finally, specifyint to Matlab where matlab functions (refered to as bindings earlier) can be found:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">addpath</span>(<span class="va">fullfile</span>(<span class="va">bindingsLocation</span><span class="op">,</span> <span class="ss">'datatypes'</span>))<span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">addpath</span>(<span class="va">fullfile</span>(<span class="va">bindingsLocation</span><span class="op">,</span> <span class="ss">'native'</span>))<span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">addpath</span>(<span class="va">fullfile</span>(<span class="va">bindingsLocation</span><span class="op">,</span> <span class="ss">'interop'</span>))<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="va">addpath</span>(<span class="va">fullfile</span>(<span class="va">bindingsLocation</span><span class="op">,</span> <span class="ss">'external'</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="modelling-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="modelling-workflow">Modelling workflow</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">% Basic modelling workflow</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">%% Load the native libraries for 'swift'  and 'datatypes'</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="va">initSwift</span>(<span class="va">libs_dir</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">% initSwift('C:/Users/username/local/libs/64');</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">%% SIMULATION</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="va">cd</span>(<span class="ss">'C:/Users/username/tmp'</span>)<span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="va">cd</span>(<span class="ss">'/data/username/tmp'</span>)<span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">% Define the simulation period</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="va">simulationStart</span> <span class="op">=</span> <span class="va">datetime</span>(<span class="fl">1990</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="va">simulationEnd</span> <span class="op">=</span> <span class="va">datetime</span>(<span class="fl">2005</span><span class="op">,</span> <span class="fl">12</span><span class="op">,</span> <span class="fl">31</span>)<span class="op">;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">% Read in time series data from disk for rain and evap</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="va">tsRainData</span> <span class="op">=</span> <span class="va">transpose</span>(<span class="va">csvread</span>(<span class="va">strcat</span>(<span class="va">bindingsLocation</span><span class="op">,</span> <span class="ss">'/tutorials/getting_started/data/rain.csv'</span>)))<span class="op">;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="va">tsRain</span> <span class="op">=</span> <span class="va">SimpleTimeSeries</span>(<span class="va">simulationStart</span><span class="op">,</span> <span class="ss">'daily'</span><span class="op">,</span> <span class="va">tsRainData</span><span class="op">,</span> <span class="ss">'rain'</span>)<span class="op">;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="va">tsEvapData</span> <span class="op">=</span> <span class="va">transpose</span>(<span class="va">csvread</span>(<span class="va">strcat</span>(<span class="va">bindingsLocation</span><span class="op">,</span> <span class="ss">'/tutorials/getting_started/data/evap.csv'</span>)))<span class="op">;</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="va">tsEvap</span> <span class="op">=</span> <span class="va">SimpleTimeSeries</span>(<span class="va">simulationStart</span><span class="op">,</span> <span class="ss">'daily'</span><span class="op">,</span> <span class="va">tsEvapData</span><span class="op">,</span> <span class="ss">'evap'</span>)<span class="op">;</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">% Create a simple one subarea model simulation using GR4J</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="va">ms</span> <span class="op">=</span> <span class="va">createCatchment</span>(<span class="ss">'GR4J'</span><span class="op">,</span> {<span class="ss">'node1'</span><span class="op">,</span><span class="ss">'node2'</span>}<span class="op">,</span>{<span class="ss">'node 1'</span><span class="op">,</span><span class="ss">'node 2'</span>}<span class="op">,</span>{<span class="ss">'link1'</span>}<span class="op">,</span>{<span class="ss">'link 1'</span>}<span class="op">,</span>{<span class="ss">'node1'</span>}<span class="op">,</span>{<span class="ss">'node2'</span>}<span class="op">,</span><span class="fl">1.0</span>)<span class="op">;</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="va">setSimulationTimeStep</span>(<span class="va">ms</span><span class="op">,</span> <span class="ss">'daily'</span>)<span class="op">;</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="va">setSimulationSpan</span>(<span class="va">ms</span><span class="op">,</span> <span class="va">simulationStart</span><span class="op">,</span> <span class="va">simulationEnd</span>)<span class="op">;</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co">% Play rain and evap into model simulation</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="va">playInput</span>(<span class="va">ms</span><span class="op">,</span> {<span class="ss">'subarea.link1.P'</span>}<span class="op">,</span> <span class="va">tsRainData</span><span class="op">,</span> <span class="va">simulationStart</span><span class="op">,</span> <span class="ss">'daily'</span>)<span class="op">;</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="va">playInput</span>(<span class="va">ms</span><span class="op">,</span> {<span class="ss">'subarea.link1.E'</span>}<span class="op">,</span> <span class="va">tsEvapData</span><span class="op">,</span> <span class="va">simulationStart</span><span class="op">,</span> <span class="ss">'daily'</span>)<span class="op">;</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co">% Query the model simulation</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="va">runoffModelIds</span> <span class="op">=</span> <span class="va">runoffModelIds</span>()<span class="op">;</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="va">gr4jModelVars</span> <span class="op">=</span> <span class="va">runoffModelVarIds</span>(<span class="ss">'GR4J'</span>)<span class="op">;</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="va">subareaIds</span> <span class="op">=</span> <span class="va">getSubareaIds</span>(<span class="va">ms</span>)<span class="op">;</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="va">x4</span> <span class="op">=</span> <span class="va">getStateValue</span>(<span class="va">ms</span><span class="op">,</span> {<span class="ss">'subarea.link1.x4'</span>})<span class="op">;</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="co">% Record runoff</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="va">recordState</span>(<span class="va">ms</span><span class="op">,</span> {<span class="ss">'subarea.link1.runoff'</span>})<span class="op">;</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="va">recordedVarNames</span> <span class="op">=</span> <span class="va">getRecordedVarNames</span>(<span class="va">ms</span>)<span class="op">;</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="co">% Execute the model simulation</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a><span class="va">execSimulation</span>(<span class="va">ms</span>)<span class="op">;</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="co">% Retrieve the recorded time series data</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="va">tsRunoffData</span> <span class="op">=</span> <span class="va">getRecorded</span>(<span class="va">ms</span><span class="op">,</span> <span class="ss">'subarea.link1.runoff'</span>)<span class="op">;</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="va">tsRunoff</span> <span class="op">=</span> <span class="va">SimpleTimeSeries</span>(<span class="va">simulationStart</span><span class="op">,</span> <span class="ss">'daily'</span><span class="op">,</span> <span class="va">tsRunoffData</span><span class="op">,</span> <span class="ss">'runoff'</span>)<span class="op">;</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="co">% CALIBRATION</span></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a><span class="co">% Read in time series data from disk for flow</span></span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a><span class="va">tsFlowData</span> <span class="op">=</span> <span class="va">transpose</span>(<span class="va">csvread</span>(<span class="va">strcat</span>(<span class="va">bindingsLocation</span><span class="op">,</span> <span class="ss">'/tutorials/getting_started/data/flow.csv'</span>)))<span class="op">;</span></span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a><span class="va">tsFlow</span> <span class="op">=</span> <span class="va">SimpleTimeSeries</span>(<span class="va">simulationStart</span><span class="op">,</span> <span class="ss">'daily'</span><span class="op">,</span> <span class="va">tsFlowData</span><span class="op">,</span> <span class="ss">'flow'</span>)<span class="op">;</span></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="co">% Replace no value flag values with nan</span></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a><span class="va">tsFlowData</span>(<span class="va">tsFlowData</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">1</span>) <span class="op">=</span> <span class="va">nan</span><span class="op">;</span></span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="va">calibrationStart</span> <span class="op">=</span> <span class="va">datetime</span>(<span class="fl">1992</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a><span class="va">setSimulationSpan</span>(<span class="va">ms</span><span class="op">,</span> <span class="va">calibrationStart</span><span class="op">,</span> <span class="va">simulationEnd</span>)<span class="op">;</span></span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="va">runoffId</span> <span class="op">=</span> <span class="ss">'subarea.link1.runoff'</span><span class="op">;</span></span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a><span class="va">objective</span> <span class="op">=</span> <span class="va">createObjective</span>(<span class="va">ms</span><span class="op">,</span> <span class="va">runoffId</span><span class="op">,</span> <span class="va">tsFlow</span><span class="op">,</span> <span class="ss">'NSE'</span><span class="op">,</span> <span class="va">calibrationStart</span><span class="op">,</span> <span class="va">simulationEnd</span>)<span class="op">;</span></span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a><span class="co">% Note that as of March 2018, the matlab bindings will retrieve error</span></span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a><span class="co">% messages from the native library (instead of crashing...) on incorrect</span></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a><span class="co">% calls such as:</span></span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a><span class="co">% execSimulation(objective)</span></span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="co">% Configure parameter bounds for our GR4J calibration</span></span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a><span class="va">pSpecGr4j</span> <span class="op">=</span> <span class="va">ParameterSet</span>()<span class="op">;</span></span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a><span class="va">pSpecGr4j</span>.<span class="va">AddParameter</span>(<span class="ss">'subarea.link1.x1'</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="fl">1000</span><span class="op">,</span> <span class="fl">542.1981111</span>)<span class="op">;</span></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a><span class="va">pSpecGr4j</span>.<span class="va">AddParameter</span>(<span class="ss">'subarea.link1.x2'</span><span class="op">,</span> <span class="op">-</span><span class="fl">30</span><span class="op">,</span> <span class="fl">30</span><span class="op">,</span> <span class="op">-</span><span class="fl">0.4127542</span>)<span class="op">;</span></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a><span class="va">pSpecGr4j</span>.<span class="va">AddParameter</span>(<span class="ss">'subarea.link1.x3'</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="fl">1000</span><span class="op">,</span> <span class="fl">7.7403390</span>)<span class="op">;</span></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a><span class="va">pSpecGr4j</span>.<span class="va">AddParameter</span>(<span class="ss">'subarea.link1.x4'</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="fl">240</span><span class="op">,</span> <span class="fl">1.2388548</span>)<span class="op">;</span></span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a><span class="co">% Create a parameterizer</span></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a><span class="va">p</span> <span class="op">=</span> <span class="va">createParameterizer</span>(<span class="ss">'generic'</span><span class="op">,</span> <span class="va">pSpecGr4j</span>)<span class="op">;</span></span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a><span class="va">score</span> <span class="op">=</span> <span class="va">getScore</span>(<span class="va">objective</span><span class="op">,</span> <span class="va">p</span>)<span class="op">;</span></span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a><span class="co">% Create a max runtime termination criteria</span></span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a><span class="va">term</span> <span class="op">=</span> <span class="va">getMaxRuntimeTermination</span>(<span class="fl">0.005</span>)<span class="op">;</span></span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a><span class="co">% Create a default SCE parameter structure</span></span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a><span class="va">sceParams</span> <span class="op">=</span> <span class="va">getDefaultSceParameters</span>()<span class="op">;</span></span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a><span class="co">% Create a population initializer</span></span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a><span class="va">urs</span> <span class="op">=</span> <span class="va">createParameterSampler</span>(<span class="fl">0</span><span class="op">,</span> <span class="va">p</span><span class="op">,</span> <span class="ss">'urs'</span>)<span class="op">;</span></span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a><span class="co">% Construct an optimizer</span></span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a><span class="va">optimizer</span> <span class="op">=</span> <span class="va">createSceOptimSwift</span>(<span class="va">objective</span><span class="op">,</span> <span class="va">term</span><span class="op">,</span> <span class="va">sceParams</span><span class="op">,</span> <span class="va">urs</span>)<span class="op">;</span></span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a><span class="co">% Setup the calibration logger</span></span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a><span class="va">setCalibrationLogger</span>(<span class="va">optimizer</span><span class="op">,</span> <span class="ss">''</span>)<span class="op">;</span></span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a><span class="co">% Calibrate the model</span></span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a><span class="va">calibResults</span> <span class="op">=</span> <span class="va">executeOptimization</span>(<span class="va">optimizer</span>)<span class="op">;</span></span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a><span class="co">% Display the best objective score</span></span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a><span class="va">bestResult</span> <span class="op">=</span> <span class="va">calibResults</span>{<span class="fl">1</span><span class="op">,</span><span class="fl">2</span>}<span class="op">;</span></span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a><span class="va">disp</span>(<span class="va">bestResult</span>)<span class="op">;</span></span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a><span class="co">% Load the calibration log data in matlab</span></span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a><span class="va">logData</span> <span class="op">=</span> <span class="va">loadCalibrationLogger</span>(<span class="va">optimizer</span>)<span class="op">;</span></span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a><span class="co">% Plot the evolution of all parameters</span></span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a><span class="va">plotAllParameterEvolutions</span>(<span class="va">logData</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© CC-By CSIRO</div>   
+    <div class="nav-footer-right">This page is built with <a href="https://quarto.org/">Quarto</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>
