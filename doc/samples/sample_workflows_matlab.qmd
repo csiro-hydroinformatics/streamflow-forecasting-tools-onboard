@@ -1,0 +1,198 @@
+---
+title: "Sample modelling workflows - MATLAB"
+---
+
+
+::: {.callout-note}
+
+This is only a basic workflow for illustrative purposes, not an extensive reference document. Much work was done by the Matlab user base, but not (yet) published for an external audience.
+
+:::
+
+## Path setup
+
+```matlab
+% Matlab SWIFT getting started vignette (last updated March 2018)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define the paths to the directories containing the SWIFT-Matlab functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% We need to define a few locations 
+% In order to load the swift native library, matlab needs a C/C++ compiler. 
+% Matlab probably locates Visual Studio C/C++ compilers if you have installed them. 
+% if using mingw on windows you may need to set up an environment variable such as:
+
+% On a Windows machine:
+% Mapping drive from my laptop to bragg-w for convenience:
+setenv('MW_MINGW64_LOC', 'C:/Users/username/prog/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64');
+bindingsLocation  = 'C:/Users/username/local/matlab'
+localDir = 'C:/Users/username/local';
+libs_dir = fullfile(localDir, 'libs/64');
+```
+
+For illustration, there are a few steps that would be expected on compute clusters, for instance Linux based:
+
+```matlab
+%%%%%%%%%
+% % Linux cluster additional steps
+%%%%%%%%%
+% % on a linux machine such as a Linux cluster:
+% bindingsLocation = '/data/username/src/stash/swift/bindings/matlab';
+% libs_dir = '/data/projects/hydroforecast/usr/local/lib';
+% % on a Linux cluster due to Matlab coming coming with its own netcdf.so, which is problematic:
+% prevenv = getenv('LD_LIBRARY_PATH')
+% newenv = strcat('/apps/netcdf/4.3.3.1/lib', ':', prevenv);
+% setenv('LD_LIBRARY_PATH', newenv);
+% % And we also need the following to really get rid of matlabs' own:
+% loadlibrary('libnetcdf', '/apps/netcdf/4.3.3.1/include/netcdf.h')
+```
+
+Finally, specifyint to Matlab where matlab functions (refered to as bindings earlier) can be found:
+
+```matlab
+addpath(fullfile(bindingsLocation, 'datatypes'));
+addpath(fullfile(bindingsLocation, 'native'));
+addpath(fullfile(bindingsLocation, 'interop'));
+addpath(fullfile(bindingsLocation, 'external'));
+```
+
+## Modelling workflow
+
+```matlab
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic modelling workflow
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Load the native libraries for 'swift'  and 'datatypes'
+initSwift(libs_dir)
+% initSwift('C:/Users/username/local/libs/64');
+
+%% SIMULATION
+cd('C:/Users/username/tmp');
+cd('/data/username/tmp');
+% Define the simulation period
+simulationStart = datetime(1990, 1, 1);
+simulationEnd = datetime(2005, 12, 31);
+
+% Read in time series data from disk for rain and evap
+
+tsRainData = transpose(csvread(strcat(bindingsLocation, '/tutorials/getting_started/data/rain.csv')));
+tsRain = SimpleTimeSeries(simulationStart, 'daily', tsRainData, 'rain');
+
+tsEvapData = transpose(csvread(strcat(bindingsLocation, '/tutorials/getting_started/data/evap.csv')));
+tsEvap = SimpleTimeSeries(simulationStart, 'daily', tsEvapData, 'evap');
+
+% Create a simple one subarea model simulation using GR4J
+
+ms = createCatchment('GR4J', {'node1','node2'},{'node 1','node 2'},{'link1'},{'link 1'},{'node1'},{'node2'},1.0);
+
+setSimulationTimeStep(ms, 'daily');
+setSimulationSpan(ms, simulationStart, simulationEnd);
+
+% Play rain and evap into model simulation
+
+playInput(ms, {'subarea.link1.P'}, tsRainData, simulationStart, 'daily');
+playInput(ms, {'subarea.link1.E'}, tsEvapData, simulationStart, 'daily');
+
+% Query the model simulation
+
+runoffModelIds = runoffModelIds();
+
+gr4jModelVars = runoffModelVarIds('GR4J');
+
+subareaIds = getSubareaIds(ms);
+
+x4 = getStateValue(ms, {'subarea.link1.x4'});
+
+% Record runoff
+
+recordState(ms, {'subarea.link1.runoff'});
+
+recordedVarNames = getRecordedVarNames(ms);
+
+% Execute the model simulation
+
+execSimulation(ms);
+
+% Retrieve the recorded time series data
+
+tsRunoffData = getRecorded(ms, 'subarea.link1.runoff');
+tsRunoff = SimpleTimeSeries(simulationStart, 'daily', tsRunoffData, 'runoff');
+
+% CALIBRATION
+
+% Read in time series data from disk for flow
+
+tsFlowData = transpose(csvread(strcat(bindingsLocation, '/tutorials/getting_started/data/flow.csv')));
+tsFlow = SimpleTimeSeries(simulationStart, 'daily', tsFlowData, 'flow');
+
+% Replace no value flag values with nan
+
+tsFlowData(tsFlowData < -1) = nan;
+
+calibrationStart = datetime(1992, 1, 1);
+
+setSimulationSpan(ms, calibrationStart, simulationEnd);
+
+runoffId = 'subarea.link1.runoff';
+
+objective = createObjective(ms, runoffId, tsFlow, 'NSE', calibrationStart, simulationEnd);
+
+% Note that as of March 2018, the matlab bindings will retrieve error
+% messages from the native library (instead of crashing...) on incorrect
+% calls such as:
+% execSimulation(objective)
+
+% Configure parameter bounds for our GR4J calibration
+
+pSpecGr4j = ParameterSet();
+
+pSpecGr4j.AddParameter('subarea.link1.x1', 1, 1000, 542.1981111);
+pSpecGr4j.AddParameter('subarea.link1.x2', -30, 30, -0.4127542);
+pSpecGr4j.AddParameter('subarea.link1.x3', 1, 1000, 7.7403390);
+pSpecGr4j.AddParameter('subarea.link1.x4', 1, 240, 1.2388548);
+
+% Create a parameterizer
+
+p = createParameterizer('generic', pSpecGr4j);
+
+score = getScore(objective, p);
+
+% Create a max runtime termination criteria
+
+term = getMaxRuntimeTermination(0.005);
+
+% Create a default SCE parameter structure
+
+sceParams = getDefaultSceParameters();
+
+% Create a population initializer
+
+urs = createParameterSampler(0, p, 'urs');
+
+% Construct an optimizer
+
+optimizer = createSceOptimSwift(objective, term, sceParams, urs);
+
+% Setup the calibration logger
+
+setCalibrationLogger(optimizer, '');
+
+% Calibrate the model
+
+calibResults = executeOptimization(optimizer);
+
+% Display the best objective score
+
+bestResult = calibResults{1,2};
+disp(bestResult);
+
+% Load the calibration log data in matlab
+
+logData = loadCalibrationLogger(optimizer);
+
+% Plot the evolution of all parameters
+
+plotAllParameterEvolutions(logData);
+```

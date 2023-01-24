@@ -1,9 +1,15 @@
-You will have been given one or more links to the location of C++ compiled libraries (windows DLLs), and R and/or Python packages.
+---
+title: "Installation: Windows"
+---
+
+You will have been given one or more links to the location of C++ compiled libraries (windows DLLs), and R and/or Python packages. You should have access to at least:
 
 * libs_third_party.7z
 * libs.7z
-* R_pkgs.7z
-* python.7z
+
+and R/Python packages, in files `R_pkgs.7z` and `python.7z`, or subfolders already extracted.
+
+Other archives files (such as include.7z) are used for development and not necessary for most users.
 
 # Installing shared (dynamic) libraries
 

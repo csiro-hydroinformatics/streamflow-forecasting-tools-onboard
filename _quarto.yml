@@ -58,10 +58,12 @@ website:
     - id: documentation
       title: "Documentation"
       style: "floating"
-      collapse-level: 2
+      collapse-level: 1
       align: left
       contents:
         - documentation.qmd
+        - text: "Examples in Python"
+          href: doc/samples/sample_workflows_python.md
         - section: "Examples in R"
           href: doc/samples/sample_workflows_r.md
           contents:
@@ -74,8 +76,8 @@ website:
             - doc/samples/R/vignettes/calibration_initial_states/calibration_initial_states.md
             - doc/samples/R/vignettes/error_correction_four_stages/error_correction_four_stages.md
             - doc/samples/R/vignettes/muskingum_multilink_calibration/muskingum_multilink_calibration.md
-        - text: "Examples in Python"
-          href: doc/samples/sample_workflows_python.md
+        - text: "Examples in Matlab"
+          href: doc/samples/sample_workflows_matlab.qmd
         - text: "Developer documentation"
           href: doc/developer.qmd
         - text: "Build workflow"
