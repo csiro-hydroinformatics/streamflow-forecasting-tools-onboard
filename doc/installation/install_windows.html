@@ -230,7 +230,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#installing-shared-dynamic-libraries" id="toc-installing-shared-dynamic-libraries" class="nav-link active" data-scroll-target="#installing-shared-dynamic-libraries">Installing shared (dynamic) libraries</a>
+  <li><a href="#installing-shared-dynamic-or-feasible-librarie" id="toc-installing-shared-dynamic-or-feasible-librarie" class="nav-link active" data-scroll-target="#installing-shared-dynamic-or-feasible-librarie">Installing shared (dynamic) or feasible librarie</a>
   <ul class="collapse">
   <li><a href="#adding-environment-variable-library_path" id="toc-adding-environment-variable-library_path" class="nav-link" data-scroll-target="#adding-environment-variable-library_path">Adding environment variable LIBRARY_PATH</a></li>
   </ul></li>
@@ -272,31 +272,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>You will have been given one or more links to the location of C++ compiled libraries (windows DLLs), and R and/or Python packages. You should have access to at least:</p>
-<ul>
-<li>libs_third_party.7z</li>
-<li>libs.7z</li>
-</ul>
-<p>and R/Python packages, in files <code>R_pkgs.7z</code> and <code>python.7z</code>, or subfolders already extracted.</p>
-<p>Other archives files (such as include.7z) are used for development and not necessary for most users.</p>
-<section id="installing-shared-dynamic-libraries" class="level1">
-<h1>Installing shared (dynamic) libraries</h1>
-<p>This documentation is fairly prescriptive in terms of the location where you would install dynamic libraries. You can still choose the top level folder where you would install these libraries. This document uses “c:”, and you are encourage to adhere to this convention if you can logistically can.</p>
+<p>You will have been given one or more links to the location of C++ compiled libraries (windows DLLs), and R and/or Python packages. You should have access to at least a file <code>libs.7z</code> and R/Python packages, in files <code>R_pkgs.7z</code> and <code>python.7z</code>, or subfolders already extracted.</p>
+<p>Other archives files (such as include.7z) may be present and used only for development. They are not necessary for most users.</p>
+<section id="installing-shared-dynamic-or-feasible-librarie" class="level1">
+<h1>Installing shared (dynamic) or feasible librarie</h1>
+<p>The top level folder where you should install these libraries is not prescribed. This document uses <code>c:\local</code> for historical reasons, but this may not be a logical or feasible place depending on your organisational IT environment. You can replace it with another folder location in the rest of this document.</p>
 <p>You may have <code>7z</code> in your command line prompt, otherwise use Windows Explorer to extract the zip file from the 7Zip graphical user interface. You may replace <code>7z</code> with the full path, typically <code>"c:\Program Files\7-Zip\7z.exe"</code> with quotation marks.</p>
 <pre class="bat"><code>if not defined local_dir set local_dir=c:\local
 if not exist %local_dir% mkdir %local_dir%\libs\64
 
 cd %local_dir%
-7z x -y libs_third_party.7z
-7z x -y libs.7z</code></pre>
-<p>This should have created the folder <code>C:\local\libs\64</code>. A 32 bits folder may be present but is deprecated since 2017-12: operating systems are now largely 64 bits and we strongly recommend you use 64 bits toolsets.</p>
+7z x -y libs.7z
+:: or:
+"c:\Program Files\7-Zip\7z.exe" x -y libs.7z</code></pre>
+<p>This should have created the folder <code>C:\local\libs\64</code>. A 32 bits folder may be present but is deprecated since 2017-12: operating systems are now largely 64 bits and we strongly recommend you use 64 bits version of the products.</p>
 <section id="adding-environment-variable-library_path" class="level2">
 <h2 class="anchored" data-anchor-id="adding-environment-variable-library_path">Adding environment variable LIBRARY_PATH</h2>
-<p>The packages in R, python, (etc.) need a way to search for these native libraries. To do so, you should set up a User- or System-level environmental variable <code>LIBRARY_PATH</code>. The approach borrows from what is customary (albeit variable) on most Linux system for dynamic library resolution.</p>
+<p>The packages in R, python, (etc.) need a way to search for these native libraries. To do so, you should set up a User- or System-level environmental variable <code>LIBRARY_PATH</code>. The approach borrows from what is customary (albeit variable) on most Linux system for locating software libraries.</p>
 <p>Go to the Control Panel, System and Security, Search for the string “environment”, and it should give you the link to <strong>Edit environment variables for your account</strong>.</p>
 <ul>
 <li>for the field “Variable name:” use <code>LIBRARY_PATH</code></li>
-<li>for the field “Variable value:” use c:(if you unzipped libs.7z into c:in the previous section)</li>
+<li>for the field “Variable value:” use c:(if you unzipped libs.7z into “c:” in the previous section)</li>
 </ul>
 </section>
 </section>
@@ -369,6 +365,7 @@ pip install --force-reinstall --no-deps fogss-0.3-py2.py3-none-any.whl</code></p
 </section>
 <section id="installing-hydroforecast-packages-in-dev-mode" class="level3">
 <h3 class="anchored" data-anchor-id="installing-hydroforecast-packages-in-dev-mode"><strong>Installing hydroforecast packages in dev mode</strong></h3>
+<p>This section is valid for developers who have access to and checked out source code. All other users can ignore it.</p>
 <p>To install instead in development mode, for some or all of the 4 packages:</p>
 <pre class="bat"><code>set GITHUB_REPOS=c:\src
 set CSIRO_BITBUCKET=c:\src</code></pre>
@@ -382,20 +379,20 @@ python setup.py develop
 cd %CSIRO_BITBUCKET%\swift\bindings\python\swift2\
 python setup.py develop
 :: fogss...</code></pre>
-<p>Now to exploresample notebooks</p>
+<p>Now to explore sample notebooks</p>
 <p><code>mamba install -c conda-forge seaborn</code></p>
 <pre class="bat"><code>cd %userprofile%\Documents
 mkdir notebooks
 xcopy %CSIRO_BITBUCKET%\swift\bindings\python\swift2\notebooks\* .\
 
 jupyter-lab .</code></pre>
-<p>start with getting_started.ipynb</p>
-<p>TODO: recommend using <code>nbstripout</code> and <code>jupytext</code></p>
+<p>start with <code>getting_started.ipynb</code></p>
+<p>We recommend developers install the packages <code>nbstripout</code> and <code>jupytext</code> to manage python notebooks.</p>
 </section>
 </section>
 <section id="matlab-functions" class="level2">
 <h2 class="anchored" data-anchor-id="matlab-functions">Matlab functions</h2>
-<p>This section is a placeholder</p>
+<p>Matlab bindings are available and used by some users. Their installation is not documented here, but may be in the future.</p>
 
 
 </section>
