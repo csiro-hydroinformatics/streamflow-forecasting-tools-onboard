@@ -2,18 +2,13 @@
 title: "Installation: Windows"
 ---
 
-You will have been given one or more links to the location of C++ compiled libraries (windows DLLs), and R and/or Python packages. You should have access to at least:
+You will have been given one or more links to the location of C++ compiled libraries (windows DLLs), and R and/or Python packages. You should have access to at least a file `libs.7z` and R/Python packages, in files `R_pkgs.7z` and `python.7z`, or subfolders already extracted.
 
-* libs_third_party.7z
-* libs.7z
+Other archives files (such as include.7z) may be present and used only for development. They are not necessary for most users.
 
-and R/Python packages, in files `R_pkgs.7z` and `python.7z`, or subfolders already extracted.
+# Installing shared (dynamic) or feasible librarie
 
-Other archives files (such as include.7z) are used for development and not necessary for most users.
-
-# Installing shared (dynamic) libraries
-
-This documentation is fairly prescriptive in terms of the location where you would install dynamic libraries. You can still choose the top level folder where you would install these libraries. This document uses "c:\local", and you are encourage to adhere to this convention if you can logistically can.
+The top level folder where you should install these libraries is not prescribed. This document uses `c:\local` for historical reasons, but this may not be a logical or feasible place depending on your organisational IT environment. You can replace it with another folder location in the rest of this document.
 
 You may have `7z` in your command line prompt, otherwise use Windows Explorer to extract the zip file from the 7Zip graphical user interface. You may replace `7z` with the full path, typically `"c:\Program Files\7-Zip\7z.exe"` with quotation marks.
 
@@ -22,20 +17,21 @@ if not defined local_dir set local_dir=c:\local
 if not exist %local_dir% mkdir %local_dir%\libs\64
 
 cd %local_dir%
-7z x -y libs_third_party.7z
 7z x -y libs.7z
+:: or:
+"c:\Program Files\7-Zip\7z.exe" x -y libs.7z
 ```
 
-This should have created the folder `C:\local\libs\64`. A 32 bits folder may be present but is deprecated since 2017-12: operating systems are now largely 64 bits and we strongly recommend you use 64 bits toolsets.
+This should have created the folder `C:\local\libs\64`. A 32 bits folder may be present but is deprecated since 2017-12: operating systems are now largely 64 bits and we strongly recommend you use 64 bits version of the products.
 
 ## Adding environment variable LIBRARY_PATH
 
-The packages in R, python, (etc.) need a way to search for these native libraries. To do so, you should set up a User- or System-level environmental variable `LIBRARY_PATH`. The approach borrows from what is customary (albeit variable) on most Linux system for dynamic library resolution.
+The packages in R, python, (etc.) need a way to search for these native libraries. To do so, you should set up a User- or System-level environmental variable `LIBRARY_PATH`. The approach borrows from what is customary (albeit variable) on most Linux system for locating software libraries.
 
 Go to the Control Panel, System and Security\System, Search for the string "environment", and it should give you the link to **Edit environment variables for your account**.
 
 * for the field "Variable name:" use `LIBRARY_PATH`
-* for the field "Variable value:" use c:\local\libs  (if you unzipped libs.7z into c:\local in the previous section)
+* for the field "Variable value:" use c:\local\libs  (if you unzipped libs.7z into "c:\local" in the previous section)
 
 # Installing packages
 
@@ -152,6 +148,8 @@ pip install --force-reinstall --no-deps fogss-0.3-py2.py3-none-any.whl
 
 ### __Installing hydroforecast packages in dev mode__
 
+This section is valid for developers who have access to and checked out source code. All other users can ignore it.
+
 To install instead in development mode, for some or all of the 4 packages:
 
 ```bat
@@ -172,7 +170,7 @@ python setup.py develop
 :: fogss...
 ```
 
-Now to exploresample notebooks
+Now to explore sample notebooks
 
 `mamba install -c conda-forge seaborn`
 
@@ -184,10 +182,12 @@ xcopy %CSIRO_BITBUCKET%\swift\bindings\python\swift2\notebooks\* .\
 jupyter-lab .
 ```
 
-start with getting_started.ipynb
+start with `getting_started.ipynb`
 
-TODO: recommend using `nbstripout` and `jupytext`
+We recommend developers install the packages `nbstripout` and `jupytext` to manage python notebooks.
 
 ## Matlab functions
 
-This section is a placeholder
+Matlab bindings are available and used by some users. Their installation is not documented here, but may be in the future.
+
+
