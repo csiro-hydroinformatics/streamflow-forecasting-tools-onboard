@@ -5,3 +5,43 @@ title: "Installation: From source code"
 ["cruise-control" (restricted link)](https://bitbucket.csiro.au/projects/SF/repos/cruise-control/browse){.external target="_blank"} contains detailed instructions for building and maintaining the software stack from source.
 
 Few people have this need in practice, and within this pool of people, most will have a particular platform and preference in development tools, so it is moot to document prescriptive steps here for now. That said, the build pipelines that exist for various operating systems may be a basis for documenting this in the future. Pending user needs.
+
+# Appendix
+
+## Installing hydroforecast packages in dev mode
+
+To install instead in development mode, for some or all of the 4 packages:
+
+```bat
+set GITHUB_REPOS=c:\src
+set CSIRO_BITBUCKET=c:\src
+```
+
+```bat
+cd %GITHUB_REPOS%\pyrefcount
+python setup.py develop
+cd %GITHUB_REPOS%\c-interop\bindings\python\cinterop
+python setup.py develop
+
+cd %CSIRO_BITBUCKET%\datatypes\bindings\python\uchronia\
+python setup.py develop
+cd %CSIRO_BITBUCKET%\swift\bindings\python\swift2\
+python setup.py develop
+:: fogss...
+```
+
+Now to explore sample notebooks
+
+`mamba install -c conda-forge seaborn`
+
+```bat
+cd %userprofile%\Documents
+mkdir notebooks
+xcopy %CSIRO_BITBUCKET%\swift\bindings\python\swift2\notebooks\* .\
+
+jupyter-lab .
+```
+
+start with getting_started.ipynb
+
+TODO: recommend using `nbstripout` and `jupytext`
