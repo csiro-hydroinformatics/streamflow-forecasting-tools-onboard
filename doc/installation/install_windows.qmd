@@ -2,13 +2,117 @@
 title: "Installation: Windows"
 ---
 
-You will have been given one or more links to the location of C++ compiled libraries (windows DLLs), and R and/or Python packages. You should have access to at least a file `libs.7z` and R/Python packages, in files `R_pkgs.7z` and `python.7z`, or subfolders already extracted.
+# Introduction 
 
-Other archives files (such as include.7z) may be present and used only for development. They are not necessary for most users.
+This document is a short guide to install on Windows the CSIRO ensemble streamflow
+forecasting software stack that includes tools known as SWIFT2, FoGSS,
+CHyPP.
 
-# Installing shared (dynamic) or feasible librarie
+As of 2023-04-24 it is recommended to use a Windows Installer (MSI file). The manual setup is kept in this document but is deprecated.
+
+# Installation with the Windows installer
+
+The windows installer v1.0 is available upon prior agreement from [this web page](https://data.csiro.au/collection/csiro:58370v1). You can see always see the web page but cannot download the installer without prior agreement (user credentials).
+
+You should have access to a windows installer file "sf.msi" of around
+40MB. This installer should work on at least Windows 10 or later. It may
+work on older versions of Windows but has not been tested.
+
+![](./media/image1.png){width="6.27in"
+height="1.8694444444444445in"}
+
+The installer is signed with a cryptographic signature certified by a
+third party, which should facilitate the approval from your IT
+department if required.
+
+![](./media/image2.png){width="4.0005588363954505in"
+height="1.8544258530183726in"}
+
+::: {.callout-note}
+
+This document outlines the steps to perform for a "normal" user without
+particularly elevated privileges on the installation machine. It is
+possible to install as an Administrator for all users, but this is not
+documented here.
+
+:::
+
+An installation consists of two steps in practice. The installer
+installs native libraries, sets environment variables, and copies
+installable packages for R, python, MATLAB. You can then use the latter
+to install these packages in your environment. There are many ways to
+manage R and python environments, so this step cannot be handled
+automatically by the windows installer.
+
+## Windows installer
+
+Execute the file sf.msi
+
+![](./media/image3.png){width="5.15in"
+height="4.031812117235345in"}
+
+Do read the license agreement. If you have access to this installer, you
+should already have had prior discussions with the product
+distributors to agree on the scope of use of the products.
+
+![](./media/image4.png){width="5.15in"
+height="4.031812117235345in"}
+
+As a user-level installation you will be prompted with a conventional
+default location. You may change the destination folder if required.
+
+![](./media/image5.png){width="5.15in"
+height="4.031812117235345in"}
+
+![](./media/image6.png){width="5.15in"
+height="4.031812117235345in"}
+
+The installation will typically take a few seconds to proceed.
+
+![](./media/image7.png){width="5.15in"
+height="4.031812117235345in"}
+
+![](./media/image8.png){width="5.15in"
+height="4.031812117235345in"}
+
+# Checking the base installation
+
+One way to check the installation worked as desired is to open a new
+command prompt. The command `where chyppapp` should return a path.
+
+![](./media/image9.png){width="6.27in"
+height="1.886111111111111in"}
+
+Then `chyppapp \--help` should work and display a help output.
+
+![](./media/image10.png){width="6.27in"
+height="1.5805555555555555in"}
+
+# Uninstalling
+
+The installer is well integrated in the Windows system, and to repair or
+uninstall the stack you can use the "Add and Remove software" panel of Windows.
+Uninstalling will remove all installed files and revert changes to the
+environment variables `PATH` and `LIBRARY_PATH`
+
+![](./media/image11.png){width="6.27in" height="3.0875in"}
+
+
+# Manual installation of libraries 
+
+::: {.callout-note}
+
+This manual procedure to install the stack is deprecated. Preferably use the windows installer as above.
+
+:::
+
+You will have been given one or more links to the location of C++ compiled libraries (windows DLLs), and R and/or Python packages. You should have access to at least libs.7z. Other archives files (such as include.7z) may be present and used only for development. They are not necessary for most users.
 
 The top level folder where you should install these libraries is not prescribed. This document uses `c:\local` for historical reasons, but this may not be a logical or feasible place depending on your organisational IT environment. You can replace it with another folder location in the rest of this document.
+
+## Installing shared (dynamic) libraries
+
+This documentation is fairly prescriptive in terms of the location where you would install dynamic libraries. You can still choose the top level folder where you would install these libraries. This document uses `c:\local`, and you are encourage to adhere to this convention if you can logistically can.
 
 You may have `7z` in your command line prompt, otherwise use Windows Explorer to extract the zip file from the 7Zip graphical user interface. You may replace `7z` with the full path, typically `"c:\Program Files\7-Zip\7z.exe"` with quotation marks.
 
@@ -24,14 +128,14 @@ cd %local_dir%
 
 This should have created the folder `C:\local\libs\64`. A 32 bits folder may be present but is deprecated since 2017-12: operating systems are now largely 64 bits and we strongly recommend you use 64 bits version of the products.
 
-## Adding environment variable LIBRARY_PATH
+### Adding environment variable LIBRARY_PATH
 
 The packages in R, python, (etc.) need a way to search for these native libraries. To do so, you should set up a User- or System-level environmental variable `LIBRARY_PATH`. The approach borrows from what is customary (albeit variable) on most Linux system for locating software libraries.
 
 Go to the Control Panel, System and Security\System, Search for the string "environment", and it should give you the link to **Edit environment variables for your account**.
 
 * for the field "Variable name:" use `LIBRARY_PATH`
-* for the field "Variable value:" use c:\local\libs  (if you unzipped libs.7z into "c:\local" in the previous section)
+* for the field "Variable value:" use `c:\local\libs`  (if you unzipped libs.7z into `c:\local` in the previous section)
 
 # Installing packages
 
@@ -39,11 +143,46 @@ You can choose to install various higher level languages: R, Python, Matlab, C# 
 
 This section documents R and Python. You can install either, or both, depending on your needs.
 
+::: {.callout-note}
+
+This section mostly assumes you are installing from the Windows 
+Installer, not manually. You may need to adapt a few things if you 
+installed manually.
+
+:::
+
+From the start menu, go to "All apps" (note: screen captures are made on
+Windows 11).
+
+![](./media/image12.png){width="5.834146981627296in"
+height="1.5939720034995626in"}
+
+In the "S" section you will find a "Streamflow Forecasting" folder, with
+a shortcut to the installation folder.
+
+![](./media/image13.png){width="6.268055555555556in"
+height="2.095833333333333in"}
+
+This will open the installation folder which includes the additional
+files for R, python and matlab.
+
+![](./media/image14.png){width="6.268055555555556in" height="2.8125in"}
+
 ## R packages
 
-At the time of writing, instructions should work for R versions 4.2. It should be possible to install in ulterior versions but changes may be required. On Windows binary packages are version-specific, so by default packages for older versions may not be available, but could be built upon request.
 
-Most users will not (and should not) write to the default R library. You may already have installed additional packages, in which case R would have proposed to create a personal library instead. You can check this with: `.libPaths()`
+R packages are available in source and precompiled "win.binaries" form.
+The latter is easy and fast. Installing from source is out of scope of
+this document. However, Windows binary packages are version dependent.
+The installer includes packages for R 4.2.x, the current latest stable
+version of R. If you need another version of the packages, please
+contact the authors.
+
+Open an R terminal.
+
+Check with the command `.libPaths()` that the first folder is user
+specific, so that you will be able to install the packages. It is likely
+R would likely prompt you if not, and would created one in the process.
 
 ```
 [1] "C:/Users/xxxyyy/AppData/Local/R/win-library/4.2"
@@ -60,23 +199,41 @@ While not required, you can set up an additional R library location, specified v
 
 ### Installing an R package
 
-You should have been given pre-compiled R packages. If you have for instance a USB drive mapped to E:, the following command should install swift, and all its depencency packages. This may take some time to set up once, but is worth it - most of these packages are publicly, popular R packages providing powerful statistical and visualisation tools to complement SWIFT2.
+Then you will need the root name of the small R library folder where R
+packages are, e.g. "C:\\Users\\xxxyyy\\AppData\\Local\\Programs\\SF\\R" if you have
+chosen the default option for an destination folder.
 
-`swift` is the main modelling package, `uchronia` is a closely related package for multi-dimensional time series handling. 
-
-```R
-install.packages(c('uchronia','swift'), repos=c('file:///E:/software/R_pkgs', 'https://cran.csiro.au'), type='win.binary')
-```
-
-Other related packages but less mature or less often used are available:
+Adapting the following command should install the streamflow forecasting
+packages and their third party dependencies
 
 ```R
-install.packages(c('rpp','calibragem'), repos=c('file:///E:/software/R_pkgs', 'https://cran.csiro.au'), type='win.binary')
+install.packages(c('calibragem', 'mhplot', 'efts', 'swift',
+'qpp'),
+repos=c('file:///C:/Users/xxxyyy/AppData/Local/Programs/SF/R',
+'https://cran.csiro.au'), type='win.binary')`
 ```
+
+Upon successful installation you should be able to load the `swift`
+package:
+
+![](./media/image15.png){width="6.268055555555556in"
+height="1.6104166666666666in"}
+
+The command `?swift` should open an HTML page in a browser. At the
+bottom of the page you can find a shortcut to the package index.
+
+![](./media/image16.png){width="3.3546347331583553in"
+height="0.541742125984252in"}
+
+The package Index page should also include a link to the introductory
+vignettes:
+
+![](./media/image17.png){width="6.268055555555556in"
+height="3.4604166666666667in"}
 
 ## Python packages
 
-### __Python environments__
+### Python environments
 
 We **strongly** advise you to use python virtual environments to execute these tools via python.
 
@@ -84,7 +241,7 @@ There are various methods for these, but typically `venv` (virtual environments)
 
 This section documents the process using `conda`.
 
-We recommend you use [miniconda3](https://docs.conda.io/en/latest/miniconda.html), but you may have already it installed on your Windows box by e.g. your IT department installation management software.
+There are various options to set up a suotable python environment to run. This document outlines using `conda`. If you do not have any preexisting environments, we recommend you use [mambaforge](https://github.com/conda-forge/miniforge#mambaforge), but you may have already it installed on your Windows box by e.g. your IT department installation management software.
 
 This document assumes you start from the base environment, for instance:
 
@@ -97,15 +254,15 @@ base                  *  C:\Users\xxxyyy\Miniconda3
 
 We recommend you use the `mamba` package, a newer and faster drop-in replacement for `conda`. This is optional.
 
-```bat
+```sh
 conda install -c conda-forge mamba
 ```
 
-### __Installing hydroforecast packages__
+### Installing Python packages
 
 Below remember to replace `mamba` by `conda` if you have not installed mamba.
 
-```bat
+```text
 set env_name="hydrofc"
 mamba create -n %env_name% -c conda-forge python=3.9 xarray cffi pandas numpy matplotlib ipykernel jsonpickle netcdf4 seaborn
 REM note to self seaborn used in swift2 sample notebooks, so somewhat optional.
@@ -122,7 +279,7 @@ From here on all commands are done from within this new conda environment
 
 You may already have `jupyter-lab` installed in another conda environment. You may use it to run 'hydrofc' notebooks. If not, install `jupyter-lab` in this new environment with:
 
-```bat
+```sh
 mamba install -c conda-forge jupyterlab
 ```
 
@@ -132,12 +289,26 @@ We can now install "our" packages. we can install from 'wheels', or from source 
 
 Two dependencies `refcount` and `cinterop` are on pypi, but should also be in the zip archive as wheels as well; prefer the latter.
 
-To install "wheels", which you may have gotten from a zip file:
+If installed from the Windows installer, you should have the wheels in a
+folder such as  "C:\\Users\\xxxyyy\\AppData\\Local\\Programs\\SF\\python" 
+if you have chosen the default option for an destination folder.
+
+To install "wheels", if you got them from a zip file:
 
 ```bat
 cd  C:\tmp\sf
 7z x python.7z
+```
 
+or
+
+```bat
+cd C:\Users\xxxyyy\AppData\Local\Programs\SF\python
+```
+
+Then, after having activated your conda environment if need be:
+
+```bat
 :: Adapt the following to the versions you have.
 pip install --force-reinstall --no-deps refcount-0.9.3-py2.py3-none-any.whl
 pip install --force-reinstall --no-deps cinterop-0.9.0-py2.py3-none-any.whl
@@ -146,48 +317,56 @@ pip install --force-reinstall --no-deps swift2-2.3.7-py2.py3-none-any.whl
 pip install --force-reinstall --no-deps fogss-0.3-py2.py3-none-any.whl
 ```
 
-### __Installing hydroforecast packages in dev mode__
-
-This section is valid for developers who have access to and checked out source code. All other users can ignore it.
-
-To install instead in development mode, for some or all of the 4 packages:
-
-```bat
-set GITHUB_REPOS=c:\src
-set CSIRO_BITBUCKET=c:\src
-```
-
-```bat
-cd %GITHUB_REPOS%\pyrefcount
-python setup.py develop
-cd %GITHUB_REPOS%\c-interop\bindings\python\cinterop
-python setup.py develop
-
-cd %CSIRO_BITBUCKET%\datatypes\bindings\python\uchronia\
-python setup.py develop
-cd %CSIRO_BITBUCKET%\swift\bindings\python\swift2\
-python setup.py develop
-:: fogss...
-```
-
-Now to explore sample notebooks
-
-`mamba install -c conda-forge seaborn`
-
-```bat
-cd %userprofile%\Documents
-mkdir notebooks
-xcopy %CSIRO_BITBUCKET%\swift\bindings\python\swift2\notebooks\* .\
-
-jupyter-lab .
-```
-
-start with `getting_started.ipynb`
-
-We recommend developers install the packages `nbstripout` and `jupytext` to manage python notebooks.
-
 ## Matlab functions
 
-Matlab bindings are available and used by some users. Their installation is not documented here, but may be in the future.
+::: {.callout-warning}
 
+This section is a draft, indicative only. 
 
+Our MATLAB bindings are known to work very well, but the requirements from
+MATLAB for C/C++ compilers can be fiddly to figure out and set up, and this 
+section has not been fully validated recently. 
+
+:::
+
+If installed from the Windows installer, you should have the MATLAB functions in a
+folder such as  "C:\\Users\\xxxyyy\\AppData\\Local\\Programs\\SF\\matlab" 
+if you have chosen the default option for an destination folder.
+
+You will find bindings for SWIFT and FoGSS.
+
+### C/C++ compiler Visual Studio
+
+If you have Visual Studio with the C++ compiler installed on your machine, chances are that MATLAB can detect and use it. Otherwise using the MinGW64 toolchain has also been successfully tested.
+
+### Installing Mingw64
+
+Read the [MATLAB Support for MinGW-w64 C/C++ Compiler](https://au.mathworks.com/matlabcentral/fileexchange/52848-matlab-support-for-mingw-w64-c-c-compiler) page. You
+will find some information on versions of GCC you need depending on the version 
+of MATLAB you are using.
+
+Head to [Mingw-w64](https://www.mingw-w64.org/) and the download section for "MingW-W64-builds"
+
+Older versions of MATLAB may require versions of GCC that are more difficult to obtain. Around 2017 MATLAB required GCC version 5.3 which appears harder to obtain as of 2023. 
+Users with older versions of MATLAB may find useful material in this [MinGW-w64 - for 32 and 64 bit Windows Files on Sourceforge](https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/). This is indicative only and download and use is for you to judge. As a hint, for matlab 2017 an installer version `x86_64-5.3.0-posix-seh-rt_v4-rev0` was needed.
+
+### Compiling the MEX code for swift
+
+In order to capture error messages from the swift library the matlab code needs a bit of MEX code. At the matlab prompt:
+
+```matlab
+setenv('MW_MINGW64_LOC', 'C:\Users\xxxyyy\prog\mingw-w64\x86_64-5.3.0-posix-seh-rt_v4-rev0\mingw64')
+cd('C:/src/csiro/stash/swift/bindings/matlab/interop')
+mex -L"C:/localdev/libs/64" -lswift registerSwiftExceptionCallback.cpp
+
+%% I seemed to need the addpath calls for  createSwiftPrototype to work
+bindingsLocation = 'C:/src/csiro/stash/swift/bindings/matlab';
+addpath(fullfile(bindingsLocation, 'datatypes'));
+addpath(fullfile(bindingsLocation, 'native'));
+addpath(fullfile(bindingsLocation, 'interop'));
+addpath(fullfile(bindingsLocation, 'external'));
+addpath('c:/localdev/libs/64');
+addpath('c:/local/libs/64');
+cd('C:/src/csiro/stash/swift/bindings/matlab/native')
+createSwiftPrototype()
+```
