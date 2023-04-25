@@ -2,7 +2,7 @@
 title: "Developer documentation"
 ---
 
-["cruise-control" (restricted link)](https://bitbucket.csiro.au/projects/SF/repos/cruise-control/browse) contains detailed instructions for building and maintaining the software stack, and deploying it on CSIRO organisational infrastructure. Most of its content is also available in previous public links.
+["cruise-control" (restricted link)](https://bitbucket.csiro.au/projects/SF/repos/cruise-control/browse) contains detailed instructions for building and maintaining the software stack, and deploying it on CSIRO organisational infrastructure. Research partners can naturally access that documentation upon request: the content is not sensitive but kept private for logistical reasons.
 
 # Technical blog posts
 
@@ -12,6 +12,7 @@ A few posts that are related to this hydrologic simulation software stack:
 * [Generate programming language bindings to a C API](https://jmp75.github.io/work-blog/posts/2022-09-03-c-api-wrapper-generation.html){.external target="_blank"}
 * [Azure devops CI pipeline for hydrologic forecasting software](https://jmp75.github.io/work-blog/posts/2022-07-31-azure-pipeline-vcpp-stack.html){.external target="_blank"}
 * [Compiling C++ libraries to WebAssembly - Part 1](https://jmp75.github.io/work-blog/posts/2022-09-11-cpp-code-wasm.html){.external target="_blank"}
+* [Windows installer with WiX 4 - part 1](https://jmp75.github.io/work-blog/posts/20230315-windows-installer-wix)
 
 # Release and versioning
 
