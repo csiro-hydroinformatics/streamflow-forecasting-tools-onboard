@@ -359,13 +359,13 @@ Note
 <h2 class="anchored" data-anchor-id="installing-shared-dynamic-libraries">Installing shared (dynamic) libraries</h2>
 <p>This documentation is fairly prescriptive in terms of the location where you would install dynamic libraries. You can still choose the top level folder where you would install these libraries. This document uses <code>c:\local</code>, and you are encourage to adhere to this convention if you can logistically can.</p>
 <p>You may have <code>7z</code> in your command line prompt, otherwise use Windows Explorer to extract the zip file from the 7Zip graphical user interface. You may replace <code>7z</code> with the full path, typically <code>"c:\Program Files\7-Zip\7z.exe"</code> with quotation marks.</p>
-<pre class="bat"><code>if not defined local_dir set local_dir=c:\local
-if not exist %local_dir% mkdir %local_dir%\libs\64
-
-cd %local_dir%
-7z x -y libs.7z
-:: or:
-"c:\Program Files\7-Zip\7z.exe" x -y libs.7z</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>if not defined local_dir set local_dir=c:\local</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>if not exist %local_dir% mkdir %local_dir%\libs\64</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>cd %local_dir%</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>7z x -y libs.7z</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>:: or:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>"c:\Program Files\7-Zip\7z.exe" x -y libs.7z</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This should have created the folder <code>C:\local\libs\64</code>. A 32 bits folder may be present but is deprecated since 2017-12: operating systems are now largely 64 bits and we strongly recommend you use 64 bits version of the products.</p>
 <section id="adding-environment-variable-library_path" class="level3">
 <h3 class="anchored" data-anchor-id="adding-environment-variable-library_path">Adding environment variable LIBRARY_PATH</h3>
@@ -453,8 +453,8 @@ base                  *  C:\Users\xxxyyy\Miniconda3</code></pre>
 mamba create -n %env_name% -c conda-forge python=3.9 xarray cffi pandas numpy matplotlib ipykernel jsonpickle netcdf4 seaborn
 REM note to self seaborn used in swift2 sample notebooks, so somewhat optional.</code></pre>
 <p>Register the new conda environment as a “kernel” for jupyter notebooks</p>
-<pre class="bat"><code>conda activate %env_name%
-python -m ipykernel install --user --name %env_name% --display-name "HFC"</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>conda activate %env_name%</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>python -m ipykernel install --user --name %env_name% --display-name "HFC"</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>From here on all commands are done from within this new conda environment</p>
 <p>You may already have <code>jupyter-lab</code> installed in another conda environment. You may use it to run ‘hydrofc’ notebooks. If not, install <code>jupyter-lab</code> in this new environment with:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> install <span class="at">-c</span> conda-forge jupyterlab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -463,17 +463,17 @@ python -m ipykernel install --user --name %env_name% --display-name "HFC"</code>
 <p>Two dependencies <code>refcount</code> and <code>cinterop</code> are on pypi, but should also be in the zip archive as wheels as well; prefer the latter.</p>
 <p>If installed from the Windows installer, you should have the wheels in a folder such as “C:\Users\xxxyyy\AppData\Local\Programs\SF\python” if you have chosen the default option for an destination folder.</p>
 <p>To install “wheels”, if you got them from a zip file:</p>
-<pre class="bat"><code>cd  C:\tmp\sf
-7z x python.7z</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cd  C:\tmp\sf</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>7z x python.7z</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>or</p>
-<pre class="bat"><code>cd C:\Users\xxxyyy\AppData\Local\Programs\SF\python</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cd C:\Users\xxxyyy\AppData\Local\Programs\SF\python</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Then, after having activated your conda environment if need be:</p>
-<pre class="bat"><code>:: Adapt the following to the versions you have.
-pip install --force-reinstall --no-deps refcount-0.9.3-py2.py3-none-any.whl
-pip install --force-reinstall --no-deps cinterop-0.9.0-py2.py3-none-any.whl
-pip install --force-reinstall --no-deps uchronia-2.3.7-py2.py3-none-any.whl
-pip install --force-reinstall --no-deps swift2-2.3.7-py2.py3-none-any.whl
-pip install --force-reinstall --no-deps fogss-0.3-py2.py3-none-any.whl</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>:: Adapt the following to the versions you have.</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>pip install --force-reinstall --no-deps refcount-0.9.3-py2.py3-none-any.whl</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>pip install --force-reinstall --no-deps cinterop-0.9.0-py2.py3-none-any.whl</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>pip install --force-reinstall --no-deps uchronia-2.3.7-py2.py3-none-any.whl</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>pip install --force-reinstall --no-deps swift2-2.3.7-py2.py3-none-any.whl</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>pip install --force-reinstall --no-deps fogss-0.3-py2.py3-none-any.whl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="matlab-functions" class="level2">
