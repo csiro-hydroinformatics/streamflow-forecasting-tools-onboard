@@ -116,7 +116,7 @@ This documentation is fairly prescriptive in terms of the location where you wou
 
 You may have `7z` in your command line prompt, otherwise use Windows Explorer to extract the zip file from the 7Zip graphical user interface. You may replace `7z` with the full path, typically `"c:\Program Files\7-Zip\7z.exe"` with quotation marks.
 
-```bat
+```default
 if not defined local_dir set local_dir=c:\local
 if not exist %local_dir% mkdir %local_dir%\libs\64
 
@@ -270,7 +270,7 @@ REM note to self seaborn used in swift2 sample notebooks, so somewhat optional.
 
 Register the new conda environment as a "kernel" for jupyter notebooks
 
-```bat
+```default
 conda activate %env_name%
 python -m ipykernel install --user --name %env_name% --display-name "HFC"
 ```
@@ -295,20 +295,20 @@ if you have chosen the default option for an destination folder.
 
 To install "wheels", if you got them from a zip file:
 
-```bat
+```default
 cd  C:\tmp\sf
 7z x python.7z
 ```
 
 or
 
-```bat
+```default
 cd C:\Users\xxxyyy\AppData\Local\Programs\SF\python
 ```
 
 Then, after having activated your conda environment if need be:
 
-```bat
+```default
 :: Adapt the following to the versions you have.
 pip install --force-reinstall --no-deps refcount-0.9.3-py2.py3-none-any.whl
 pip install --force-reinstall --no-deps cinterop-0.9.0-py2.py3-none-any.whl
