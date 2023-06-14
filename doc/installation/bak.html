@@ -129,7 +129,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -150,7 +150,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../installation.html" aria-current="page">
+    <a class="nav-link" href="../../installation.html">
  <span class="menu-text">Installation</span></a>
   </li>  
   <li class="nav-item">
@@ -176,54 +176,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Installation: Windows</h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
-      </button>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../installation.html" class="sidebar-item-text sidebar-link">Installation</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../doc/installation/install_windows.html" class="sidebar-item-text sidebar-link active">Installation: Windows</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../doc/installation/install_linux.html" class="sidebar-item-text sidebar-link">Installation: Debian based Linux</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../doc/installation/install_macosx.html" class="sidebar-item-text sidebar-link">Installation: MacOSX</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../doc/installation/install_docker.html" class="sidebar-item-text sidebar-link">Installation: via Docker</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../doc/installation/install_source.html" class="sidebar-item-text sidebar-link">Installation: From source code</a>
-  </div>
-</li>
-    </ul>
-    </div>
-</nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -271,7 +227,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Installation: Windows</h1>
+<h1 class="title">Installation: Windows</h1>
 </div>
 
 
@@ -330,7 +286,7 @@ Note
 <h1>Checking the base installation</h1>
 <p>One way to check the installation worked as desired is to open a new command prompt. The command <code>where chyppapp</code> should return a path.</p>
 <p><img src="./media/image9.png" style="width:6.27in;height:1.88611in"></p>
-<p>Then <code>chyppapp --help</code> should work and display a help output.</p>
+<p>Then <code>chyppapp \--help</code> should work and display a help output.</p>
 <p><img src="./media/image10.png" style="width:6.27in;height:1.58056in"></p>
 </section>
 <section id="uninstalling" class="level1">
@@ -340,17 +296,17 @@ Note
 </section>
 <section id="manual-installation-of-libraries" class="level1">
 <h1>Manual installation of libraries</h1>
-<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-warning callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-caption-container flex-fill">
-Note
+Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This manual procedure to install the stack is deprecated. Preferably use the windows installer as above.</p>
+<p>This manual procedure to install the stack is <strong>DEPRECATED</strong>. Preferably use the windows installer as above.</p>
 </div>
 </div>
 <p>You will have been given one or more links to the location of C++ compiled libraries (windows DLLs), and R and/or Python packages. You should have access to at least libs.7z. Other archives files (such as include.7z) may be present and used only for development. They are not necessary for most users.</p>
@@ -395,9 +351,7 @@ Note
 <p>This section mostly assumes you are installing from the Windows Installer, not manually. You may need to adapt a few things if you installed manually.</p>
 </div>
 </div>
-<p><strong>If you are using Windows 10</strong>, from the start menu, go the “S” section:</p>
-<p><img src="./media/added/001.png" class="img-fluid" style="width:3in"></p>
-<p><strong>If you are using Windows 11</strong>, from the start menu, go to “All apps”</p>
+<p>From the start menu, go to “All apps” (note: screen captures are made on Windows 11).</p>
 <p><img src="./media/image12.png" style="width:5.83415in;height:1.59397in"></p>
 <p>In the “S” section you will find a “Streamflow Forecasting” folder, with a shortcut to the installation folder.</p>
 <p><img src="./media/image13.png" style="width:6.26806in;height:2.09583in"></p>
@@ -439,19 +393,14 @@ Note
 <p>We <strong>strongly</strong> advise you to use python virtual environments to execute these tools via python.</p>
 <p>There are various methods for these, but typically <code>venv</code> (virtual environments) or <code>conda</code></p>
 <p>This section documents the process using <code>conda</code>.</p>
-<p>There are various options to set up a suitable python environment to run. This document outlines using <code>conda</code> or its replacement <code>mamba</code>. If you do not have any pre-existing environments, we recommend you use <a href="https://github.com/conda-forge/miniforge#mambaforge">mambaforge</a>, but you may have already it installed on your Windows box by e.g.&nbsp;your IT department installation management software.</p>
+<p>There are various options to set up a suotable python environment to run. This document outlines using <code>conda</code>. If you do not have any preexisting environments, we recommend you use <a href="https://github.com/conda-forge/miniforge#mambaforge">mambaforge</a>, but you may have already it installed on your Windows box by e.g.&nbsp;your IT department installation management software.</p>
 <p>This document assumes you start from the base environment, for instance if you installed <code>miniconda</code>:</p>
 <pre class="text"><code>(base) C:\Users\xxxyyy&gt;conda env list
 # conda environments:
 #
 base                  *  C:\Users\xxxyyy\Miniconda3</code></pre>
-<p>If you have installed Mambaforge, look for “miniforge” in the Windows start menu:</p>
-<p><img src="./media/added/003.png" class="img-fluid" style="width:4in"></p>
-<p><img src="./media/added/004.png" class="img-fluid"></p>
-<p>We recommend you use the program <code>mamba</code>, a newer and faster drop-in replacement for <code>conda</code>. This is optional.</p>
-<p>You may already have mamba installed (e.g.&nbsp;if you installed mambaforge). You can check the command <code>where mamba</code> returns paths to <code>mamba.bat</code> and/or <code>mamba.exe</code> files:</p>
-<p><img src="./media/added/005.png" class="img-fluid"></p>
-<p>Otherwise you can install mamba in the base environment with:</p>
+<p>We recommend you use the <code>mamba</code> package, a newer and faster drop-in replacement for <code>conda</code>. This is optional.</p>
+<p>You may already have mamba installed; this is the case if the the command <code>where mamba</code> returns paths to <code>mamba.bat</code> and/or <code>mamba.exe</code> files.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> conda-forge mamba</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="installing-python-packages" class="level3">
@@ -460,22 +409,6 @@ base                  *  C:\Users\xxxyyy\Miniconda3</code></pre>
 <pre class="text"><code>set env_name="hydrofc"
 mamba create -n %env_name% -c conda-forge python=3.9 xarray cffi pandas numpy matplotlib ipykernel jsonpickle netcdf4 seaborn
 REM note to self seaborn used in swift2 sample notebooks, so somewhat optional.</code></pre>
-<div class="callout-tip callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>It was once observed on some machines that downloading the package metadata for a conda channel was <strong>painfully</strong> slow:</p>
-<p><img src="./media/added/006.png" class="img-fluid"></p>
-<p>Hopefully you will not encounter this issue, but if you do there may be a workaround. If there are already cached package metadata, it is possible to skip downloading newer package metadata with the <code>-C</code> option. For instance:</p>
-<p><code>mamba install -c conda-forge -C xarray</code></p>
-</div>
-</div>
 <p>Register the new conda environment as a “kernel” for jupyter notebooks</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>conda activate %env_name%</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>python -m ipykernel install --user --name %env_name% --display-name "HFC"</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -491,8 +424,7 @@ Tip
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>7z x python.7z</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>or</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cd C:\Users\xxxyyy\AppData\Local\Programs\SF\python</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In that folder, there may be a batch file <code>installpkgs.bat</code> that can be called to install the streamflow forecasting packages in your new conda environment.</p>
-<p>Otherwise, a more manual approach is to adapt the following lines:</p>
+<p>Then, after having activated your conda environment if need be:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>:: Adapt the following to the versions you have.</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>pip install --force-reinstall --no-deps refcount-0.9.3-py2.py3-none-any.whl</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>pip install --force-reinstall --no-deps cinterop-0.9.0-py2.py3-none-any.whl</span>

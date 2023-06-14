@@ -2,114 +2,114 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/index.html</loc>
-    <lastmod>2023-04-26T05:29:59.255Z</lastmod>
+    <lastmod>2023-06-14T10:24:36.217Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/installation.html</loc>
-    <lastmod>2023-04-26T05:29:59.515Z</lastmod>
+    <lastmod>2023-06-14T10:24:36.485Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/documentation.html</loc>
-    <lastmod>2023-04-26T05:29:59.891Z</lastmod>
+    <lastmod>2023-06-14T10:24:36.921Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/notes.html</loc>
-    <lastmod>2023-04-26T05:30:00.251Z</lastmod>
+    <lastmod>2023-06-14T10:24:37.301Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/sample_workflows_matlab.html</loc>
-    <lastmod>2023-04-26T05:30:00.535Z</lastmod>
+    <lastmod>2023-06-14T10:24:37.609Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/sample_workflows_python.html</loc>
-    <lastmod>2023-04-26T05:30:00.755Z</lastmod>
+    <lastmod>2023-06-14T10:24:37.825Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/R/vignettes/error_correction_four_stages/error_correction_four_stages.html</loc>
-    <lastmod>2023-04-26T05:30:01.171Z</lastmod>
+    <lastmod>2023-06-14T10:24:38.325Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/R/vignettes/meta_parameters/meta_parameters.html</loc>
-    <lastmod>2023-04-26T05:30:01.555Z</lastmod>
+    <lastmod>2023-06-14T10:24:38.777Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/R/vignettes/ensemble_forecast_model_runs/ensemble_forecast_model_runs.html</loc>
-    <lastmod>2023-04-26T05:30:01.923Z</lastmod>
+    <lastmod>2023-06-14T10:24:39.241Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/R/vignettes/calibration_initial_states/calibration_initial_states.html</loc>
-    <lastmod>2023-04-26T05:30:02.267Z</lastmod>
+    <lastmod>2023-06-14T10:24:39.693Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/R/vignettes/calibrate_multisite/calibrate_multisite.html</loc>
-    <lastmod>2023-04-26T05:30:02.643Z</lastmod>
+    <lastmod>2023-06-14T10:24:40.097Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/R/vignettes/getting_started/getting_started.html</loc>
-    <lastmod>2023-04-26T05:30:03.083Z</lastmod>
+    <lastmod>2023-06-14T10:24:40.553Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/R/vignettes/calibrate_subcatchments/calibrate_subcatchments.html</loc>
-    <lastmod>2023-04-26T05:30:03.503Z</lastmod>
+    <lastmod>2023-06-14T10:24:40.977Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/R/vignettes/log_likelihood/log_likelihood.html</loc>
-    <lastmod>2023-04-26T05:30:03.871Z</lastmod>
+    <lastmod>2023-06-14T10:24:41.345Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/R/vignettes/ensemble_model_runs/ensemble_model_runs.html</loc>
-    <lastmod>2023-04-26T05:30:04.239Z</lastmod>
+    <lastmod>2023-06-14T10:24:41.769Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/R/vignettes/muskingum_multilink_calibration/muskingum_multilink_calibration.html</loc>
-    <lastmod>2023-04-26T05:30:04.807Z</lastmod>
+    <lastmod>2023-06-14T10:24:42.345Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/samples/sample_workflows_r.html</loc>
-    <lastmod>2023-04-26T05:30:05.027Z</lastmod>
+    <lastmod>2023-06-14T10:24:42.569Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/build.html</loc>
-    <lastmod>2023-04-26T05:30:05.275Z</lastmod>
+    <lastmod>2023-06-14T10:24:42.829Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/developer.html</loc>
-    <lastmod>2023-04-26T05:30:05.515Z</lastmod>
+    <lastmod>2023-06-14T10:24:43.077Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/roadmap.html</loc>
-    <lastmod>2023-04-26T05:30:05.727Z</lastmod>
+    <lastmod>2023-06-14T10:24:43.289Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/installation/Readme.html</loc>
-    <lastmod>2023-04-26T05:30:06.071Z</lastmod>
+    <lastmod>2023-06-14T10:24:43.669Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/installation/install_macosx.html</loc>
-    <lastmod>2023-04-26T05:30:06.275Z</lastmod>
+    <lastmod>2023-06-14T10:24:43.905Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/installation/install_source.html</loc>
-    <lastmod>2023-04-26T05:30:06.503Z</lastmod>
+    <lastmod>2023-06-14T10:24:44.137Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/installation/windows_installer.html</loc>
-    <lastmod>2023-04-26T05:30:06.751Z</lastmod>
+    <lastmod>2023-06-14T10:24:44.429Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/installation/install_linux.html</loc>
-    <lastmod>2023-04-26T05:30:07.103Z</lastmod>
+    <lastmod>2023-06-14T10:24:44.793Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/installation/install_docker.html</loc>
-    <lastmod>2023-04-26T05:30:07.307Z</lastmod>
+    <lastmod>2023-06-14T10:24:45.029Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/doc/installation/install_windows.html</loc>
-    <lastmod>2023-04-26T05:30:07.771Z</lastmod>
+    <lastmod>2023-06-14T10:24:45.541Z</lastmod>
   </url>
   <url>
     <loc>https://csiro-hydroinformatics.github.io/streamflow-forecasting-tools-onboard/faq.html</loc>
-    <lastmod>2023-04-26T05:30:07.995Z</lastmod>
+    <lastmod>2023-06-14T10:24:45.777Z</lastmod>
   </url>
 </urlset>
