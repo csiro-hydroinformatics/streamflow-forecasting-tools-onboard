@@ -83,7 +83,7 @@ command prompt. The command `where chyppapp` should return a path.
 ![](./media/image9.png){width="6.27in"
 height="1.886111111111111in"}
 
-Then `chyppapp \--help` should work and display a help output.
+Then `chyppapp --help` should work and display a help output.
 
 ![](./media/image10.png){width="6.27in"
 height="1.5805555555555555in"}
@@ -151,8 +151,11 @@ installed manually.
 
 :::
 
-From the start menu, go to "All apps" (note: screen captures are made on
-Windows 11).
+**If you are using Windows 10**, from the start menu, go the "S" section:
+
+![](./media/added/001.png){width="3in"}
+
+**If you are using Windows 11**, from the start menu, go to "All apps" 
 
 ![](./media/image12.png){width="5.834146981627296in"
 height="1.5939720034995626in"}
@@ -169,7 +172,6 @@ files for R, python and matlab.
 ![](./media/image14.png){width="6.268055555555556in" height="2.8125in"}
 
 ## R packages
-
 
 R packages are available in source and precompiled "win.binaries" form.
 The latter is easy and fast. Installing from source is out of scope of
@@ -241,20 +243,32 @@ There are various methods for these, but typically `venv` (virtual environments)
 
 This section documents the process using `conda`.
 
-There are various options to set up a suotable python environment to run. This document outlines using `conda`. If you do not have any preexisting environments, we recommend you use [mambaforge](https://github.com/conda-forge/miniforge#mambaforge), but you may have already it installed on your Windows box by e.g. your IT department installation management software.
+There are various options to set up a suitable python environment to run. This document outlines using `conda` or its replacement `mamba`. If you do not have any pre-existing environments, we recommend you use [mambaforge](https://github.com/conda-forge/miniforge#mambaforge), but you may have already it installed on your Windows box by e.g. your IT department installation management software.
 
-This document assumes you start from the base environment, for instance:
+This document assumes you start from the base environment, for instance if you installed `miniconda`:
 
-```text
+``` text
 (base) C:\Users\xxxyyy>conda env list
 # conda environments:
 #
 base                  *  C:\Users\xxxyyy\Miniconda3
 ```
 
-We recommend you use the `mamba` package, a newer and faster drop-in replacement for `conda`. This is optional.
+If you have installed Mambaforge, look for "miniforge" in the Windows start menu:
 
-```sh
+![](./media/added/003.png){width="4in"}
+
+![](./media/added/004.png)
+
+We recommend you use the program `mamba`, a newer and faster drop-in replacement for `conda`. This is optional.
+
+You may already have mamba installed (e.g. if you installed mambaforge). You can check the command `where mamba` returns paths to `mamba.bat` and/or `mamba.exe` files:
+
+![](./media/added/005.png)
+
+Otherwise you can install mamba in the base environment with:
+
+``` sh
 conda install -c conda-forge mamba
 ```
 
@@ -267,6 +281,18 @@ set env_name="hydrofc"
 mamba create -n %env_name% -c conda-forge python=3.9 xarray cffi pandas numpy matplotlib ipykernel jsonpickle netcdf4 seaborn
 REM note to self seaborn used in swift2 sample notebooks, so somewhat optional.
 ```
+
+::: {.callout-tip}
+
+It was once observed on some machines that downloading the package metadata for a conda channel was **painfully** slow:
+
+![](./media/added/006.png)
+
+Hopefully you will not encounter this issue, but if you do there may be a workaround. If there are already cached package metadata, it is possible to skip downloading newer package metadata with the `-C` option. For instance:
+
+`mamba install -c conda-forge -C xarray`
+
+:::
 
 Register the new conda environment as a "kernel" for jupyter notebooks
 
@@ -306,7 +332,9 @@ or
 cd C:\Users\xxxyyy\AppData\Local\Programs\SF\python
 ```
 
-Then, after having activated your conda environment if need be:
+In that folder, there may be a batch file `installpkgs.bat` that can be called to install the streamflow forecasting packages in your new conda environment.
+
+Otherwise, a more manual approach is to adapt the following lines:
 
 ```default
 :: Adapt the following to the versions you have.
