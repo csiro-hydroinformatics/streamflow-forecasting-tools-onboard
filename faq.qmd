@@ -12,4 +12,19 @@ Software components that are agnostic to the scientific domain itself are all op
 
 ## Does it run fast?
 
-Placeholder for facts and figures...
+A short answer is: **Yes**. The choice of C++ for the core engine was made, notably, to foster computational efficiency. Researchers over the years confirm very satisfactory runtime performances, including when compared to several other hydrologic toolsets.
+
+A longer answer would still be **yes**, even if there are nuances depending on the hardware, the size of the model and simulation length.
+
+### Wall time
+
+A model set up for the South Esk catchment (Tasmania, Australia) comprises **42 subareas and 42 routing links**. One simulation run over 1920 time steps completes in **~0.1 seconds** on a single core (Intel Core i7-10875H CPU @ 2.30GHz).
+
+This figure can be used as a starting point to estimate what a calibration procedure would take to complete. Let's say you have a calibration procedure that requires 10,000 iterations of the model. On a single core, this would take around **16 minutes**. If you run multithreaded on a machine with 4 cores, the same calibration procedure would take around **4 minutes**, but assuming some multithreading overhead (see next section), it may take around **6 minutes** in practice.
+
+### Scalability with parallelism
+
+SWIFT2 is designed to use multithreading where feasible, notably for lengthy model calibrations. Measurements done for the paper [SWIFT2: High performance software for short-medium term ensemble streamflow forecasting research and operations](https://www.mssanz.org.au/modsim2015/L15/perraud.pdf){.external target="_blank"} show a good capability to scale up with multiple threads.
+
+![Scalability of runtime performance with respect to system size, simulation length and degree of parallelism. Each point is the median of 10 replicate test runs to reduce measurement uncertainty.](./img/scaling_thread.png "Scalability of runtime performance with respect to system size, simulation length and degree of parallelism. Each point is the median of 10 replicate test runs to reduce measurement uncertainty.")
+
