@@ -8,7 +8,7 @@ This is a public entry point for a suite of hydrologic ensemble forecasting mode
 
 Some of the modelling tools are used by the Australian Bureau of Meteorology (the Bureau) to provide the [7-day Ensemble Streamflow Forecasts](http://www.bom.gov.au/water/7daystreamflow){.external target="_blank"} service. An overview of the research and outcomes in streamflow forecasting of the research alliance between the Bureau and CSIRO is available [at this page](https://www.csiro.au/en/Research/LWF/Areas/Water/Assessing-water-resources/WIRADA/Research/Water-forecasting){.external target="_blank"}.
 
-More recent versions of the tools are also used for further research, development and applications. The core modelling features are usually native (C++) libraries, accessed seamlessly by user from R, Python and Matlab.
+More recent versions of the tools are also used for further research, development and applications. The core modelling features are usually native (C++) libraries, accessed seamlessly by user from **Python**, **R** and **Matlab**.
 
 ![Ensemble forecasting simulation run from an R script](./img/ens_streamflow_forecast.png "Ensemble forecasting simulation run from an R script")
 

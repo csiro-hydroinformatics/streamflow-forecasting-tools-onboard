@@ -46,7 +46,7 @@ automatically by the windows installer.
 
 ## Windows installer
 
-Execute the file sf.msi
+Execute the file `sf.msi` (or `sf-x.y.z.msi`)
 
 ![](./media/image3.png){width="5.15in"
 height="4.031812117235345in"}
@@ -102,7 +102,9 @@ environment variables `PATH` and `LIBRARY_PATH`
 
 ::: {.callout-note}
 
-This manual procedure to install the stack is deprecated. Preferably use the windows installer as above.
+The manual procedure to install the stack is **deprecated**. Preferably use the windows installer as in the previous paragraphs.
+
+Some longstanding users may still want to stick to a manual process, hence this legacy is kept here.
 
 :::
 
@@ -141,7 +143,7 @@ Go to the Control Panel, System and Security\System, Search for the string "envi
 
 You can choose to install various higher level languages: R, Python, Matlab, C# and potentially others.
 
-This section documents R and Python. You can install either, or both, depending on your needs.
+This section documents R and Python. You can install either, or both, depending on your needs. Matlab is also summarily documented.
 
 ::: {.callout-note}
 
@@ -176,26 +178,40 @@ files for R, python and matlab.
 R packages are available in source and precompiled "win.binaries" form.
 The latter is easy and fast. Installing from source is out of scope of
 this document. However, Windows binary packages are version dependent.
-The installer includes packages for R 4.2.x, the current latest stable
+The installer includes packages for **R 4.2.x**, the current latest stable
 version of R. If you need another version of the packages, please
 contact the authors.
+
+There are multiple ways to install R. If you have a corporate 
+software management system, chances are the latest stable release of 
+R (currently 4.2.x) is readily available.
 
 Open an R terminal.
 
 Check with the command `.libPaths()` that the first folder is user
-specific, so that you will be able to install the packages. It is likely
-R would likely prompt you if not, and would created one in the process.
+specific, so that you will be able to install the packages. 
 
-```
+```text
 [1] "C:/Users/xxxyyy/AppData/Local/R/win-library/4.2"
-[2] "C:/Program Files/R/R-4.2.1/library"             
+[2] "C:/Program Files/R/R-4.2.1/library"
 ```
+
+It is likely R would likely prompt you if do not already have a personal library,
+and would created one in the process; for instance when adding a package:
+
+![](./media/added/008.png)
+
+![](./media/added/009.png)
+
+Then after that:
+
+![](./media/added/010.png)
 
 An alternate possibility is to specify a custom library directory via the `R_LIBS` environment variable.
 
 ### Adding an R_LIBS environment variable
 
-This step is not compulsory.
+**This step is optional, and possibly deprecated**.
 
 While not required, you can set up an additional R library location, specified via an environment variable `R_LIBS` at the machine or user level. This can facilitate access to R packages for all users and upgrades to newer version of R down the track. you can install the packages in the other library folders that R creates (user-specific if you do not have admin rights)
 
@@ -203,16 +219,18 @@ While not required, you can set up an additional R library location, specified v
 
 Then you will need the root name of the small R library folder where R
 packages are, e.g. "C:\\Users\\xxxyyy\\AppData\\Local\\Programs\\SF\\R" if you have
-chosen the default option for an destination folder.
+chosen the default option for an destination folder. You can also get the path via the shortcut named "Open installation folder" (start to type open in the start menu will likely get you there:)
 
-Adapting the following command should install the streamflow forecasting
+![](./media/added/011.png)
+
+Adapt the following command with the folder name and it should install the streamflow forecasting
 packages and their third party dependencies
 
 ```R
 install.packages(c('calibragem', 'mhplot', 'efts', 'swift',
 'qpp'),
 repos=c('file:///C:/Users/xxxyyy/AppData/Local/Programs/SF/R',
-'https://cran.csiro.au'), type='win.binary')`
+'https://cran.csiro.au'), type='win.binary')
 ```
 
 Upon successful installation you should be able to load the `swift`
@@ -227,7 +245,7 @@ bottom of the page you can find a shortcut to the package index.
 ![](./media/image16.png){width="3.3546347331583553in"
 height="0.541742125984252in"}
 
-The package Index page should also include a link to the introductory
+The package `Index` page should also include a link to the introductory
 vignettes:
 
 ![](./media/image17.png){width="6.268055555555556in"

@@ -75,7 +75,7 @@ head(getPlayed(ms))
 
     ## Warning: timezone of object (UTC) is different than current timezone ().
 
-    ##            subcatchment.Subarea.E subcatchment.Subarea.P
+    ##            subcatchment.Subarea.E subarea.Subarea.P
     ## 1990-01-01               5.542243               0.000000
     ## 1990-01-02               5.552225               0.000000
     ## 1990-01-03               5.562208               0.000000
@@ -219,7 +219,7 @@ assign another input time series, with a somewhat contrived example of a
 scaled up precipitation input series.
 
 ``` r
-precipId <- 'subcatchment.Subarea.P'
+precipId <- 'subarea.Subarea.P'
 runoffId <- 'subarea.Subarea.runoff'
 precip <- getPlayed(ms, precipId)
 baselineRunoff <- getRecorded(ms, runoffId)
